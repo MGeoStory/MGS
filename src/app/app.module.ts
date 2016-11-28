@@ -4,10 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
-
+import { BarGraph } from './bar-graph.directive';
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    BarGraph
   ],
   imports: [
     BrowserModule,
