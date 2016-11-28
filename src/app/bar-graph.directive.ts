@@ -14,6 +14,7 @@ export class BarGraph {
 
         //graph is a selection type
         var graph = d3.select(el.nativeElement);
+        //append svg是為了透過attr改變view(CSS可連動),if style則無法透過css覆寫
         graph.append('svg')
             .attr('class', 'chart')
             .attr('width', this.graphWidth + 'px')
