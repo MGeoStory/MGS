@@ -21,6 +21,8 @@ export class AppComponent implements OnInit {
     console.log('AppComponent-ngOnInit');
   }
 
+
+
   getFoods() {
     this.dm.getFoods().subscribe(
       // the first argument is a function which runs on success
