@@ -1,11 +1,12 @@
 import { Directive, ElementRef, Input, Renderer, OnInit } from '@angular/core';
 import * as d3 from 'd3';
 
-@Directive({ selector: 'bar-graph' })
+@Directive({ selector: 'bar-graph1' })
 export class BarGraph implements OnInit {
     graphWidth: number = 500;
     graphHeight: number = 400;
     graph: any;
+    dataPath: string = 'app/data/circle.json';
     constructor(
         private el: ElementRef, private renderer: Renderer) {
         // renderer.setElementStyle(el.nativeElement, 'backgroundColor', 'yellow');
@@ -29,24 +30,26 @@ export class BarGraph implements OnInit {
         //     .attr('height', this.graphHeight + 'px').selectAll('div')
         //     .data(this.data).enter().append('div')
         //     .attr('width', 10 + 'px');
-        graph.append('svg').append('circle')
-            .attr('cx', 5)
-            .attr('cy', 5)
-            .attr('r', 5);
-        d3.json('app/data/circle.json', function (d) {
-            console.log(d);
+        // graph.append('svg').append('circle')
+        //     .attr('cx', 5)
+        //     .attr('cy', 5)
+        //     .attr('r', 5);
+        // d3.json(this.dataPath, (d) => console.log(d));
+        d3.json(this.dataPath, function (data) {
+            console.log(data[0].x_axis);
+            graph.selectAll('circle').data(data).enter().append('circle')
+                .attr('cx', function (data, i) {
+                    console.log(data.color);
+                    console.log(1);
+                    return 1;
+                });
+            // .attr('cx', (d, i) => d.x_axis);
+            // .attr('cy', (d, i) => d[i].y_axis)
+            // .attr('r', (d, i) => d[i].radius);
         }
         );
     }
 
     ngOnInit() {
-        d3.json('app/data/circle.json', function (d) {
-            console.log(d);
-        }
-        );
-        d3.csv('app/data/test.csv', function (d) {
-            console.log(d);
-        }
-        );
     }
 }
