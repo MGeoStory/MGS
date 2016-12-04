@@ -8,6 +8,9 @@ import { AppComponent } from './app.component';
 //graph type
 import { BarGraph } from './bar-graph.directive';
 
+import { DemoService } from './demo.service';
+import './rxjs-extensions';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -18,7 +21,7 @@ import { BarGraph } from './bar-graph.directive';
     FormsModule,
     HttpModule
   ],
-  providers: [],
+  providers: [DemoService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
