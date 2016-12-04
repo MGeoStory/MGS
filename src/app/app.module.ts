@@ -4,12 +4,10 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
+import './rxjs-extensions';
 
 //graph type
 import { BarGraph } from './bar-graph.directive';
-
-import { JsonService } from './json.service';
-import './rxjs-extensions';
 
 @NgModule({
   declarations: [
@@ -21,7 +19,7 @@ import './rxjs-extensions';
     FormsModule,
     HttpModule
   ],
-  providers: [JsonService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
