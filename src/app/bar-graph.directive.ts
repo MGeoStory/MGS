@@ -36,11 +36,16 @@ export class BarGraph implements OnInit {
         //     .attr('r', 5);
         // d3.json(this.dataPath, (d) => console.log(d));
         d3.json(this.dataPath, function (data) {
-            console.log(data[0].x_axis);
+            // console.log(d3.entries(data));
             graph.selectAll('circle').data(data).enter().append('circle')
                 .attr('cx', function (data, i) {
-                    console.log(data.color);
-                    console.log(1);
+                    console.log(d3.keys(data));
+                    console.log(d3.values(data));
+                    console.log(data['color']);
+
+                    //     console.log(data['color']);
+                    //     console.log(i);
+                    //     // console.log(data[i]);
                     return 1;
                 });
             // .attr('cx', (d, i) => d.x_axis);
