@@ -41,6 +41,8 @@ export class BarGraph implements OnInit {
                 .attr('cx', function (data, i) {
                     console.log(d3.keys(data));
                     console.log(d3.values(data));
+                    //be a draw-function assign the cx variable
+                    //ng-2 implements 
                     console.log(data['color']);
 
                     //     console.log(data['color']);
