@@ -1,0 +1,26 @@
+[
+    {
+        "name": "A",
+        "value": 60
+    },
+    {
+        "name": "BB",
+        "value": 50
+    },
+    {
+        "name": "CCC",
+        "value": 40
+    },
+    {
+        "name": "DDDD",
+        "value": 30
+    },
+    {
+        "name": "EEEEE",
+        "value": 1000
+    },
+    {
+        "name": "FFFFFF",
+        "value": 200
+    }
+]

@@ -4,7 +4,7 @@ import * as d3 from 'd3';
 @Injectable()
 export class D3DrawService {
 
-    drawCircles(path: string, className: string): void {
+    drawCircles(path: string, ): void {
 
     }
 
