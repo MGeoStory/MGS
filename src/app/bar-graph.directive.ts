@@ -28,22 +28,31 @@ export class BarGraph implements OnInit {
 
     ngOnInit(): void {
         this.setup();
-        this.buildContent();
+        this.drawContent();
+        this.drawXAxis();
         this.drawCircles();
     }
 
     setup(): void {
         xScale = d3.scaleBand().range([0, width]);
         yScale = d3.scaleLinear().range([0, height]);
+        xAxis = d3.axisBottom(xScale);
     }
 
-    buildContent(): void {
+    drawXAxis(): void {
+        canvas.append('g')
+            .attr('class', 'xAxis').call(xAxis)
+            .attr('transform', `translate(0,${height})`);
+    }
+
+    drawContent(): void {
         d3.json(this.dataPath, function (data) {
             console.log(JSON.stringify(data));
             // console.log(d3.max(data, (d) => d['value']));
             xScale.domain(data.map((d) => d['name']));
             yScale.domain([d3.max(data, (d) => d['value']), 0]);
 
+            //bar-rect
             canvas.selectAll('rect').data(data).enter().append('rect')
                 .attr('x', (d) => xScale(d['name']))
                 .attr('y', (d) => yScale(d['value']))
@@ -51,6 +60,16 @@ export class BarGraph implements OnInit {
                 .attr('height', (d) => height - yScale(d['value']))
                 // .attr("height", (d) => yScale(d['value']))
                 .attr('fill', 'grey');
+
+            //bar-value
+            canvas.selectAll('text').data(data).enter().append('text')
+                .attr('class', 'bar-value')
+                .attr('x', (d) => xScale(d['name']) + xScale.bandwidth() / 2)
+                .attr('y', (d) => yScale(d['value']) - 5)
+                .attr('text-anchor', 'middle')
+                .text((d) => d['value']);
+
+            //bar-name
 
         });
     }
