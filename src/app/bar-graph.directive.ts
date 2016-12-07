@@ -11,7 +11,9 @@ let yScale;
 let xAxis;
 let yAxis;
 
-@Directive({ selector: 'vertical-bar-graph' })
+@Directive({
+    selector: 'vertical-bar-graph',
+})
 export class BarGraph implements OnInit {
 
     private dataPath: string = 'app/data/bar.json';
@@ -30,7 +32,7 @@ export class BarGraph implements OnInit {
         this.setup();
         this.drawContent();
         // this.drawXAxis();
-        this.drawCircles();
+        // this.drawCircles();
     }
 
     setup(): void {
