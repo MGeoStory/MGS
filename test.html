@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+
+<head>
+  <meta charset="utf-8">
+  <script src="https://d3js.org/d3-array.v0.7.min.js"></script>
+  <script src="https://d3js.org/d3-collection.v0.1.min.js"></script>
+  <script src="https://d3js.org/d3-color.v0.4.min.js"></script>
+  <script src="https://d3js.org/d3-format.v0.5.min.js"></script>
+  <script src="https://d3js.org/d3-interpolate.v0.5.min.js"></script>
+  <script src="https://d3js.org/d3-scale.v0.6.min.js"></script>
+
+  <script src="https://d3js.org/d3-selection.v0.6.min.js"></script>
+  <script src="https://d3js.org/d3-axis.v0.2.min.js"></script>
+
+  <script src="https://d3js.org/d3-array.v0.6.min.js"></script>
+  <style>
+    line,
+    path,
+    .domain,
+    .bar {
+      stroke: black;
+      fill: none;
+    }
+    
+    text {
+      fill: black;
+    }
+  </style>
+</head>
+
+<body>
+  <script>
+    var margin = {top: 20, right: 10, bottom: 40, left: 10};
+    var width = 500;
+    var height = 400;
+    var chartWidth = 500 - margin.left - margin.right;
+    var chartHeight = 400 - margin.top - margin.bottom;
+    var axisHeight = 30;
+    var data = [
+      {key:'A', value: 1},
+      {key:'B', value: 3},
+      {key:'C', value: 2},
+      {key:'D', value: 3},
+      {key:'E', value: 4},
+    ];
+    
+		var scaleX = d3_scale.scaleBand()
+    	.range([0, chartWidth]);
+    	// .paddingInner([0.1])
+	    // .paddingOuter([0.3])
+	    // .align([0.5]);
+    
+    // var scaleY = d3_scale.scaleLinear()
+    //   .domain([0, d3_array.max(data.map(function(d){ return d.value; }))])
+    //   .range([0, chartHeight]);
+    
+    var axis = d3_axis.axisBottom(scaleX);
+	    // .tickSizeInner(4)
+    	// .tickSizeOuter(20)
+	    // .tickPadding(3);
+    
+    var panel = d3_selection.select("body").append("svg")
+      .attr("class", "axis")
+      .attr("width", width)
+      .attr("height", height).call(axis);;
+    //  .append("g")
+    //   .attr("transform", "translate("+[margin.left, margin.top]+")")
+    scaleX.domain(data.map(function(d){ return d.key; }))
+    // panel.attr("transform", "translate("+[margin.left, height - margin.bottom]+")")
+      // .call(axis);
+    
+    // panel.selectAll('rect.bar')
+    // 	.data(data)
+    // 	.enter().append('rect')
+    // 	.attr("class", "bar")
+	  //   .attr("width", scaleX.bandwidth())
+    // 	.attr("height", function(d){ return scaleY(d.value); })
+	  //   .attr("x", function(d){ return scaleX(d.key); })
+	  //   .attr("y", function(d){ return -scaleY(d.value); })
+    
+  </script>
+</body>

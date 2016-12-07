@@ -29,20 +29,24 @@ export class BarGraph implements OnInit {
     ngOnInit(): void {
         this.setup();
         this.drawContent();
-        this.drawXAxis();
+        // this.drawXAxis();
         this.drawCircles();
     }
 
     setup(): void {
-        xScale = d3.scaleBand().range([0, width]);
+        xScale = d3.scaleBand().range([0, width]).paddingInner(0.1);
         yScale = d3.scaleLinear().range([0, height]);
         xAxis = d3.axisBottom(xScale);
+
     }
 
+    //call xAxis沒有東西是life cycle的問題
     drawXAxis(): void {
+        console.log('enter xAxis');
         canvas.append('g')
-            .attr('class', 'xAxis').call(xAxis)
-            .attr('transform', `translate(0,${height})`);
+            .attr('class', 'xAxis')
+            .attr('transform', `translate(0,${height})`)
+            .call(xAxis);
     }
 
     drawContent(): void {
@@ -69,8 +73,13 @@ export class BarGraph implements OnInit {
                 .attr('text-anchor', 'middle')
                 .text((d) => d['value']);
 
-            //bar-name
-
+            //不把axis抽成function是因為xAxis會用到xScale，這樣會有時間順序的問題
+            //bar-name and axis
+            canvas.append('g')
+                .attr('class', 'xAxis')
+                .attr('transform', `translate(0,${height})`)
+                .call(xAxis);
+            console.log('drawContent end');
         });
     }
 
