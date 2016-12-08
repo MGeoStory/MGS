@@ -8,16 +8,23 @@ import './rxjs-extensions';
 
 //graph type
 import { BarGraph } from './bar-graph.directive';
+import { GoogleMapComponent } from './google-map/google-map.component';
+
+import { AgmCoreModule } from 'angular2-google-maps/core';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    BarGraph
-  ],
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyDhm69UDMZY-VG4b3HQ3-RImGmlukvNKQ0'
+    })
+  ],
+  declarations: [
+    AppComponent,
+    BarGraph,
+    GoogleMapComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

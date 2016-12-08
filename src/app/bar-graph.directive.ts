@@ -12,7 +12,7 @@ let xAxis;
 let yAxis;
 
 @Directive({
-    selector: 'vertical-bar-graph',
+    selector: 'app-vertical-bar-graph',
 })
 export class BarGraph implements OnInit {
 
@@ -40,15 +40,6 @@ export class BarGraph implements OnInit {
         yScale = d3.scaleLinear().range([0, height]);
         xAxis = d3.axisBottom(xScale);
 
-    }
-
-    //call xAxis沒有東西是life cycle的問題
-    drawXAxis(): void {
-        console.log('enter xAxis');
-        canvas.append('g')
-            .attr('class', 'xAxis')
-            .attr('transform', `translate(0,${height})`)
-            .call(xAxis);
     }
 
     drawContent(): void {
@@ -81,8 +72,17 @@ export class BarGraph implements OnInit {
                 .attr('class', 'xAxis')
                 .attr('transform', `translate(0,${height})`)
                 .call(xAxis);
-            console.log('drawContent end');
+            // console.log('drawContent end');
         });
+    }
+
+    //call xAxis沒有東西是life cycle的問題
+    drawXAxis(): void {
+        console.log('enter xAxis');
+        canvas.append('g')
+            .attr('class', 'xAxis')
+            .attr('transform', `translate(0,${height})`)
+            .call(xAxis);
     }
 
     drawCircles(): void {
