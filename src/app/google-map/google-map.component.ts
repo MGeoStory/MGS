@@ -11,15 +11,13 @@ import * as d3 from 'd3';
 })
 export class GoogleMapComponent implements OnInit, OnChanges {
     title: string = 'google map';
-    lat: number = 23.5;
-    lng: number = 121.5;
-
+    // lat: number = 23.5;
+    // lng: number = 121.5;
     ngOnInit(): void {
         var map = new google.maps.Map(document.getElementById('map'),
             {
-                zoom: 7,
-                center: { lat: 41.85, lng: -87.65 }
-
+                zoom: 6,
+                center: { lat: 23.5, lng: 121.5 }
             });
     }
 
