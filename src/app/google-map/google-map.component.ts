@@ -6,4 +6,7 @@ import { Component } from '@angular/core';
     styleUrls: ['app-google-map.component.css']
 })
 export class GoogleMapComponent {
+    title: string = 'google map';
+    lat: number = 23.5;
+    lng: number = 121.5;
 }
