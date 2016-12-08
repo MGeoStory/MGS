@@ -44,7 +44,7 @@ export class BarGraph implements OnInit {
 
     drawContent(): void {
         d3.json(this.dataPath, function (data) {
-            console.log(JSON.stringify(data));
+            // console.log(JSON.stringify(data));
             // console.log(d3.max(data, (d) => d['value']));
             xScale.domain(data.map((d) => d['name']));
             yScale.domain([d3.max(data, (d) => d['value']), 0]);
