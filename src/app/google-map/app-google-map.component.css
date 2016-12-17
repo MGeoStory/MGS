@@ -3,10 +3,14 @@
 }
 
 #map {
-  height: 300px;
-  /*不寫也有預設值
+  height: 500px;
+  /*不寫也有預設值*/
   width: 100%;
   margin: 0;
-  padding: 0;*/
+  padding: 0;
 }
 
+/* no work=> cause by shadow DOM?*/
+.stations {
+position: 'absolute';
+}
