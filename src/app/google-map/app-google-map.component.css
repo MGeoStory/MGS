@@ -10,7 +10,13 @@
   padding: 0;
 }
 
-/* no work=> cause by shadow DOM?*/
-.stations {
-position: 'absolute';
+div .test {
+  color :red;
 }
+
+#map * svg.stations {
+  background-color:rgba(0,0,0,.5);
+}
+
+
+

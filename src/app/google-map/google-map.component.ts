@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges } from '@angular/core';
+import { Component, OnInit, OnChanges, ViewEncapsulation } from '@angular/core';
 // import { GoogleMapsLoader } from 'google-maps';
 import * as d3 from 'd3';
 
@@ -7,12 +7,15 @@ import * as d3 from 'd3';
 @Component({
     selector: 'app-google-map',
     templateUrl: 'app-google-map.component.html',
+    encapsulation: ViewEncapsulation.None, //view不封裝的話，css可操作angular2的ng-style(any class)
     styleUrls: ['app-google-map.component.css']
 })
 export class GoogleMapComponent implements OnInit {
     title: string = 'google map';
 
     ngOnInit(): void {
+        d3.selectAll('p').text('selected by d3').attr('class', 'test');
+
         console.log('ngOnInit');
         var map = new google.maps.Map(document.getElementById('map'),
             {
@@ -60,8 +63,7 @@ export class GoogleMapComponent implements OnInit {
                         .attr('height', (sw.y - ne.y) + 'px')
                         .style('position', 'absolute')
                         .style('left', sw.x + 'px')
-                        .style('top', ne.y + 'px')
-                        .style('background-color', 'rgba(0,0,0,.5)');
+                        .style('top', ne.y + 'px');
 
                     //create point
                     var maker = layer.selectAll('.marker')
