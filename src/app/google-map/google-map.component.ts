@@ -14,7 +14,6 @@ export class GoogleMapComponent implements OnInit {
     title: string = 'google map';
 
     ngOnInit(): void {
-        d3.selectAll('p').text('selected by d3').attr('class', 'test');
 
         console.log('ngOnInit');
         var map = new google.maps.Map(document.getElementById('map'),

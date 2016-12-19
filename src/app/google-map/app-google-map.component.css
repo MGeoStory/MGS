@@ -18,5 +18,7 @@ div .test {
   background-color:rgba(0,0,0,.5);
 }
 
-
+#map * svg.stations > circle.marker{
+  fill:red;
+}
 
