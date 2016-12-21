@@ -14,7 +14,6 @@ export class GoogleMapComponent implements OnInit {
     title: string = 'google map';
 
     ngOnInit(): void {
-
         console.log('ngOnInit');
         var map = new google.maps.Map(document.getElementById('map'),
             {
@@ -64,6 +63,12 @@ export class GoogleMapComponent implements OnInit {
                         .style('left', sw.x + 'px')
                         .style('top', ne.y + 'px');
 
+                    console.log('object0');
+                    layer.on('click', function () {
+                        console.log('object1');
+
+                    })
+                    console.log('object2');
                     //create point
                     var maker = layer.selectAll('.marker')
                         .data(d3.entries(data))
@@ -73,13 +78,13 @@ export class GoogleMapComponent implements OnInit {
                         .attr('class', 'marker')
                         .attr('r', r)
                         .attr('cx', function (d) { //這邊開始是初始化的point，後續不call
-                            console.log('enter cx');
+                            // console.log('enter cx');
                             var p = new google.maps.Point(0, 0); //point class
                             p = projection.fromLatLngToDivPixel(d.value.lat_lng);
                             // console.log(p.x);
                             // console.log(sw.x);
                             // console.log(p.x - sw.x);
-                            console.log('p=' + (p.x - sw.x));
+                            // console.log('p=' + (p.x - sw.x));
                             return p.x - sw.x;
                         })
                         .attr('cy', function (d) {
@@ -94,7 +99,7 @@ export class GoogleMapComponent implements OnInit {
                     function transform(d) {
                         // console.log(d);
                         d = projection.fromLatLngToDivPixel(d.value.lat_lng);
-                        console.log('d=' + (d.x - sw.x));
+                        // console.log('d=' + (d.x - sw.x));
                         return d3.select(this)
                             .attr('cx', d.x - sw.x) //因為absolute了sw.x的距離
                             .attr('cy', d.y - ne.y);// 因為 absolute了ne.y的距離
