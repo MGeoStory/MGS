@@ -1,9 +1,8 @@
-import { Component, OnInit, OnChanges, ViewEncapsulation } from '@angular/core';
-// import { GoogleMapsLoader } from 'google-maps';
+import { Component, OnInit, OnChanges, ViewEncapsulation, AfterContentInit } from '@angular/core';
 import * as d3 from 'd3';
 
-// import { GoogleMapAPI } from 'googlemaps';
-// import * as aa from 'googlemaps';
+var clickLayer;
+
 @Component({
     selector: 'app-google-map',
     templateUrl: 'app-google-map.component.html',
@@ -37,12 +36,15 @@ export class GoogleMapComponent implements OnInit {
             var overlay = new google.maps.OverlayView(),
                 r = 4.5,
                 padding = r * 2;
+
             overlay.onAdd = function () {
                 //this is mean overlay class
                 // console.log(d3.select(this.getPanes()));
                 var layer = d3.select(this.getPanes().overlayLayer)
                     .append('svg')
                     .attr('class', 'stations');
+
+                clickLayer = layer;
 
                 overlay.draw = function () {
                     var projection = this.getProjection(),
@@ -63,12 +65,6 @@ export class GoogleMapComponent implements OnInit {
                         .style('left', sw.x + 'px')
                         .style('top', ne.y + 'px');
 
-                    console.log('object0');
-                    layer.on('click', function () {
-                        console.log('object1');
-
-                    })
-                    console.log('object2');
                     //create point
                     var maker = layer.selectAll('.marker')
                         .data(d3.entries(data))
@@ -109,5 +105,8 @@ export class GoogleMapComponent implements OnInit {
             // Bind our overlay to the map…
             overlay.setMap(map);
         });
+        console.log(clickLayer);
     };
+
 }
+
