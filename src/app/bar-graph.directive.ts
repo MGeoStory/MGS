@@ -39,7 +39,6 @@ export class BarGraph implements OnInit {
         xScale = d3.scaleBand().range([0, width]).paddingInner(0.1);
         yScale = d3.scaleLinear().range([0, height]);
         xAxis = d3.axisBottom(xScale);
-
     }
 
     drawContent(): void {
@@ -73,7 +72,15 @@ export class BarGraph implements OnInit {
                 .attr('transform', `translate(0,${height})`)
                 .call(xAxis);
             // console.log('drawContent end');
+
+            d3.select('rect').attr('fill', 'red');
+            // console.log(d3.select('rect').empty());
+
+            d3.select('rect').on('mouseover', function () {
+                console.log('mouserover');
+            });
         });
+
     }
 
     //call xAxis沒有東西是life cycle的問題
