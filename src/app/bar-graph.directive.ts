@@ -80,7 +80,6 @@ export class BarGraph implements OnInit {
                 console.log('mouserover');
             });
         });
-
     }
 
     //call xAxis沒有東西是life cycle的問題

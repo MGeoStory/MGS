@@ -19,6 +19,6 @@ div .test {
 }
 
 #map * svg.stations > circle.marker{
-  fill:red;
+  /*fill:red;*/
 }
 

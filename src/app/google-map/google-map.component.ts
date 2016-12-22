@@ -40,7 +40,7 @@ export class GoogleMapComponent implements OnInit {
             overlay.onAdd = function () {
                 //this is mean overlay class
                 // console.log(d3.select(this.getPanes()));
-                var layer = d3.select(this.getPanes().overlayLayer)
+                var layer = d3.select(this.getPanes().overlayMouseTarget)
                     .append('svg')
                     .attr('class', 'stations');
 
@@ -88,8 +88,12 @@ export class GoogleMapComponent implements OnInit {
                             p = projection.fromLatLngToDivPixel(d.value.lat_lng);
                             return p.y - ne.y;
                         }).append('title').text(function (d) {
-                            return d.key;
+                            return d.key + '1';
+                        }).on('mouseover', function () {
+                            console.log('mouseover');
                         });
+
+                    // console.log(d3.selectAll('circle').style('fill', 'red'));
 
                     //讓點位能隨著地圖縮放而不改變位置
                     function transform(d) {
