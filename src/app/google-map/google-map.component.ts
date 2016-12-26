@@ -50,7 +50,9 @@ export class GoogleMapComponent implements OnInit {
                     .style('top', ne.y + 'px');
 
                 console.log(layerOfStation);
-                var marker = layerOfStation.selectAll('svg')
+
+                var marker = d3.selection;
+                marker = layerOfStation.selectAll('svg')
                     .data(d3.entries(data))
                     .enter().append('circle');
                 //create point
@@ -99,7 +101,6 @@ export class GoogleMapComponent implements OnInit {
 
         //caculate the lat lng position
         bounds = new google.maps.LatLngBounds();
-
 
         //draw my layer
         overlayView = new google.maps.OverlayView();
