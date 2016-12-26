@@ -4,7 +4,10 @@ import * as d3 from 'd3';
 let map: google.maps.Map;
 let bounds: google.maps.LatLngBounds;
 let overlayView: google.maps.OverlayView;
-let layerOfStation;
+let projection: google.maps.MapCanvasProjection;
+
+//assign laterOfStation type => d3.Selection (cant avoid type error, but call d3.index well)
+let layerOfStation = d3.select(null);
 
 @Component({
     selector: 'app-google-map',
@@ -31,8 +34,7 @@ export class GoogleMapComponent implements OnInit {
             });// END OF d3.entries
 
             overlayView.draw = function () {
-                var projection = this.getProjection(),
-                    sw = projection.fromLatLngToDivPixel(bounds.getSouthWest()),
+                var sw = projection.fromLatLngToDivPixel(bounds.getSouthWest()),
                     ne = projection.fromLatLngToDivPixel(bounds.getNorthEast()),
                     r = 4.5,
                     padding = r * 2;
@@ -49,16 +51,24 @@ export class GoogleMapComponent implements OnInit {
                     .style('left', sw.x + 'px')
                     .style('top', ne.y + 'px');
 
-                console.log(layerOfStation);
-                var marker: Selection;
-                console.log(marker);
-                marker = layerOfStation.selectAll('svg')
+                // create point
+                var marker = layerOfStation.selectAll('svg')
                     .data(d3.entries(data))
-                    .enter().append('circle');
+                    .each(transformA)
+                    .enter().append('svg')
+                    .each(transformA)
+                    .attr('class', 'marker');
+
+                marker.append('circle')
+                    .attr('r', r)
+                    .attr("cx", padding)
+                    .attr("cy", padding);
+
+                function transformA(d) {
+                    console.log(d.value.lat_lng);
+                }
+
                 //create point
-                layerOfStation.selectAll('svg')
-                    .data(d3.entries(data))
-                    .enter().append('circle');
                 // var maker = layerOfStation.selectAll('.marker')
                 //     .data(d3.entries(data))
                 //     .each(transform) // for updating，首次loading map不call，後續會作
@@ -101,7 +111,6 @@ export class GoogleMapComponent implements OnInit {
 
         //caculate the lat lng position
         bounds = new google.maps.LatLngBounds();
-
         //draw my layer
         overlayView = new google.maps.OverlayView();
         overlayView.onAdd = function () {
@@ -111,6 +120,9 @@ export class GoogleMapComponent implements OnInit {
             layerOfStation = d3.select(this.getPanes().overlayMouseTarget)
                 .append('svg')
                 .attr('class', 'stations');
+
+            // projection要放在.onAdd裡面，不然會是undifined
+            projection = overlayView.getProjection();
         }
 
     }// END OF initialize
