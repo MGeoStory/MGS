@@ -50,6 +50,9 @@ export class GoogleMapComponent implements OnInit {
                     .style('top', ne.y + 'px');
 
                 console.log(layerOfStation);
+                var marker = layerOfStation.selectAll('svg')
+                    .data(d3.entries(data))
+                    .enter().append('circle');
                 //create point
                 layerOfStation.selectAll('svg')
                     .data(d3.entries(data))
