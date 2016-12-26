@@ -107,6 +107,7 @@ export class GoogleMapComponent implements OnInit {
         overlayView.onAdd = function () {
             //this = overlayView
             //overlayMouseTarget =>可以listener DOM event; google map有4層Panes
+            console.log(this);
             layerOfStation = d3.select(this.getPanes().overlayMouseTarget)
                 .append('svg')
                 .attr('class', 'stations');
