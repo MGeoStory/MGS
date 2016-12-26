@@ -1,7 +1,10 @@
 import { Component, OnInit, OnChanges, ViewEncapsulation, AfterContentInit } from '@angular/core';
 import * as d3 from 'd3';
 
-var clickLayer;
+let map: google.maps.Map;
+let bounds: google.maps.LatLngBounds;
+let overlayView: google.maps.OverlayView;
+let layerOfStation;
 
 @Component({
     selector: 'app-google-map',
@@ -13,18 +16,11 @@ export class GoogleMapComponent implements OnInit {
     title: string = 'google map';
 
     ngOnInit(): void {
-        console.log('ngOnInit');
-        var map = new google.maps.Map(document.getElementById('map'),
-            {
-                zoom: 20,
-                center: new google.maps.LatLng(37.76487, -122.41948),
-                mapTypeId: google.maps.MapTypeId.TERRAIN
-            });
+        this.initialize();
 
         // Load the station data. When the data comes back, create an overlay.
         d3.json("app/data/stations.json", function (error, data) {
-            console.log(d3.entries(data));
-            var bounds = new google.maps.LatLngBounds();
+            // console.log(d3.entries(data));
             //d3.entries({foo: 42, bar: true}); // [{key: "foo", value: 42}, {key: "bar", value: true}]
             d3.entries(data).forEach(function (d) {
                 //Extends this bounds to contain the given point.
@@ -32,85 +28,78 @@ export class GoogleMapComponent implements OnInit {
                 bounds.extend(d.value.lat_lng = new google.maps.LatLng(d.value[1], d.value[0]));
                 //Sets the viewport to contain the given bounds.
                 map.fitBounds(bounds);
-            });
-            var overlay = new google.maps.OverlayView(),
-                r = 4.5,
-                padding = r * 2;
+            });// END OF d3.entries
 
-            overlay.onAdd = function () {
-                //this is mean overlay class
-                // console.log(d3.select(this.getPanes()));
-                var layer = d3.select(this.getPanes().overlayMouseTarget)
-                    .append('svg')
-                    .attr('class', 'stations');
+            overlayView.draw = function () {
+                var projection = this.getProjection(),
+                    sw = projection.fromLatLngToDivPixel(bounds.getSouthWest()),
+                    ne = projection.fromLatLngToDivPixel(bounds.getNorthEast()),
+                    r = 4.5,
+                    padding = r * 2;
+                // extend the boundaries so that markers on the edge aren't cut in half
+                sw.x -= padding;
+                sw.y += padding;
+                ne.x += padding;
+                ne.y -= padding;
 
-                clickLayer = layer;
+                d3.select('.stations')
+                    .attr('width', (ne.x - sw.x) + 'px')
+                    .attr('height', (sw.y - ne.y) + 'px')
+                    .style('position', 'absolute')
+                    .style('left', sw.x + 'px')
+                    .style('top', ne.y + 'px');
 
-                overlay.draw = function () {
-                    var projection = this.getProjection(),
-                        sw = projection.fromLatLngToDivPixel(bounds.getSouthWest()),
-                        ne = projection.fromLatLngToDivPixel(bounds.getNorthEast());
-                    // extend the boundaries so that markers on the edge aren't cut in half
-                    sw.x -= padding;
-                    sw.y += padding;
-                    ne.x += padding;
-                    ne.y -= padding;
-                    // console.log(ne.x);
-                    // console.log(sw.x);
-
-                    d3.select('.stations')
-                        .attr('width', (ne.x - sw.x) + 'px')
-                        .attr('height', (sw.y - ne.y) + 'px')
-                        .style('position', 'absolute')
-                        .style('left', sw.x + 'px')
-                        .style('top', ne.y + 'px');
-
-                    //create point
-                    var maker = layer.selectAll('.marker')
-                        .data(d3.entries(data))
-                        .each(transform) // for updating，首次loading map不call，後續會作
-                        .enter()
-                        .append('circle')
-                        .attr('class', 'marker')
-                        .attr('r', r)
-                        .attr('cx', function (d) { //這邊開始是初始化的point，後續不call
-                            // console.log('enter cx');
-                            var p = new google.maps.Point(0, 0); //point class
-                            p = projection.fromLatLngToDivPixel(d.value.lat_lng);
-                            // console.log(p.x);
-                            // console.log(sw.x);
-                            // console.log(p.x - sw.x);
-                            // console.log('p=' + (p.x - sw.x));
-                            return p.x - sw.x;
-                        })
-                        .attr('cy', function (d) {
-                            var p = new google.maps.Point(0, 0); //point class
-                            p = projection.fromLatLngToDivPixel(d.value.lat_lng);
-                            return p.y - ne.y;
-                        }).append('title').text(function (d) {
-                            return d.key + '1';
-                        }).on('mouseover', function () {
-                            console.log('mouseover');
-                        });
-
-                    // console.log(d3.selectAll('circle').style('fill', 'red'));
-
-                    //讓點位能隨著地圖縮放而不改變位置
-                    function transform(d) {
-                        // console.log(d);
+                //create point
+                var maker = layerOfStation.selectAll('.marker')
+                    .data(d3.entries(data))
+                    .each(transform) // for updating，首次loading map不call，後續會作
+                    .enter()
+                    .append('circle')
+                    .attr('class', 'marker')
+                    .attr('r', r)
+                    .attr('cx', function (d) { //這邊開始是初始化的point，後續不call
+                        d = projection.fromLatLngToDivPixel(d.value.lat_lng);// d不同
+                        return d.x - sw.x;
+                    })
+                    .attr('cy', function (d) {
                         d = projection.fromLatLngToDivPixel(d.value.lat_lng);
-                        // console.log('d=' + (d.x - sw.x));
-                        return d3.select(this)
-                            .attr('cx', d.x - sw.x) //因為absolute了sw.x的距離
-                            .attr('cy', d.y - ne.y);// 因為 absolute了ne.y的距離
-                    }
-                };
-            }
-            // Bind our overlay to the map…
-            overlay.setMap(map);
-        });
-        console.log(clickLayer);
-    };
+                        return d.y - ne.y;
+                    }).append('title').text(function (d) {
+                        return d.key;
+                    });
 
+                //讓點位能隨著地圖縮放而不改變位置
+                function transform(d) {
+                    d = projection.fromLatLngToDivPixel(d.value.lat_lng);
+                    //this = SVGCircleElement
+                    return d3.select(this)
+                        .attr('cx', d.x - sw.x) //因為absolute了sw.x的距離
+                        .attr('cy', d.y - ne.y);// 因為 absolute了ne.y的距離
+                }// END OF transform
+            };// END OF overlayView.draw
+            // Bind our overlay to the map
+            overlayView.setMap(map);
+        }); // END OF d3.json
+    }; // END OF OnInit
+
+    //看起來map跟class name，可以改為parameter，轉為service
+    // set global variables
+    initialize(): void {
+        var mapOptions = { zoom: 2, mapTypeId: google.maps.MapTypeId.TERRAIN };
+        map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+        //caculate the lat lng position
+        bounds = new google.maps.LatLngBounds();
+
+        //draw my layer
+        overlayView = new google.maps.OverlayView();
+        overlayView.onAdd = function () {
+            //this = overlayView
+            //overlayMouseTarget =>可以listener DOM event; google map有4層Panes
+            layerOfStation = d3.select(this.getPanes().overlayMouseTarget)
+                .append('svg')
+                .attr('class', 'stations');
+        }
+    }// END OF initialize
 }
 
