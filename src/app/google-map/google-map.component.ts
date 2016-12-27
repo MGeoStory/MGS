@@ -22,10 +22,10 @@ export class GoogleMapComponent implements OnInit {
         this.initialize();
 
         // Load the station data. When the data comes back, create an overlay.
-        d3.json("app/data/stations.json", function(error, data) {
+        d3.json("app/data/stations.json", function (error, data) {
             // console.log(d3.entries(data));
             //d3.entries({foo: 42, bar: true}); // [{key: "foo", value: 42}, {key: "bar", value: true}]
-            d3.entries(data).forEach(function(d) {
+            d3.entries(data).forEach(function (d) {
                 //Extends this bounds to contain the given point.
                 //create value:lat_lng , lat,lng
                 bounds.extend(d.value.lat_lng = new google.maps.LatLng(d.value[1], d.value[0]));
@@ -33,7 +33,7 @@ export class GoogleMapComponent implements OnInit {
                 map.fitBounds(bounds);
             });// END OF d3.entries
 
-            overlayView.draw = function() {
+            overlayView.draw = function () {
                 var sw = projection.fromLatLngToDivPixel(bounds.getSouthWest()),
                     ne = projection.fromLatLngToDivPixel(bounds.getNorthEast()),
                     r = 4.5,
@@ -51,58 +51,26 @@ export class GoogleMapComponent implements OnInit {
                     .style('left', sw.x + 'px')
                     .style('top', ne.y + 'px');
 
-                // create point
-                var marker = layerOfStation.selectAll("svg").data(d3.entries(data)).each(transformA)
-                    .enter().append("svg:svg")
-                    .each(transformA)
-                    .attr("class", "marker");
-
-                // Add a circle.
-                marker.append("circle")
-                    .attr("r", 4.5)
-                    .attr("cx", padding)
-                    .attr("cy", padding);
-                // var marker = layerOfStation.selectAll('svg')
-                //     .data(d3.entries(data))
-                //     .each(transformA)
-                //     .enter().append('svg')
-                // .each(transformA)
-                // .attr('class', 'marker');
-
-                // marker.append('circle')
-                //     .attr('r', r)
-                //     .attr("cx", padding)
-                //     .attr("cy", padding);
-
-                function transformA(d) {
-                    d = projection.fromLatLngToDivPixel(d.value.lat_lng);
-                    console.log(d);
-                    // this = svg class='marker'
-                    return d3.select(this)
-                        .style('left', (d.x - padding) + "px")
-                        .style('top', (d.y - padding) + "px");
-                }
-
                 //create point
-                // var maker = layerOfStation.selectAll('.marker')
-                //     .data(d3.entries(data))
-                //     .each(transform) // for updating，首次loading map不call，後續會作
-                //     .enter()
-                //     .append('circle')
-                //     .attr('class', 'marker')
-                //     .attr('r', r)
-                //     .attr('cx', function (d) { //這邊開始是初始化的point，後續不call
-                //         d = projection.fromLatLngToDivPixel(d.value.lat_lng);// d不同
-                //         return d.x - sw.x;
-                //     })
-                //     .attr('cy', function (d) {
-                //         d = projection.fromLatLngToDivPixel(d.value.lat_lng);
-                //         return d.y - ne.y;
-                //     }).append('title').text(function (d) {
-                //         return d.key;
-                //     }).on("mouseover", function (d) {
-                //         console.log(d.key);
-                //     });
+                var maker = layerOfStation.selectAll('.marker')
+                    .data(d3.entries(data))
+                    .each(transform) // for updating，首次loading map不call，後續會作
+                    .enter()
+                    .append('circle')
+                    .attr('class', 'marker')
+                    .attr('r', r)
+                    .attr('cx', function (d) { //這邊開始是初始化的point，後續不call
+                        d = projection.fromLatLngToDivPixel(d.value.lat_lng);// d不同
+                        return d.x - sw.x;
+                    })
+                    .attr('cy', function (d) {
+                        d = projection.fromLatLngToDivPixel(d.value.lat_lng);
+                        return d.y - ne.y;
+                    }).append('title').text(function (d) {
+                        return d.key;
+                    }).on("mouseover", function (d) {
+                        console.log(d.key);
+                    });
 
                 //讓點位能隨著地圖縮放而不改變位置
                 function transform(d) {
@@ -128,7 +96,7 @@ export class GoogleMapComponent implements OnInit {
         bounds = new google.maps.LatLngBounds();
         //draw my layer
         overlayView = new google.maps.OverlayView();
-        overlayView.onAdd = function() {
+        overlayView.onAdd = function () {
             //this = overlayView
             //overlayMouseTarget =>可以listener DOM event; google map有4層Panes
             console.log(this);
