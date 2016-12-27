@@ -52,23 +52,24 @@ export class GoogleMapComponent implements OnInit {
                     .style('top', ne.y + 'px');
 
                 //create point
-                var maker = layerOfStation.selectAll('.marker')
+                var marker = layerOfStation.selectAll()
                     .data(d3.entries(data))
                     .each(transform) // for updating，首次loading map不call，後續會作
                     .enter()
                     .append('circle')
-                    .attr('class', 'marker')
-                    .attr('r', r)
+                    .attr('class', 'marker');
+
+                marker.attr('r', r)
                     .attr('cx', function (d) { //這邊開始是初始化的point，後續不call
-                        d = projection.fromLatLngToDivPixel(d.value.lat_lng);// d不同
-                        return d.x - sw.x;
+                        var p = new google.maps.Point(0, 0);
+                        p = projection.fromLatLngToDivPixel(d.value.lat_lng);// d不同
+                        return p.x - sw.x;
                     })
                     .attr('cy', function (d) {
-                        d = projection.fromLatLngToDivPixel(d.value.lat_lng);
-                        return d.y - ne.y;
-                    }).append('title').text(function (d) {
-                        return d.key;
-                    }).on("mouseover", function (d) {
+                        var p = new google.maps.Point(0, 0);
+                        p = projection.fromLatLngToDivPixel(d.value.lat_lng);
+                        return p.y - ne.y;
+                    }).on('mouseover', function (d) {
                         console.log(d.key);
                     });
 
