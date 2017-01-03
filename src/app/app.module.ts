@@ -9,6 +9,8 @@ import './rxjs-extensions';
 //graph type
 import { BarGraph } from './bar-graph.directive';
 import { GoogleMapComponent } from './google-map/google-map.component';
+import { LeafletMapComponent } from './leaflet-map/app-leaflet-map.component';
+
 
 import { AgmCoreModule } from 'angular2-google-maps/core';
 
@@ -24,7 +26,8 @@ import { AgmCoreModule } from 'angular2-google-maps/core';
   declarations: [
     AppComponent,
     BarGraph,
-    GoogleMapComponent
+    GoogleMapComponent,
+    LeafletMapComponent
   ],
   providers: [],
   bootstrap: [AppComponent]
