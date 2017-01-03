@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
     templateUrl: 'app-leaflet-map.component.html',
     styleUrls: ['app-leaflet-map.component.css']
 }) export class LeafletMapComponent {
-
+    title: string = 'Leaflet Map';
 }
