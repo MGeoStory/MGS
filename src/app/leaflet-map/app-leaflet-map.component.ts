@@ -69,7 +69,7 @@ let g = d3.select('null');
         }];
 
 
-        //useing d3.json to read file and addTo leaflet map
+        //using d3.json to read file and addTo leaflet map
         d3.json('app/data/COUNTY_stoneman-ms.json', function (data) {
             console.log(JSON.stringify(data));
             
