@@ -7,9 +7,7 @@ let nullBound: L.LatLngBounds;
 let mapboxUrl: string = 'https://api.mapbox.com/styles/v1/mapbox/dark-v9/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWlsZXN3YW5nIiwiYSI6ImNpeGl2NDF1ejAwMTAycWw4cDhoanViaGMifQ.nwPu50GsqxfjSc1t7EsVZA';
 let mapboxAttribution: string = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>';
 let mapbox: L.TileLayer;
-let overlaySVG = d3.select('null');
-let g = d3.select('null');
-let geoJSON;
+let geoJSON = L.geoJSON();
 let component;
 
 @Component({
@@ -39,23 +37,19 @@ let component;
             "coordinates": [[-105, 40], [-110, 45], [-115, 55]]
         }];
 
-        var myStyle;
-        myStyle = {
-            "color": "#ff7800",
-            "weight": 5,
-            "opacity": 0.65
-        };
-
-        L.geoJSON(myLines, {
-            style: this.style
-        }).addTo(map);
-        
         component = this;
         component.style();
         //using d3.json to read file and addTo leaflet map
         d3.json('app/data/COUNTY_stoneman-ms.json', function (data) {
             // console.log(JSON.stringify(data));
-            geoJSON = L.geoJSON(data);
+        
+            geoJSON = L.geoJSON(data, {
+                style: function (feature) {
+                    return { color: 'red' };
+                }
+                
+            });
+            
             // console.log(this);
             geoJSON.addTo(map);
             map.fitBounds(geoJSON.getBounds());
@@ -71,7 +65,6 @@ let component;
                 var circle = L.circle(d.value.lat_lng, {
                     radius: 200,
                 }).addTo(map);
-                // map.addLayer(circle); //也可
 
                 // fit the circles
                 var bounds = nullBound.extend(d.value.lat_lng);
@@ -95,31 +88,4 @@ let component;
             "opacity": 0.65
         };
     }
-    highlightFeature(e) {
-        var layer = e.target;
-        layer.setStye({
-            weight: 5,
-            color: '#666',
-            dashArray: '',
-            fillOpacity: 0.7
-        });
-    }
-
-    resetHighlight(e) {
-        geoJSON.resetHighlight(e.target);
-    }
-
-    zoomToFeature(e) {
-        map.fitBounds(e.target.getBounds());
-    }
-
-    onEachFeature(feature, layer) {
-        console.log('onEachFeature');
-        layer.on({
-            mouseover: this.highlightFeature,
-            mouseout: this.resetHighlight,
-            click: this.zoomToFeature
-        });
-    }
-
 } //END OF export
