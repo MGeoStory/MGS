@@ -46,8 +46,15 @@ let component;
             geoJSON = L.geoJSON(data, {
                 style: function (feature) {
                     return { color: 'red' };
+                },
+                //listener event
+                onEachFeature: function(feature,layer){
+                    layer.on({
+                        mouseover: function(e){
+                            console.log(feature.properties.COUNTYNAME);
+                        }
+                    });
                 }
-                
             });
             
             // console.log(this);
