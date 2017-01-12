@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import * as L from 'leaflet';
 import * as d3 from 'd3';
 
@@ -8,7 +8,8 @@ let mapboxUrl: string = 'https://api.mapbox.com/styles/v1/mapbox/dark-v9/tiles/2
 let mapboxAttribution: string = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>';
 let mapbox: L.TileLayer;
 let geoJSON = L.geoJSON();
-let component;
+let ownComponent: LeafletMapComponent;
+let outCountryID;
 
 @Component({
     selector: 'app-leaflet-map',
@@ -16,8 +17,11 @@ let component;
     styleUrls: ['app-leaflet-map.component.css']
 
 }) export class LeafletMapComponent implements OnInit {
+    @Output() countryClicked: EventEmitter<string> = new EventEmitter<string>();
     title: string = 'Leaflet Map';
+
     ngOnInit() {
+        ownComponent = this;
         //create mapbox and tileLayer
         d3.select('div').attr('id', 'lmap');
         map = L.map('lmap').setView([0, 0], 5);
@@ -37,26 +41,31 @@ let component;
             "coordinates": [[-105, 40], [-110, 45], [-115, 55]]
         }];
 
-        component = this;
-        component.style();
+        console.log(this.countryClicked);
+        console.log(ownComponent.countryClicked);
+
         //using d3.json to read file and addTo leaflet map
         d3.json('app/data/COUNTY_stoneman-ms.json', function (data) {
             // console.log(JSON.stringify(data));
-        
+
             geoJSON = L.geoJSON(data, {
-                style: function (feature) {
-                    return { color: 'red' };
-                },
+                // style: function (feature) {
+                //     return { color: 'red' };
+                // },
+                style: ownComponent.style,
                 //listener event
-                onEachFeature: function(feature,layer){
+                onEachFeature: function (feature, layer) {
                     layer.on({
-                        mouseover: function(e){
+                        click: function (e) {
                             console.log(feature.properties.COUNTYNAME);
+                            outCountryID = feature.properties.COUNTYNAME;
+
                         }
                     });
                 }
             });
-            
+
+
             // console.log(this);
             geoJSON.addTo(map);
             map.fitBounds(geoJSON.getBounds());
@@ -90,9 +99,7 @@ let component;
     style(feature) {
         console.log('in style');
         return {
-            "color": "#ff7800",
-            "weight": 5,
-            "opacity": 0.65
+            "color": "red",
         };
     }
 } //END OF export
