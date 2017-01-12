@@ -9,6 +9,8 @@ let mapboxAttribution: string = 'Map data &copy; <a href="http://openstreetmap.o
 let mapbox: L.TileLayer;
 let overlaySVG = d3.select('null');
 let g = d3.select('null');
+let geoJSON;
+let component;
 
 @Component({
     selector: 'app-leaflet-map',
@@ -17,7 +19,6 @@ let g = d3.select('null');
 
 }) export class LeafletMapComponent implements OnInit {
     title: string = 'Leaflet Map';
-
     ngOnInit() {
         //create mapbox and tileLayer
         d3.select('div').attr('id', 'lmap');
@@ -68,13 +69,21 @@ let g = d3.select('null');
             ]
         }];
 
+        // console.log(this);
 
+        component = this;
         //using d3.json to read file and addTo leaflet map
         d3.json('app/data/COUNTY_stoneman-ms.json', function (data) {
-            console.log(JSON.stringify(data));
+            // console.log(JSON.stringify(data));
+            geoJSON = L.geoJSON();
+            console.log(geoJSON);
+            // console.log(this);
+            //asyn problems
             
-            L.geoJSON().addTo(map).addData(data);
-            console.log('added');
+            geoJSON.addData(data, {
+                onEachFeature: component.onEachFeature
+            }).addTo(map);
+            // console.log('added');
         });
 
         //add circle
@@ -103,8 +112,53 @@ let g = d3.select('null');
         });//END OF d3.json
     }//END OF ngOnInit
 
+    highlightFeature(e) {
+        var layer = e.target;
+        layer.setStye({
+            weight: 5,
+            color: '#666',
+            dashArray: '',
+            fillOpacity: 0.7
+        });
+    }
 
+    resetHighlight(e) {
+        geoJSON.resetHighlight(e.target);
+    }
 
+    zoomToFeature(e) {
+        map.fitBounds(e.target.getBounds());
+    }
 
+    onEachFeature(feature, layer) {
+        console.log('onEachFeature');
+        layer.on({
+            mouseover: this.highlightFeature,
+            mouseout: this.resetHighlight,
+            click: this.zoomToFeature
+        });
+    }
+
+    style(feature) {
+    return {
+        fillColor: getColor(feature.properties.COUNTYCODE),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+    };
+
+    function getColor(d) {
+    return d > 1000 ? '#800026' :
+           d > 500  ? '#BD0026' :
+           d > 200  ? '#E31A1C' :
+           d > 100  ? '#FC4E2A' :
+           d > 50   ? '#FD8D3C' :
+           d > 20   ? '#FEB24C' :
+           d > 10   ? '#FED976' :
+                      '#FFEDA0';
+}
+}
 
 } //END OF export
