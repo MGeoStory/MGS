@@ -29,29 +29,8 @@ let component;
         });
         map.addLayer(mapbox);
 
-        //create country of TW
-        overlaySVG = d3.select(map.getPanes().overlayPane).append('svg');
-        g = overlaySVG.append('g').attr('class', 'leaflet-zoom-hide');
-
-
-        var geojsonFeature = {
-            "type": "Feature",
-            "properties": {
-                "name": "Coors Field",
-                "amenity": "Baseball Stadium",
-                "popupContent": "This is where the Rockies play!"
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [-104.99404, 39.75621]
-            }
-        };
-        L.geoJSON(geojsonFeature).addTo(map);
-        // L.geoJSON().addTo(map).addData(geojsonFeature);
-        // var test = require('app/data/OUNTY_stoneman-ms.json');
-        // console.log(test);
+        // console.log(this);
         var myLines;
-
         myLines = [{
             "type": "LineString",
             "coordinates": [[-100, 40], [-105, 45], [-110, 55]]
@@ -60,33 +39,30 @@ let component;
             "coordinates": [[-105, 40], [-110, 45], [-115, 55]]
         }];
 
-        var polygon;
+        var myStyle;
+        myStyle = {
+            "color": "#ff7800",
+            "weight": 5,
+            "opacity": 0.65
+        };
 
-        polygon = [{
-            "type": "Polygon",
-            "coordinates": [
-                [[100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0]]
-            ]
-        }];
-
-        // console.log(this);
-
+        L.geoJSON(myLines, {
+            style: this.style
+        }).addTo(map);
+        
         component = this;
+        component.style();
         //using d3.json to read file and addTo leaflet map
         d3.json('app/data/COUNTY_stoneman-ms.json', function (data) {
             // console.log(JSON.stringify(data));
-            geoJSON = L.geoJSON();
-            console.log(geoJSON);
+            geoJSON = L.geoJSON(data);
             // console.log(this);
-            //asyn problems
-            
-            geoJSON.addData(data, {
-                onEachFeature: component.onEachFeature
-            }).addTo(map);
+            geoJSON.addTo(map);
+            map.fitBounds(geoJSON.getBounds());
             // console.log('added');
         });
 
-        //add circle
+        //add circle from json file
         d3.json("app/data/stations.json", function (error, data) {
             if (error) throw error;
             nullBound = L.latLngBounds(null, null);
@@ -99,10 +75,10 @@ let component;
 
                 // fit the circles
                 var bounds = nullBound.extend(d.value.lat_lng);
-                map.fitBounds(bounds);
+                // map.fitBounds(bounds);
                 circle.on('mouseover', function (d) {
                     var layer = d.target;
-                    console.log(d.target);
+                    // console.log(d.target);
                     layer.setStyle({ color: 'red' });
                     // console.log(layer.feature);
                     //geojson 專用
@@ -111,7 +87,14 @@ let component;
             });
         });//END OF d3.json
     }//END OF ngOnInit
-
+    style(feature) {
+        console.log('in style');
+        return {
+            "color": "#ff7800",
+            "weight": 5,
+            "opacity": 0.65
+        };
+    }
     highlightFeature(e) {
         var layer = e.target;
         layer.setStye({
@@ -138,27 +121,5 @@ let component;
             click: this.zoomToFeature
         });
     }
-
-    style(feature) {
-    return {
-        fillColor: getColor(feature.properties.COUNTYCODE),
-        weight: 2,
-        opacity: 1,
-        color: 'white',
-        dashArray: '3',
-        fillOpacity: 0.7
-    };
-
-    function getColor(d) {
-    return d > 1000 ? '#800026' :
-           d > 500  ? '#BD0026' :
-           d > 200  ? '#E31A1C' :
-           d > 100  ? '#FC4E2A' :
-           d > 50   ? '#FD8D3C' :
-           d > 20   ? '#FEB24C' :
-           d > 10   ? '#FED976' :
-                      '#FFEDA0';
-}
-}
 
 } //END OF export
