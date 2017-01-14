@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 import './rxjs-extensions';
 
 //graph type
-import { BarGraph } from './bar-graph.directive';
+import { BarGraph } from './graphs/bar-graph.directive';
 import { GoogleMapComponent } from './google-map/google-map.component';
 import { LeafletMapComponent } from './leaflet-map/app-leaflet-map.component';
 
