@@ -18,7 +18,7 @@ let yAxis;
 export class BarGraph implements OnInit {
     private dataPath: string = 'app/data/bar.json';
 
-    constructor(private el: ElementRef, private renderer: Renderer, private mgs:MapGraphService) {
+    constructor(private el: ElementRef, private renderer: Renderer) {
         //append svg是為 了透過attr改變view(CSS可連動),if style則無法透過css覆寫
         //frame留白
         frame = d3.select(el.nativeElement).append('svg')
