@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import * as L from 'leaflet';
 import * as d3 from 'd3';
 
@@ -10,6 +10,7 @@ let mapbox: L.TileLayer;
 let geoJSON = L.geoJSON();
 let ownComponent: LeafletMapComponent;
 let outCountryID;
+let countyName:string;
 
 @Component({
     selector: 'app-leaflet-map',
@@ -17,9 +18,8 @@ let outCountryID;
     styleUrls: ['app-leaflet-map.component.css']
 
 }) export class LeafletMapComponent implements OnInit {
-    @Output() countryClicked: EventEmitter<string> = new EventEmitter<string>();
     title: string = 'Leaflet Map';
-
+    countyName ='';
     ngOnInit() {
         ownComponent = this;
         //create mapbox and tileLayer
@@ -30,19 +30,6 @@ let outCountryID;
             attribution: mapboxAttribution,
         });
         map.addLayer(mapbox);
-
-        // console.log(this);
-        var myLines;
-        myLines = [{
-            "type": "LineString",
-            "coordinates": [[-100, 40], [-105, 45], [-110, 55]]
-        }, {
-            "type": "LineString",
-            "coordinates": [[-105, 40], [-110, 45], [-115, 55]]
-        }];
-
-        console.log(this.countryClicked);
-        console.log(ownComponent.countryClicked);
 
         //using d3.json to read file and addTo leaflet map
         d3.json('app/data/COUNTY_stoneman-ms.json', function (data) {
@@ -57,9 +44,7 @@ let outCountryID;
                 onEachFeature: function (feature, layer) {
                     layer.on({
                         click: function (e) {
-                            console.log(feature.properties.COUNTYNAME);
-                            outCountryID = feature.properties.COUNTYNAME;
-
+                            ownComponent.updateCountyName(feature.properties.COUNTYNAME);
                         }
                     });
                 }
@@ -97,9 +82,13 @@ let outCountryID;
         });//END OF d3.json
     }//END OF ngOnInit
     style(feature) {
-        console.log('in style');
         return {
             "color": "red",
         };
     }
+
+    updateCountyName(countyName){
+        this.countyName = countyName;
+    }
+
 } //END OF export

@@ -11,6 +11,7 @@ import { BarGraph } from './bar-graph.directive';
 import { GoogleMapComponent } from './google-map/google-map.component';
 import { LeafletMapComponent } from './leaflet-map/app-leaflet-map.component';
 
+import {MapGraphService} from './shared/map-graph.service';
 
 import { AgmCoreModule } from 'angular2-google-maps/core';
 
@@ -29,7 +30,7 @@ import { AgmCoreModule } from 'angular2-google-maps/core';
     GoogleMapComponent,
     LeafletMapComponent
   ],
-  providers: [],
+  providers: [MapGraphService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
