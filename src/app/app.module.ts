@@ -12,9 +12,7 @@ import { GoogleMapComponent } from './google-map/google-map.component';
 import { LeafletMapComponent } from './leaflet-map/app-leaflet-map.component';
 
 import {MapGraphService} from './shared/map-graph.service';
-
 import { AgmCoreModule } from 'angular2-google-maps/core';
-
 @NgModule({
   imports: [
     BrowserModule,

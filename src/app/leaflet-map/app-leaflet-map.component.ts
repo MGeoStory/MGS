@@ -1,4 +1,5 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { MapGraphService } from 'app/shared/map-graph.service';
 import * as L from 'leaflet';
 import * as d3 from 'd3';
 
@@ -10,7 +11,7 @@ let mapbox: L.TileLayer;
 let geoJSON = L.geoJSON();
 let ownComponent: LeafletMapComponent;
 let outCountryID;
-let countyName:string;
+let countyName: string;
 
 @Component({
     selector: 'app-leaflet-map',
@@ -18,8 +19,12 @@ let countyName:string;
     styleUrls: ['app-leaflet-map.component.css']
 
 }) export class LeafletMapComponent implements OnInit {
+
+    constructor(private mgs: MapGraphService) {
+    }
+
     title: string = 'Leaflet Map';
-    countyName ='';
+    countyName = '';
     ngOnInit() {
         ownComponent = this;
         //create mapbox and tileLayer
@@ -45,6 +50,7 @@ let countyName:string;
                     layer.on({
                         click: function (e) {
                             ownComponent.updateCountyName(feature.properties.COUNTYNAME);
+                            ownComponent.updateDataReference(feature.properties.COUNTYNAME);
                         }
                     });
                 }
@@ -78,7 +84,7 @@ let countyName:string;
                     //geojson 專用
                     // console.log(layer.feature.properties);
                 })
-            });
+            });//END OF d3.entries
         });//END OF d3.json
     }//END OF ngOnInit
     style(feature) {
@@ -87,8 +93,16 @@ let countyName:string;
         };
     }
 
-    updateCountyName(countyName){
+    // passing map click info to html(<p>) 
+    updateCountyName(countyName) {
         this.countyName = countyName;
     }
+
+    updateDataReference(countyName): void {
+        this.mgs.updateDataReference(countyName);
+        this.mgs.getDataReference();
+    }
+
+
 
 } //END OF export
