@@ -5,9 +5,9 @@ import {DataReference} from './data-reference';
 @Injectable()
 export class MapGraphService{
     updateDataReference(countyName):void{
+        // console.log('updateDataReference');
         //promise用來避免異步錯誤
         Promise.resolve(DataReference.countyID = countyName);
-        console.log('updateDataReference');
     }
 
     getDataReference():Promise<DataReferences>{

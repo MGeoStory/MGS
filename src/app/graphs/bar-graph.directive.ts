@@ -1,4 +1,5 @@
 import { Directive, ElementRef, Input, Renderer, OnInit } from '@angular/core';
+import { MapGraphService } from 'app/shared/map-graph.service';
 import * as d3 from 'd3';
 
 let frame;
@@ -15,10 +16,9 @@ let yAxis;
     selector: 'app-vertical-bar-graph',
 })
 export class BarGraph implements OnInit {
-
     private dataPath: string = 'app/data/bar.json';
 
-    constructor(private el: ElementRef, private renderer: Renderer) {
+    constructor(private el: ElementRef, private renderer: Renderer, private mgs:MapGraphService) {
         //append svg是為 了透過attr改變view(CSS可連動),if style則無法透過css覆寫
         //frame留白
         frame = d3.select(el.nativeElement).append('svg')

@@ -100,7 +100,7 @@ let countyName: string;
 
     updateDataReference(countyName): void {
         this.mgs.updateDataReference(countyName);
-        this.mgs.getDataReference();
+        // this.mgs.getDataReference();
     }
 
 
