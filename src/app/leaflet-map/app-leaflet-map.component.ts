@@ -49,8 +49,9 @@ let countyName: string;
                 onEachFeature: function (feature, layer) {
                     layer.on({
                         click: function (e) {
-                            ownComponent.updateCountyName(feature.properties.COUNTYNAME);
-                            ownComponent.updateDataReference(feature.properties.COUNTYNAME);
+                            var countyName = feature.properties.COUNTYNAME;
+                            ownComponent.updateCountyName(countyName);
+                            ownComponent.mgs.announceRefId(countyName);
                         }
                     });
                 }
@@ -97,12 +98,4 @@ let countyName: string;
     updateCountyName(countyName) {
         this.countyName = countyName;
     }
-
-    updateDataReference(countyName): void {
-        this.mgs.updateDataReference(countyName);
-        // this.mgs.getDataReference();
-    }
-
-
-
 } //END OF export
