@@ -1,25 +1,23 @@
 import {Injectable} from '@angular/core';
-import {DataReferences}from './data-references';
-import {DataReference} from './data-reference';
 import {Subject} from 'rxjs/Subject';
 
 @Injectable()
 export class MapGraphService{
 
     // Observable string sources
-    private refIdSource = new Subject<string>();
+    private refClickedSource = new Subject<string>();
     
     // Observable string streams
-    refId$ = this.refIdSource.asObservable();
+    refCountry$ = this.refClickedSource.asObservable();
 
     // Service message commands
-    announceRefId (refId:string){
+    announceRefId (refCountry:string){
         console.log('announceRefId');
-        this.refIdSource.next(refId);
-    }
+        this.refClickedSource.next(refCountry);
+     }
 
-    confirmRefId(refId:string){
+    confirmRefId(refCountry:string){
         console.log('confirmRefId');
-        this.refIdSource.next(refId);
+        this.refClickedSource.next(refCountry);
     }
 }// END OF MapGraphService

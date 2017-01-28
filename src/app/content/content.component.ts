@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs/Subscription';
     id = 'sss1';
 
     constructor(private mgs: MapGraphService) {
-        this.subscription = mgs.refId$.subscribe(
+        this.subscription = mgs.refCountry$.subscribe(
             id => {
                 this.id = id;
             }
