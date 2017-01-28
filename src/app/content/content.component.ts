@@ -4,11 +4,12 @@ import { Subscription } from 'rxjs/Subscription';
 
 @Component({
     selector: 'app-content>',
-    templateUrl: 'content.component.html',
-    styleUrls: ['content.component.css']
+    styleUrls: ['content.component.css'],
+    templateUrl: 'content.component.html'
 }) export class ContentComponent implements OnDestroy {
     subscription: Subscription;
     id = 'sss1';
+
     constructor(private mgs: MapGraphService) {
         this.subscription = mgs.refId$.subscribe(
             id => {
@@ -16,7 +17,6 @@ import { Subscription } from 'rxjs/Subscription';
             }
         )
     }
-
     ngOnDestroy() {
         // prevent memory leak when component destroyed
         this.subscription.unsubscribe();

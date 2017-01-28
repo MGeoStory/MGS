@@ -15,8 +15,8 @@ let countyName: string;
 
 @Component({
     selector: 'app-leaflet-map',
-    templateUrl: 'app-leaflet-map.component.html',
-    styleUrls: ['app-leaflet-map.component.css']
+    styleUrls: ['app-leaflet-map.component.css'],
+    templateUrl: 'app-leaflet-map.component.html'
 
 }) export class LeafletMapComponent implements OnInit {
 
