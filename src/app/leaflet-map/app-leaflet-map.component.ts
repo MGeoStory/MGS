@@ -19,31 +19,56 @@ let countyName: string;
     templateUrl: 'app-leaflet-map.component.html'
 
 }) export class LeafletMapComponent implements OnInit {
-
     constructor(private mgs: MapGraphService) {
     }
 
     title: string = 'Leaflet Map';
     countyName = '';
     ngOnInit() {
+        //用以在d3裡面讀取.ts的function
         ownComponent = this;
+        this.initialMap();
+        this.mappingMap();
+
+
+        d3.csv('app/data/rawdata/simpleTest.csv', function (data: Array<Object>) {
+            console.log(data);
+            
+            //filer
+            data = data.filter(function (d) {
+                    console.log(d['縣市代碼']);
+                return {
+                    // d.縣市代碼 == 'A';
+                }
+            });
+
+            //rebuilding data by 發票年月 and 縣市代碼 and 平均開立張數
+
+        });
+
+
+    }//END OF ngOnInit
+
+    //establish a base leaf-map in website
+    initialMap(): void {
         //create mapbox and tileLayer
         d3.select('div').attr('id', 'lmap');
         map = L.map('lmap').setView([0, 0], 5);
 
+        //setting scale bar, compass and other base components 
         mapbox = L.tileLayer(mapboxUrl, {
             attribution: mapboxAttribution,
         });
         map.addLayer(mapbox);
+    }// END OF initialMap
 
+    //mapping map
+    mappingMap(): void {
         //using d3.json to read file and addTo leaflet map
         d3.json('app/data/geojson/tw_country_ms.json', function (data) {
             // console.log(JSON.stringify(data));
             geoJSON = L.geoJSON(data, {
-                // style: function (feature) {
-                //     return { color: 'red' };
-                // },
-                style: ownComponent.style,
+                style: ownComponent.styleMap,
                 //listener event
                 onEachFeature: function (feature, layer) {
                     layer.on({
@@ -55,19 +80,21 @@ let countyName: string;
                     });
                 }
             });
-            // console.log(this);
+            //add geoJson and zoom to geoJSON
             geoJSON.addTo(map);
             map.fitBounds(geoJSON.getBounds());
-            // console.log('added');
         });
-    }//END OF ngOnInit
+    }// END OF mappingMap
 
-    //style of COUNTY_stoneman
-    style(feature) {
+
+    //style of polygon
+    styleMap(feature) {
         return {
             "color": "red",
         };
-    }
+    }//END of styleMap
+
+
 
     // passing map click info to html(<p>) 
     updateCountyName(countyName) {
