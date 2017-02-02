@@ -34,7 +34,7 @@ let countyName: string;
         d3.csv('app/data/rawdata/simpleTest.csv', function (data: Array<Object>) {
             console.log(data);
             
-            //filer
+            //filer smartly by 發票年月and 縣市代碼 
             data = data.filter(function (d) {
                     console.log(d['縣市代碼']);
                 return {
