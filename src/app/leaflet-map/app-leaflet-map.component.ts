@@ -39,7 +39,6 @@ let countyName: string;
         //using d3.json to read file and addTo leaflet map
         d3.json('app/data/geojson/tw_country_ms.json', function (data) {
             // console.log(JSON.stringify(data));
-
             geoJSON = L.geoJSON(data, {
                 // style: function (feature) {
                 //     return { color: 'red' };
@@ -56,8 +55,6 @@ let countyName: string;
                     });
                 }
             });
-
-
             // console.log(this);
             geoJSON.addTo(map);
             map.fitBounds(geoJSON.getBounds());
