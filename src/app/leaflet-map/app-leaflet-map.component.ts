@@ -63,31 +63,6 @@ let countyName: string;
             map.fitBounds(geoJSON.getBounds());
             // console.log('added');
         });
-
-        // //add circle from json file
-        // d3.json("app/data/stations.json", function (error, data) {
-        //     if (error) throw error;
-        //     nullBound = L.latLngBounds(null, null);
-        //     d3.entries(data).forEach(function (d) {
-        //         d.value.lat_lng = L.latLng([d.value[1], d.value[0]]);
-        //         var circle = L.circle(d.value.lat_lng, {
-        //             radius: 200,
-        //         }).addTo(map);
-
-        //         // fit the circles
-        //         var bounds = nullBound.extend(d.value.lat_lng);
-        //         // map.fitBounds(bounds);
-        //         circle.on('mouseover', function (d) {
-        //             var layer = d.target;
-        //             // console.log(d.target);
-        //             layer.setStyle({ color: 'red' });
-        //             // console.log(layer.feature);
-        //             //geojson 專用
-        //             // console.log(layer.feature.properties);
-        //         })
-        //     });//END OF d3.entries
-        // });//END OF d3.json
-
     }//END OF ngOnInit
 
     //style of COUNTY_stoneman

@@ -1,4 +1,4 @@
-import { ElementRef, Input, Renderer, OnInit,OnDestroy,Component } from '@angular/core';
+import { ElementRef, Input, Renderer, OnInit, OnDestroy, Component } from '@angular/core';
 import { MapGraphService } from 'app/shared/map-graph.service';
 import { Subscription } from 'rxjs/Subscription';
 import * as d3 from 'd3';
@@ -18,23 +18,23 @@ let subscription: Subscription;
 
 @Component({
     selector: 'app-vertical-bar-graph',
-    templateUrl:'bar-graph.component.html',
-    styleUrls:['bar-graph.component.css']
-    
+    templateUrl: 'bar-graph.component.html',
+    styleUrls: ['bar-graph.component.css']
+
 })
 export class BarGraph implements OnInit {
     private dataPath: string = 'app/data/bar.json';
 
-    constructor(private el: ElementRef, private renderer: Renderer,private mgs: MapGraphService) {
+    constructor(private el: ElementRef, private renderer: Renderer, private mgs: MapGraphService) {
         //passsing info to userClickedInfo
         subscription = mgs.refCountry$.subscribe(
-            info=>{
+            info => {
                 userClickedInfo = info;
-        });
-        
+            });
+
         //append svg是為 了透過attr改變view(CSS可連動),if style則無法透過css覆寫
         //frame留白
-        console.log(d3.select('graph')+'000');
+        console.log(d3.select('graph') + '000');
         frame = d3.select(el.nativeElement).append('svg')
             .attr('width', width + margin.left + margin.right)
             .attr('height', height + margin.top + margin.bottom);
