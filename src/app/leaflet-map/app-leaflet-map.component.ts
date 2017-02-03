@@ -1,16 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { MapGraphService } from 'app/shared/map-graph.service';
+import { LMapSetting } from 'app/shared/lmap-setting';
 import * as L from 'leaflet';
 import * as d3 from 'd3';
-import {LMapSetting} from 'app/shared/lmap-setting';
 
 let map: L.Map;
-let mapbox: L.TileLayer;
 let geoJSON = L.geoJSON();
 let thisComponent: LeafletMapComponent;
 let outCountryID;
 let countyName: string;
-let test ={};
 
 @Component({
     selector: 'app-leaflet-map',
@@ -21,35 +19,32 @@ let test ={};
 
     constructor(private mgs: MapGraphService, private lms: LMapSetting) {
     }
-    
 
     //set variables
     title: string = 'Leaflet Map';
     countyName = '';
-    
-
 
     ngOnInit() {
+
         //用以在d3裡面讀取.ts的function
         thisComponent = this;
-        console.log(thisComponent.lms.mapboxUrl);
         this.initialMap();
         this.mappingMap();
 
-
+        //https://github.com/d3/d3-time-format
+        var parseTime = d3.timeParse("%Y/%m/%d");
+        
+        //grouping data::http://learnjsdata.com/group_data.html
         d3.csv('app/data/rawdata/simpleTest.csv', function (data: Array<Object>) {
+            data.forEach(function (d) {
+            //處理time and numbers format
+                d['發票年月'] = parseTime(d['發票年月']);
+                d['平均客單價'] = +d['平均客單價'];
+            })
             console.log(data);
+            //rebuilding data by 縣市名稱 and what the needed of map displayed
             
             //filer smartly by 發票年月and 縣市代碼 
-            data = data.filter(function (d) {
-                    console.log(d['縣市代碼']);
-                return {
-                    // d.縣市代碼 == 'A';
-                }
-            });
-
-            //rebuilding data by 發票年月 and 縣市代碼 and 平均開立張數
-
         });
 
 
@@ -60,12 +55,7 @@ let test ={};
         //create mapbox and tileLayer
         d3.select('div').attr('id', 'lmap');
         map = L.map('lmap').setView([0, 0], 5);
-
-        
-        // mapbox = L.tileLayer(thisComponent.lms.mapboxUrl, {
-        //     attribution: thisComponent.lms.mapboxAttribution,
-        // });
-        map.addLayer(thisComponent.lms.mapboxTileLayer);
+        map.addLayer(thisComponent.lms.testMap());
     }// END OF initialMap
 
     //mapping map
