@@ -34,7 +34,6 @@ export class BarGraph implements OnInit {
 
         //append svg是為 了透過attr改變view(CSS可連動),if style則無法透過css覆寫
         //frame留白
-        console.log(d3.select('graph') + '000');
         frame = d3.select(el.nativeElement).append('svg')
             .attr('width', width + margin.left + margin.right)
             .attr('height', height + margin.top + margin.bottom);

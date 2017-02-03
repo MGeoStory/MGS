@@ -2,16 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { MapGraphService } from 'app/shared/map-graph.service';
 import * as L from 'leaflet';
 import * as d3 from 'd3';
+import {LMapSetting} from 'app/shared/lmap-setting';
 
 let map: L.Map;
-let nullBound: L.LatLngBounds;
-let mapboxUrl: string = 'https://api.mapbox.com/styles/v1/mapbox/dark-v9/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWlsZXN3YW5nIiwiYSI6ImNpeGl2NDF1ejAwMTAycWw4cDhoanViaGMifQ.nwPu50GsqxfjSc1t7EsVZA';
-let mapboxAttribution: string = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>';
 let mapbox: L.TileLayer;
 let geoJSON = L.geoJSON();
-let ownComponent: LeafletMapComponent;
+let thisComponent: LeafletMapComponent;
 let outCountryID;
 let countyName: string;
+let test ={};
 
 @Component({
     selector: 'app-leaflet-map',
@@ -19,14 +18,21 @@ let countyName: string;
     templateUrl: 'app-leaflet-map.component.html'
 
 }) export class LeafletMapComponent implements OnInit {
-    constructor(private mgs: MapGraphService) {
-    }
 
+    constructor(private mgs: MapGraphService, private lms: LMapSetting) {
+    }
+    
+
+    //set variables
     title: string = 'Leaflet Map';
     countyName = '';
+    
+
+
     ngOnInit() {
         //用以在d3裡面讀取.ts的function
-        ownComponent = this;
+        thisComponent = this;
+        console.log(thisComponent.lms.mapboxUrl);
         this.initialMap();
         this.mappingMap();
 
@@ -55,11 +61,11 @@ let countyName: string;
         d3.select('div').attr('id', 'lmap');
         map = L.map('lmap').setView([0, 0], 5);
 
-        //setting scale bar, compass and other base components 
-        mapbox = L.tileLayer(mapboxUrl, {
-            attribution: mapboxAttribution,
-        });
-        map.addLayer(mapbox);
+        
+        // mapbox = L.tileLayer(thisComponent.lms.mapboxUrl, {
+        //     attribution: thisComponent.lms.mapboxAttribution,
+        // });
+        map.addLayer(thisComponent.lms.mapboxTileLayer);
     }// END OF initialMap
 
     //mapping map
@@ -68,14 +74,14 @@ let countyName: string;
         d3.json('app/data/geojson/tw_country_ms.json', function (data) {
             // console.log(JSON.stringify(data));
             geoJSON = L.geoJSON(data, {
-                style: ownComponent.styleMap,
+                style: thisComponent.styleMap,
                 //listener event
                 onEachFeature: function (feature, layer) {
                     layer.on({
                         click: function (e) {
                             var countyName = feature.properties.COUNTYNAME;
-                            ownComponent.updateCountyName(countyName);
-                            ownComponent.mgs.announceRefId(countyName);
+                            thisComponent.updateCountyName(countyName);
+                            thisComponent.mgs.announceRefId(countyName);
                         }
                     });
                 }

@@ -10,10 +10,12 @@ import './rxjs-extensions';
 import { BarGraph } from './graphs/bar-graph.directive';
 import { GoogleMapComponent } from './google-map/google-map.component';
 import { LeafletMapComponent } from './leaflet-map/app-leaflet-map.component';
-import {ContentComponent} from './content/content.component';
+import { ContentComponent } from './content/content.component';
 
-import {MapGraphService} from './shared/map-graph.service';
+import { MapGraphService } from './shared/map-graph.service';
 import { AgmCoreModule } from 'angular2-google-maps/core';
+import { LMapSetting } from './shared/lmap-setting';
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -30,7 +32,10 @@ import { AgmCoreModule } from 'angular2-google-maps/core';
     LeafletMapComponent,
     ContentComponent
   ],
-  providers: [MapGraphService],
+  providers: [
+    MapGraphService,
+    LMapSetting
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
