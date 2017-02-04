@@ -9,6 +9,7 @@ let geoJSON = L.geoJSON();
 let thisComponent: LeafletMapComponent;
 let outCountryID;
 let countyName: string;
+let csvFilters;
 
 @Component({
     selector: 'app-leaflet-map',
@@ -33,21 +34,39 @@ let countyName: string;
 
         //https://github.com/d3/d3-time-format
         var parseTime = d3.timeParse("%Y/%m/%d");
-        
+
         //grouping data::http://learnjsdata.com/group_data.html
         d3.csv('app/data/rawdata/simpleTest.csv', function (data: Array<Object>) {
-            data.forEach(function (d) {
-            //處理time and numbers format
+
+            //1. filter data
+            var dataFiltered = data
+                .filter(column => {
+                    if (column['發票年月'] == '2013/01/01' || column['行業名稱'] == '便利商店') {
+                        return column;
+                    }
+                });
+            //2. adjust format
+            dataFiltered.forEach(d => {
+                //處理time and numbers format
                 d['發票年月'] = parseTime(d['發票年月']);
                 d['平均客單價'] = +d['平均客單價'];
-            })
-            console.log(data);
-            //rebuilding data by 縣市名稱 and what the needed of map displayed
-            
-            //filer smartly by 發票年月and 縣市代碼 
+                d['平均開立張數'] = +d['平均開立張數'];
+                d['平均開立金額'] = +d['平均開立金額'];
+            });
+            console.log(dataFiltered);
+            //3. map data
+            //4. nest data by縣市代碼
+            var dataNested = d3.nest()
+                .key(d=>{return d['縣市代碼']})
+                .entries(dataFiltered);
+            console.log(dataNested);
+            //5. reading
+
+            // var a = d3.values(nestData).map(function (d) {
+            //     return d.values
+            // });
+            // console.log(a);
         });
-
-
     }//END OF ngOnInit
 
     //establish a base leaf-map in website
