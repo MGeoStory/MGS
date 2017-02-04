@@ -10,6 +10,7 @@ let thisComponent: LeafletMapComponent;
 let outCountryID;
 let countyName: string;
 let csvFilters;
+let dataDealed: Array<Object>;
 
 @Component({
     selector: 'app-leaflet-map',
@@ -30,14 +31,25 @@ let csvFilters;
         //用以在d3裡面讀取.ts的function
         thisComponent = this;
         this.initialMap();
+        this.setFeatureInfo();
         this.mappingMap();
+    }//END OF ngOnInit
 
+    //establish a base leaf-map in website
+    initialMap(): void {
+        //create mapbox and tileLayer
+        d3.select('div').attr('id', 'lmap');
+        map = L.map('lmap').setView([0, 0], 5);
+        map.addLayer(thisComponent.lms.testMap());
+    }// END OF initialMap
+
+    //parsing data for color of feature
+    setFeatureInfo(): void {
         //https://github.com/d3/d3-time-format
         var parseTime = d3.timeParse("%Y/%m/%d");
 
         //grouping data::http://learnjsdata.com/group_data.html
         d3.csv('app/data/rawdata/simpleTest.csv', function (data: Array<Object>) {
-
             //1. filter data
             var dataFiltered = data
                 .filter(column => {
@@ -57,25 +69,18 @@ let csvFilters;
             //3. map data
             //4. nest data by縣市代碼
             var dataNested = d3.nest()
-                .key(d=>{return d['縣市代碼']})
+                .key(d => { return d['縣市代碼'] })
                 .entries(dataFiltered);
             console.log(dataNested);
             //5. reading
+            dataDealed = dataNested;
 
             // var a = d3.values(nestData).map(function (d) {
             //     return d.values
             // });
             // console.log(a);
         });
-    }//END OF ngOnInit
-
-    //establish a base leaf-map in website
-    initialMap(): void {
-        //create mapbox and tileLayer
-        d3.select('div').attr('id', 'lmap');
-        map = L.map('lmap').setView([0, 0], 5);
-        map.addLayer(thisComponent.lms.testMap());
-    }// END OF initialMap
+    }
 
     //mapping map
     mappingMap(): void {
@@ -100,7 +105,6 @@ let csvFilters;
             map.fitBounds(geoJSON.getBounds());
         });
     }// END OF mappingMap
-
 
     //style of polygon
     styleMap(feature) {
