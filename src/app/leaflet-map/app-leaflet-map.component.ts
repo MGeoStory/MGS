@@ -59,20 +59,19 @@ let dataDealed: Array<Object>;
                 });
             //2. adjust format
             dataFiltered.forEach(d => {
-                //處理time and numbers format
+                //deal time and numbers format
                 d['發票年月'] = parseTime(d['發票年月']);
                 d['平均客單價'] = +d['平均客單價'];
                 d['平均開立張數'] = +d['平均開立張數'];
                 d['平均開立金額'] = +d['平均開立金額'];
             });
-            console.log(dataFiltered);
-            //3. map data
-            //4. nest data by縣市代碼
+            // console.log(dataFiltered);
+            //3. nest data by縣市代碼
             var dataNested = d3.nest()
                 .key(d => { return d['縣市代碼'] })
                 .entries(dataFiltered);
-            console.log(dataNested);
-            //5. reading
+            // console.log(dataNested);
+            //4. map data
             dataDealed = dataNested;
 
             // var a = d3.values(nestData).map(function (d) {
@@ -87,6 +86,7 @@ let dataDealed: Array<Object>;
         //using d3.json to read file and addTo leaflet map
         d3.json('app/data/geojson/tw_country_ms.json', function (data) {
             // console.log(JSON.stringify(data));
+            let countryID = data['features'][0]['properties']['COUNTYID'];
             geoJSON = L.geoJSON(data, {
                 style: thisComponent.styleMap,
                 //listener event
