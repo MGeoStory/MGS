@@ -5,12 +5,12 @@ import * as L from 'leaflet';
 import * as d3 from 'd3';
 
 let map: L.Map;
-let geoJSON = L.geoJSON();
+let geoJSON : L.GeoJSON;
 let thisComponent: LeafletMapComponent;
 let outCountryID;
 let countyName: string;
-let csvFilters;
-let dataDealed: Array<Object>;
+let dataDealed:d3.Map<{}>;
+
 
 @Component({
     selector: 'app-leaflet-map',
@@ -70,10 +70,16 @@ let dataDealed: Array<Object>;
             var dataNested = d3.nest()
                 .key(d => { return d['縣市代碼'] })
                 .entries(dataFiltered);
-            // console.log(dataNested);
+            console.log(dataNested);
             //4. map data
-            dataDealed = dataNested;
-
+            dataDealed = d3.map(dataNested, (d)=>{
+                return d.key;
+            });
+            // console.log(t.get('A').values[0]['縣市代碼']);
+            // dataNested.map((d) => {
+            //     console.log(d);
+            // })
+            
             // var a = d3.values(nestData).map(function (d) {
             //     return d.values
             // });
