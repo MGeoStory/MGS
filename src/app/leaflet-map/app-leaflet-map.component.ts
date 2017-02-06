@@ -28,8 +28,7 @@ let dataDealed:d3.Map<{}>;
     countyName = '';
 
     ngOnInit() {
-
-        //用以在d3裡面讀取.ts的function
+        //call functions of this component in d3 loop
         thisComponent = this;
         this.initialMap();
         this.setFeatureInfo();
@@ -52,7 +51,6 @@ let dataDealed:d3.Map<{}>;
         //grouping data::http://learnjsdata.com/group_data.html
         d3.csv('app/data/rawdata/simpleTest.csv', function (data: Array<Object>) {
             //1. filter data
-            
             var dataFiltered = data
                 .filter(column => {
                     if (column['發票年月'] == '2013/01/01' || column['行業名稱'] == '便利商店') {
@@ -67,14 +65,33 @@ let dataDealed:d3.Map<{}>;
                 d['平均開立張數'] = +d['平均開立張數'];
                 d['平均開立金額'] = +d['平均開立金額'];
             });
+            var t = dataFiltered;
+
+            var u =t.map((d)=>{
+                return {
+                    a: d['縣市代碼'],
+                    b: d['平均客單價']
+                }
+            });
+
+            console.log(u);
+
+            var v= d3.extent(u,function(d){
+                console.log(d.b);
+                return d.b;
+            });
+            console.log(v);
+
             // console.log(dataFiltered);
             //3. nest data by縣市代碼
             var dataNested = d3.nest()
                 .key(d => { return d['縣市代碼'] })
                 .entries(dataFiltered);
-            console.log(dataNested);
+            // console.log(dataNested);
             
-            //4. map data to make data simplify
+
+
+            //4. map data(make data simplify) by what the map need
             var dataMapped = dataNested.map((d)=>{
                 // console.log(d.key);
                 // console.log(d.values[0]['平均客單價']);
@@ -121,17 +138,23 @@ let dataDealed:d3.Map<{}>;
 
     //style of polygon (feature is the object of data)
     styleMap(feature:Object) {
-        console.log(feature['properties']['COUNTYID']);  
+        // console.log(dataDealed);
+        var countryId:string =feature['properties']['COUNTYID']; 
+        
         return {
-            fillColor: 'blue',
+            fillColor: thisComponent.getFillColor(countryId),
             color: "red",
         };
     }//END of styleMap
 
+    getFillColor(countryId:string):string{
+        // console.log(countryId);
+        return 'red';
+    }
 
 
     // passing map click info to html(<p>) 
     updateCountyName(countyName) {
         this.countyName = countyName;
-    }
+    }// END OF updateCountyName
 } //END OF export
