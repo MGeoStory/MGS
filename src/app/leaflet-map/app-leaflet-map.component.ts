@@ -5,6 +5,7 @@ import * as L from 'leaflet';
 import * as d3 from 'd3';
 
 let map: L.Map;
+
 let geoJSON : L.GeoJSON;
 let thisComponent: LeafletMapComponent;
 let outCountryID;
@@ -51,6 +52,7 @@ let dataDealed:d3.Map<{}>;
         //grouping data::http://learnjsdata.com/group_data.html
         d3.csv('app/data/rawdata/simpleTest.csv', function (data: Array<Object>) {
             //1. filter data
+            
             var dataFiltered = data
                 .filter(column => {
                     if (column['發票年月'] == '2013/01/01' || column['行業名稱'] == '便利商店') {
@@ -71,19 +73,24 @@ let dataDealed:d3.Map<{}>;
                 .key(d => { return d['縣市代碼'] })
                 .entries(dataFiltered);
             console.log(dataNested);
-            //4. map data
-            dataDealed = d3.map(dataNested, (d)=>{
+            
+            //4. map data to make data simplify
+            var dataMapped = dataNested.map((d)=>{
+                // console.log(d.key);
+                // console.log(d.values[0]['平均客單價']);
+                return{
+                    key: d.key,
+                    value: d.values[0]['平均客單價']
+                }
+            });
+
+            //5.using key to select value of data
+            dataDealed = d3.map(dataMapped, (d)=>{
                 return d.key;
             });
-            // console.log(t.get('A').values[0]['縣市代碼']);
-            // dataNested.map((d) => {
-            //     console.log(d);
-            // })
-            
-            // var a = d3.values(nestData).map(function (d) {
-            //     return d.values
-            // });
-            // console.log(a);
+            // console.log(dataDealed);
+            // console.log(dataDealed.get('A')['value']);
+
         });
     }
 
@@ -112,10 +119,12 @@ let dataDealed:d3.Map<{}>;
         });
     }// END OF mappingMap
 
-    //style of polygon
-    styleMap(feature) {
+    //style of polygon (feature is the object of data)
+    styleMap(feature:Object) {
+        console.log(feature['properties']['COUNTYID']);  
         return {
-            "color": "red",
+            fillColor: 'blue',
+            color: "red",
         };
     }//END of styleMap
 
