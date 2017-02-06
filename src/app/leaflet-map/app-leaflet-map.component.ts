@@ -6,11 +6,11 @@ import * as d3 from 'd3';
 
 let map: L.Map;
 
-let geoJSON : L.GeoJSON;
+let geoJSON: L.GeoJSON;
 let thisComponent: LeafletMapComponent;
 let outCountryID;
 let countyName: string;
-let dataDealed:d3.Map<{}>;
+let dataDealed: d3.Map<{}>;
 
 
 @Component({
@@ -65,18 +65,17 @@ let dataDealed:d3.Map<{}>;
                 d['平均開立張數'] = +d['平均開立張數'];
                 d['平均開立金額'] = +d['平均開立金額'];
             });
+
+            //the paras in d3.extent() is array[], so build up a simple array
             var valuesOfData;
 
-            valuesOfData = dataFiltered.map((d)=>{
+            valuesOfData = dataFiltered.map((d) => {
                 return {
                     countryID: d['縣市代碼'],
                     value: d['平均客單價']
                 }
             });
-
-            console.log(valuesOfData);
-
-            var extentOfData= d3.extent(valuesOfData,function(d){
+            var extentOfData = d3.extent(valuesOfData, function (d) {
                 return d['value'];
             });
             console.log(extentOfData);
@@ -87,21 +86,19 @@ let dataDealed:d3.Map<{}>;
                 .key(d => { return d['縣市代碼'] })
                 .entries(dataFiltered);
             // console.log(dataNested);
-            
-
 
             //4. map data(make data simplify) by what the map need
-            var dataMapped = dataNested.map((d)=>{
+            var dataMapped = dataNested.map((d) => {
                 // console.log(d.key);
                 // console.log(d.values[0]['平均客單價']);
-                return{
+                return {
                     key: d.key,
                     value: d.values[0]['平均客單價']
                 }
             });
 
             //5.using key to select value of data
-            dataDealed = d3.map(dataMapped, (d)=>{
+            dataDealed = d3.map(dataMapped, (d) => {
                 return d.key;
             });
             // console.log(dataDealed);
@@ -136,18 +133,26 @@ let dataDealed:d3.Map<{}>;
     }// END OF mappingMap
 
     //style of polygon (feature is the object of data)
-    styleMap(feature:Object) {
+    styleMap(feature: Object) {
         // console.log(dataDealed);
-        var countryId:string =feature['properties']['COUNTYID']; 
-        
+        var countryId: string = feature['properties']['COUNTYID'];
+
         return {
             fillColor: thisComponent.getFillColor(countryId),
             color: "red",
         };
     }//END of styleMap
 
-    getFillColor(countryId:string):string{
-        // console.log(countryId);
+    getFillColor(countryId: string): string {
+        //26 countries in Taiwan will show in map, but the data would be lack
+        var valueOfCountry: number;
+        if (dataDealed.get(countryId) != null) {
+            valueOfCountry = dataDealed.get(countryId)['value'];
+        } else {
+            valueOfCountry = 0;
+        }
+
+        console.log(countryId +", "+ valueOfCountry);
         return 'red';
     }
 
