@@ -65,22 +65,21 @@ let dataDealed:d3.Map<{}>;
                 d['平均開立張數'] = +d['平均開立張數'];
                 d['平均開立金額'] = +d['平均開立金額'];
             });
-            var t = dataFiltered;
+            var valuesOfData;
 
-            var u =t.map((d)=>{
+            valuesOfData = dataFiltered.map((d)=>{
                 return {
-                    a: d['縣市代碼'],
-                    b: d['平均客單價']
+                    countryID: d['縣市代碼'],
+                    value: d['平均客單價']
                 }
             });
 
-            console.log(u);
+            console.log(valuesOfData);
 
-            var v= d3.extent(u,function(d){
-                console.log(d.b);
-                return d.b;
+            var extentOfData= d3.extent(valuesOfData,function(d){
+                return d['value'];
             });
-            console.log(v);
+            console.log(extentOfData);
 
             // console.log(dataFiltered);
             //3. nest data by縣市代碼
