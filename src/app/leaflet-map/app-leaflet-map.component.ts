@@ -4,6 +4,9 @@ import { LMapSetting } from 'app/shared/lmap-setting';
 import * as L from 'leaflet';
 import * as d3 from 'd3';
 
+// import * as rgbHex from 'rgb-hex';
+const rgbHex = require('rgb-hex');
+
 let map: L.Map;
 
 let geoJSON: L.GeoJSON;
@@ -11,7 +14,7 @@ let thisComponent: LeafletMapComponent;
 let outCountryID;
 let countyName: string;
 let dataDealed: d3.Map<{}>;
-
+let colorFeature: d3.ScaleLinear<any, any>;
 
 @Component({
     selector: 'app-leaflet-map',
@@ -104,6 +107,13 @@ let dataDealed: d3.Map<{}>;
             // console.log(dataDealed);
             // console.log(dataDealed.get('A')['value']);
 
+            //why <string>? https://github.com/DefinitelyTyped/DefinitelyTyped/issues/8941
+            colorFeature = d3.scaleLinear<string>()
+                .domain(extentOfData)
+                .range(["white", "OrangeRed"]);
+            console.log(colorFeature(77));
+            console.log(rgbHex(colorFeature(77)));
+
         });
     }
 
@@ -139,7 +149,9 @@ let dataDealed: d3.Map<{}>;
 
         return {
             fillColor: thisComponent.getFillColor(countryId),
-            color: "red",
+            fillOpacity: 0.9,
+            color: "gray",
+            weight: 1
         };
     }//END of styleMap
 
@@ -148,12 +160,16 @@ let dataDealed: d3.Map<{}>;
         var valueOfCountry: number;
         if (dataDealed.get(countryId) != null) {
             valueOfCountry = dataDealed.get(countryId)['value'];
+            // return rgbHex('#'+colorFeature(valueOfCountry));
+            console.log('#' + rgbHex(colorFeature(valueOfCountry)));
+            return '#' + rgbHex(colorFeature(valueOfCountry));
         } else {
             valueOfCountry = 0;
+            return 'gray';
         }
 
-        console.log(countryId +", "+ valueOfCountry);
-        return 'red';
+        // console.log(countryId + ", " + valueOfCountry);
+        // return 'red';
     }
 
 
