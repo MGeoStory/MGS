@@ -2,7 +2,7 @@ import { ElementRef, Input, Renderer, OnInit, OnDestroy, Component } from '@angu
 import { MapGraphService } from 'app/shared/map-graph.service';
 import { Subscription } from 'rxjs/Subscription';
 import * as d3 from 'd3';
-import  { GraphFrame } from 'app/shared/graph-frame';
+import { GraphFrame } from 'app/shared/graph-frame';
 
 let gf = new GraphFrame();
 let canvas;
@@ -29,29 +29,28 @@ export class BarGraph implements OnInit {
             info => {
                 userClickedInfo = info;
             });
-                    
+
         canvas = gf.setFrame(el.nativeElement).append('g')
             .attr('transform', 'translate(' + gf.margin.left + ',' + gf.margin.top + ')');;
-    }
+    }//END OF constructor
 
     ngOnInit(): void {
-        
         this.setup();
         this.drawContent();
         // this.drawXAxis();
         // this.drawCircles();
-    }
+    }//END OF ngOnInit
 
     ngOnDestroy() {
         // prevent memory leak when component destroyed
         subscription.unsubscribe();
-    }
+    }//END OF ngOnDestroy
 
     setup(): void {
         xScale = d3.scaleBand().range([0, gf.width]).paddingInner(0.1);
         yScale = d3.scaleLinear().range([0, gf.height]);
         xAxis = d3.axisBottom(xScale);
-    }
+    }//END OF setup
 
     drawContent(): void {
         d3.json(this.dataPath, function (data) {
@@ -93,7 +92,7 @@ export class BarGraph implements OnInit {
                 console.log(userClickedInfo);
             });
         });
-    }
+    }//END OF drawContent
 
     //call xAxis沒有東西是life cycle的問題
     drawXAxis(): void {
@@ -102,15 +101,5 @@ export class BarGraph implements OnInit {
             .attr('class', 'xAxis')
             .attr('transform', `translate(0,${gf.height})`)
             .call(xAxis);
-    }
-
-    drawCircles(): void {
-        d3.json('app/data/circle.json', function (data) {
-            canvas.selectAll('circle').data(data).enter().append('circle')
-                .attr('cx', (d) => d['x_axis'])
-                .attr('cy', (d) => d['y_axis'])
-                .attr('r', (d) => d['radius']);
-        }
-        );
-    }
-}
+    }//END OF drawXAxis
+}// END OF class
