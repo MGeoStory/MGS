@@ -1,1 +1,6 @@
-#lmap { height: 500px; }
+/*http://leafletjs.com/examples/mobile*/
+#lmap { 
+    height: 60vh;
+    width: 100vw; 
+    /*margin-right: 12vh;*/
+}
