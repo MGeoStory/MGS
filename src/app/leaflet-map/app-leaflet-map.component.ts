@@ -122,7 +122,7 @@ let colorFeature: d3.ScaleLinear<any, any>;
         //using d3.json to read file and addTo leaflet map
         d3.json('app/data/geojson/tw_country_ms.json', function (data) {
             // console.log(JSON.stringify(data));
-            let countryID = data['features'][0]['properties']['COUNTYID'];
+            // let countryID = data['features'][0]['properties']['COUNTYID'];
             geoJSON = L.geoJSON(data, {
                 style: thisComponent.styleMap,
                 //listener event
@@ -161,7 +161,7 @@ let colorFeature: d3.ScaleLinear<any, any>;
         if (dataDealed.get(countryId) != null) {
             valueOfCountry = dataDealed.get(countryId)['value'];
             // return rgbHex('#'+colorFeature(valueOfCountry));
-            console.log('#' + rgbHex(colorFeature(valueOfCountry)));
+            // console.log('#' + rgbHex(colorFeature(valueOfCountry)));
             return '#' + rgbHex(colorFeature(valueOfCountry));
         } else {
             valueOfCountry = 0;

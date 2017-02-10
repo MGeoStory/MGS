@@ -2,12 +2,10 @@ import { ElementRef, Input, Renderer, OnInit, OnDestroy, Component } from '@angu
 import { MapGraphService } from 'app/shared/map-graph.service';
 import { Subscription } from 'rxjs/Subscription';
 import * as d3 from 'd3';
+import  { GraphFrame } from 'app/shared/graph-frame';
 
-let frame;
+let gf = new GraphFrame();
 let canvas;
-let width = 500;
-let height = 300;
-let margin = { top: 20, right: 20, bottom: 20, left: 20 };
 let xScale;
 let yScale;
 let xAxis;
@@ -31,17 +29,13 @@ export class BarGraph implements OnInit {
             info => {
                 userClickedInfo = info;
             });
-
-        //append svg是為 了透過attr改變view(CSS可連動),if style則無法透過css覆寫
-        //frame留白
-        frame = d3.select(el.nativeElement).append('svg')
-            .attr('width', width + margin.left + margin.right)
-            .attr('height', height + margin.top + margin.bottom);
-        canvas = frame.append('g')
-            .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');;
+                    
+        canvas = gf.setFrame(el.nativeElement).append('g')
+            .attr('transform', 'translate(' + gf.margin.left + ',' + gf.margin.top + ')');;
     }
 
     ngOnInit(): void {
+        
         this.setup();
         this.drawContent();
         // this.drawXAxis();
@@ -54,8 +48,8 @@ export class BarGraph implements OnInit {
     }
 
     setup(): void {
-        xScale = d3.scaleBand().range([0, width]).paddingInner(0.1);
-        yScale = d3.scaleLinear().range([0, height]);
+        xScale = d3.scaleBand().range([0, gf.width]).paddingInner(0.1);
+        yScale = d3.scaleLinear().range([0, gf.height]);
         xAxis = d3.axisBottom(xScale);
     }
 
@@ -71,7 +65,7 @@ export class BarGraph implements OnInit {
                 .attr('x', (d) => xScale(d['name']))
                 .attr('y', (d) => yScale(d['value']))
                 .attr('width', xScale.bandwidth())
-                .attr('height', (d) => height - yScale(d['value']))
+                .attr('height', (d) => gf.height - yScale(d['value']))
                 // .attr("height", (d) => yScale(d['value']))
                 .attr('fill', 'grey');
 
@@ -87,7 +81,7 @@ export class BarGraph implements OnInit {
             //bar-name and axis
             canvas.append('g')
                 .attr('class', 'xAxis')
-                .attr('transform', `translate(0,${height})`)
+                .attr('transform', `translate(0,${gf.height})`)
                 .call(xAxis);
             // console.log('drawContent end');
 
@@ -106,7 +100,7 @@ export class BarGraph implements OnInit {
         console.log('enter xAxis');
         canvas.append('g')
             .attr('class', 'xAxis')
-            .attr('transform', `translate(0,${height})`)
+            .attr('transform', `translate(0,${gf.height})`)
             .call(xAxis);
     }
 
