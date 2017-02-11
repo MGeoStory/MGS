@@ -11,6 +11,7 @@ import { BarGraph } from './graphs/bar-graph.directive';
 import { GoogleMapComponent } from './google-map/google-map.component';
 import { LeafletMapComponent } from './leaflet-map/app-leaflet-map.component';
 import { ContentComponent } from './content/content.component';
+import {DropdownList} from'./dropdown-list/dropdown-list.component'
 
 import { MapGraphService } from './shared/map-graph.service';
 import { AgmCoreModule } from 'angular2-google-maps/core';
@@ -30,7 +31,8 @@ import { LMapSetting } from './shared/lmap-setting';
     BarGraph,
     GoogleMapComponent,
     LeafletMapComponent,
-    ContentComponent
+    ContentComponent,
+    DropdownList
   ],
   providers: [
     MapGraphService,

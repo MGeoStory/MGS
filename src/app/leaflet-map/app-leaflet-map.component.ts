@@ -12,7 +12,6 @@ let map: L.Map;
 let geoJSON: L.GeoJSON;
 let thisComponent: LeafletMapComponent;
 let outCountryID;
-let countyName: string;
 let dataDealed: d3.Map<{}>;
 let colorFeature: d3.ScaleLinear<any, any>;
 
@@ -25,10 +24,6 @@ let colorFeature: d3.ScaleLinear<any, any>;
 
     constructor(private mgs: MapGraphService, private lms: LMapSetting) {
     }
-
-    //set variables
-    title: string = 'Leaflet Map';
-    countyName = '';
 
     ngOnInit() {
         //call functions of this component in d3 loop
@@ -130,7 +125,6 @@ let colorFeature: d3.ScaleLinear<any, any>;
                     layer.on({
                         click: function (e) {
                             var countyName = feature.properties.COUNTYNAME;
-                            thisComponent.updateCountyName(countyName);
                             thisComponent.mgs.announceRefId(countyName);
                         }
                     });
@@ -170,11 +164,5 @@ let colorFeature: d3.ScaleLinear<any, any>;
 
         // console.log(countryId + ", " + valueOfCountry);
         // return 'red';
-    }
-
-
-    // passing map click info to html(<p>) 
-    updateCountyName(countyName) {
-        this.countyName = countyName;
-    }// END OF updateCountyName
+    }//END OF getFillColor
 } //END OF export
