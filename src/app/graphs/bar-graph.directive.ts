@@ -5,11 +5,7 @@ import * as d3 from 'd3';
 import { GraphFrame } from 'app/shared/graph-frame';
 import { GraphCanvas } from 'app/shared/graph-canvas';
 
-// let gf = new GraphFrame();
 let gc = new GraphCanvas();
-let canvas;
-let xScale;
-let yScale;
 let xAxis;
 let yAxis;
 let userClickedInfo: string = '';
@@ -31,16 +27,9 @@ export class BarGraph implements OnInit {
             info => {
                 userClickedInfo = info;
             });
-        // gc.setFrameHeight(11);
-        // gc.setFrameWidth(11);
-        // gc.setFrameMargin{11,11,1,1};
-        console.log(gc.getFrameHeight());
-        console.log(gc.getFrameWidth());
-        // console.log(gc.getFrameMargin()['top']);
-
-        canvas = gc.addFrame(el.nativeElement).append('g')
-            .attr('transform', 'translate(' + gc.getFrameMargin()['left'] + ',' + gc.getFrameMargin()['top'] + ')');;
-    }//END OF constructor
+        gc.createCanvas(el.nativeElement);
+        
+}//END OF constructor
 
     ngOnInit(): void {
         this.setup();
@@ -55,40 +44,36 @@ export class BarGraph implements OnInit {
     }//END OF ngOnDestroy
 
     setup(): void {
-        xScale = d3.scaleBand().range([0, gc.getFrameWidth()]).paddingInner(0.1);
-        yScale = d3.scaleLinear().range([0, gc.getFrameHeight()]);
-        xAxis = d3.axisBottom(xScale);
+        xAxis = d3.axisBottom(gc.xScaleBand);
     }//END OF setup
-
-
 
     drawContent(): void {
         d3.json(this.dataPath, function (data) {
             // console.log(JSON.stringify(data));
             // console.log(d3.max(data, (d) => d['value']));
-            xScale.domain(data.map((d) => d['name']));
-            yScale.domain([d3.max(data, (d) => d['value']), 0]);
-
+            gc.xScaleBand.domain(data.map((d) => d['name']));
+            gc.yScaleLinear.domain([d3.max(data, (d) => d['value']), 0]);
+            
             //bar-rect
-            canvas.selectAll('rect').data(data).enter().append('rect')
-                .attr('x', (d) => xScale(d['name']))
-                .attr('y', (d) => yScale(d['value']))
-                .attr('width', xScale.bandwidth())
-                .attr('height', (d) => gc.getFrameHeight() - yScale(d['value']))
+            gc.canvas.selectAll('rect').data(data).enter().append('rect')
+                .attr('x', (d) => gc.xScaleBand(d['name']))
+                .attr('y', (d) => gc.yScaleLinear(d['value']))
+                .attr('width', gc.xScaleBand.bandwidth())
+                .attr('height', (d) => gc.getFrameHeight() - gc.yScaleLinear(d['value']))
                 // .attr("height", (d) => yScale(d['value']))
                 .attr('fill', 'grey');
 
             //bar-value
-            canvas.selectAll('text').data(data).enter().append('text')
+            gc.canvas.selectAll('text').data(data).enter().append('text')
                 .attr('class', 'bar-value')
-                .attr('x', (d) => xScale(d['name']) + xScale.bandwidth() / 2)
-                .attr('y', (d) => yScale(d['value']) - 5)
+                .attr('x', (d) => gc.xScaleBand(d['name']) + gc.xScaleBand.bandwidth() / 2)
+                .attr('y', (d) => gc.yScaleLinear(d['value']) - 5)
                 .attr('text-anchor', 'middle')
                 .text((d) => d['value']);
 
             //不把axis抽成function是因為xAxis會用到xScale，這樣會有時間順序的問題
             //bar-name and axis
-            canvas.append('g')
+            gc.canvas.append('g')
                 .attr('class', 'xAxis')
                 .attr('transform', `translate(0,${gc.getFrameHeight()})`)
                 .call(xAxis);
@@ -107,7 +92,7 @@ export class BarGraph implements OnInit {
     //call xAxis沒有東西是life cycle的問題
     drawXAxis(): void {
         console.log('enter xAxis');
-        canvas.append('g')
+        gc.canvas.append('g')
             .attr('class', 'xAxis')
             .attr('transform', `translate(0,${gc.getFrameHeight()})`)
             .call(xAxis);
