@@ -83,7 +83,7 @@ let colorFeature: d3.ScaleLinear<any, any>;
             var dataNested = d3.nest()
                 .key(d => { return d['縣市代碼'] })
                 .entries(dataFiltered);
-            // console.log(dataNested);
+            console.log(dataNested);
 
             //4. map data(make data simplify) by what the map need
             var dataMapped = dataNested.map((d) => {
@@ -94,7 +94,6 @@ let colorFeature: d3.ScaleLinear<any, any>;
                     value: d.values[0]['平均客單價']
                 }
             });
-
             //5.using key to select value of data
             dataDealed = d3.map(dataMapped, (d) => {
                 return d.key;
