@@ -13,37 +13,41 @@ let thisComponent: DropdownList;
     brief = 'infomation about Taiwan.';
 
     ngOnInit() {
-        this.dropOfData().then(this.setDropdownList);
-
+        this.setDropData().then(this.setDropdownList);
     }// END OF ngOnInit
+
+    /**
+     * call after setDropData(), set the droplist value and text
+     */
     setDropdownList() {
         //select id => '#+id'
         var dropDown = d3.select('#select_table').append('select')
             .attr('name', 'listOfTime');
+
+        // html select->options
         var options = dropDown.selectAll('option')
             .data(dropDataOfTime)
             .enter()
             .append('option');
         options
-            .text((d,i)=>{return dropDataOfTime[i];})
-            .attr('value',(d,i)=>{return dropDataOfTime[i];});
+            .text((d, i) => { return dropDataOfTime[i]; })
+            .attr('value', (d, i) => { return dropDataOfTime[i]; });
+        
+        dropDown.on('change',function(){
+            console.log(d3.select(this).property('value'));
+        });
 
-        // var options = dropDown.selectAll('option')
-        //     .data(listOfTime)
-        //     .enter()
-        //     .append('option');
+    }//END of setDropdownList
 
-        // options.text(function (d) {
-        //     // console.log(d);
-        //     return 11;
-        // }).attr('value', 11);
-    }
-    dropOfData() {
+    /**
+     * deal data od dropdwon list
+     */
+    setDropData() {
         // resolve(sth) is needed, and then will
         return new Promise(function (resolve, reject) {
             d3.csv('app/data/rawdata/simpleTest.csv', (data: Array<Object>) => {
                 var listOfTime = d3.nest()
-                    .key(d => { return d['發票年月'] })
+                    .key(d => { return d['行業名稱'] })
                     .entries(data);
                 listOfTime.forEach(d => {
                     dropDataOfTime.push(d.key);
