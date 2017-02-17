@@ -123,7 +123,7 @@ export class BarGraph implements OnInit {
                 .attr('y', (d) => gc.yScaleLinear(d['value']) - 5)
                 .attr('text-anchor', 'middle')
                 .text((d) => d['value']);
-                
+
             gc.canvas.append('g')
                 .attr('class', 'xAxis')
                 .attr('transform', `translate(0,${gc.getFrameHeight()})`)

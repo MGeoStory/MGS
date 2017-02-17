@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as d3 from 'd3';
+import { MapGraphService } from 'app/shared/map-graph.service';
 
 let outResult: Array<Object>;
 let dropDataOfTime = [];
@@ -12,7 +13,11 @@ let thisComponent: DropdownList;
     title = 'data sharing';
     brief = 'infomation about Taiwan.';
 
+    constructor(private mgs: MapGraphService) {
+    }
+
     ngOnInit() {
+        thisComponent = this;
         this.setDropData().then(this.setDropdownList);
     }// END OF ngOnInit
 
@@ -32,9 +37,11 @@ let thisComponent: DropdownList;
         options
             .text((d, i) => { return dropDataOfTime[i]; })
             .attr('value', (d, i) => { return dropDataOfTime[i]; });
-        
-        dropDown.on('change',function(){
+
+        dropDown.on('change', function () {
             console.log(d3.select(this).property('value'));
+            var select = d3.select(this).property('value');
+            thisComponent.mgs.announceRefYear(select);
         });
 
     }//END of setDropdownList

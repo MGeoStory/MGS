@@ -5,19 +5,27 @@ import {Subject} from 'rxjs/Subject';
 export class MapGraphService{
 
     // Observable string sources
-    private refClickedSource = new Subject<string>();
-    
+    private refMapClickedSource = new Subject<string>();
+    private refYearSource= new Subject<string>(); 
     // Observable string streams
-    refCountry$ = this.refClickedSource.asObservable();
+    refCountry$ = this.refMapClickedSource.asObservable();
+    refYear = this.refYearSource.asObservable();
+
+    //dropdown list of years
+    announceRefYear(refYear:string){
+        console.log('announceRefYear');
+        this.refYearSource.next(refYear);
+    }
+    confirmRefYear(refYear:string){
+        this.refYearSource.next(refYear);
+    }
 
     // Service message commands
     announceRefId (refCountry:string){
-        console.log('announceRefId');
-        this.refClickedSource.next(refCountry);
+        this.refMapClickedSource.next(refCountry);
      }
 
     confirmRefId(refCountry:string){
-        console.log('confirmRefId');
-        this.refClickedSource.next(refCountry);
+        this.refMapClickedSource.next(refCountry);
     }
 }// END OF MapGraphService
