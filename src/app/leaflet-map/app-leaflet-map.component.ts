@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges } from '@angular/core';
 import { MapGraphService } from 'app/shared/map-graph.service';
 import { LMapSetting } from 'app/shared/lmap-setting';
+import { Subscription } from 'rxjs/Subscription';
 import * as L from 'leaflet';
 import * as d3 from 'd3';
 
@@ -12,7 +13,8 @@ let geoJSON: L.GeoJSON;
 let thisComponent: LeafletMapComponent;
 let dataDealed: d3.Map<{}>;
 let colorFeature: d3.ScaleLinear<any, any>;
-// let refYears:
+let refYear: string;
+let title: string;
 
 @Component({
     selector: 'app-leaflet-map',
@@ -20,18 +22,39 @@ let colorFeature: d3.ScaleLinear<any, any>;
     templateUrl: 'app-leaflet-map.component.html'
 
 }) export class LeafletMapComponent implements OnInit {
-
+    title = '+++' + refYear;
     constructor(private mgs: MapGraphService, private lms: LMapSetting) {
+        //test
+        refYear = '2013/2/1';
+        mgs.refYear.subscribe(
+            year => {
+                refYear = year;
+                // console.log(refYear);
+            }
+        );
     }
 
     ngOnInit() {
-        //call functions of this component in d3 loop
+
         thisComponent = this;
+        thisComponent.mgs.refYear.subscribe(
+            year => {
+                refYear = year;
+                console.log(refYear);
+                this.initialMap();
+                this.setFeatureInfo(refYear);
+                this.mappingMap();
+            }
+        );
+        //call functions of this component in d3 loop
         this.initialMap();
-        this.setFeatureInfo();
+        this.setFeatureInfo('2013/1/1');
         this.mappingMap();
     }//END OF ngOnInit
 
+    ngOnChanges() {
+        var title = refYear;
+    }
     //establish a base leaf-map in website
     initialMap(): void {
         //create mapbox and tileLayer
@@ -41,7 +64,7 @@ let colorFeature: d3.ScaleLinear<any, any>;
     }// END OF initialMap
 
     //parsing data for color of feature
-    setFeatureInfo(): void {
+    setFeatureInfo(refYear:string): void {
         //https://github.com/d3/d3-time-format
         var parseTime = d3.timeParse("%Y/%m/%d");
 
@@ -50,11 +73,11 @@ let colorFeature: d3.ScaleLinear<any, any>;
             //1. filter data
             var dataFiltered = data
                 .filter(column => {
-                    if (column['發票年月'] == '2013/1/1' && column['行業名稱'] == '便利商店') {
+                    if (column['發票年月'] == refYear && column['行業名稱'] == '便利商店') {
                         return column;
                     }
                 });
-                console.log(dataFiltered);
+            console.log(dataFiltered);
             //2. adjust format
             dataFiltered.forEach(d => {
                 //deal time and numbers format

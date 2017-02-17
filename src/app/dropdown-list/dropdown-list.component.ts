@@ -12,7 +12,6 @@ let thisComponent: DropdownList;
 }) export class DropdownList implements OnInit {
     title = 'data sharing';
     brief = 'infomation about Taiwan.';
-
     constructor(private mgs: MapGraphService) {
     }
 
@@ -42,6 +41,7 @@ let thisComponent: DropdownList;
             console.log(d3.select(this).property('value'));
             var select = d3.select(this).property('value');
             thisComponent.mgs.announceRefYear(select);
+            
         });
 
     }//END of setDropdownList
