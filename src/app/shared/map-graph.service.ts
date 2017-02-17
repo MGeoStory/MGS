@@ -13,7 +13,6 @@ export class MapGraphService{
 
     //dropdown list of years
     announceRefYear(refYear:string){
-        console.log('announceRefYear');
         this.refYearSource.next(refYear);
     }
     confirmRefYear(refYear:string){

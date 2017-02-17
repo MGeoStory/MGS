@@ -54,7 +54,7 @@ let thisComponent: DropdownList;
         return new Promise(function (resolve, reject) {
             d3.csv('app/data/rawdata/simpleTest.csv', (data: Array<Object>) => {
                 var listOfTime = d3.nest()
-                    .key(d => { return d['行業名稱'] })
+                    .key(d => { return d['發票年月'] })
                     .entries(data);
                 listOfTime.forEach(d => {
                     dropDataOfTime.push(d.key);

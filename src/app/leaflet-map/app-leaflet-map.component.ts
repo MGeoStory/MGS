@@ -8,12 +8,11 @@ import * as d3 from 'd3';
 const rgbHex = require('rgb-hex');
 
 let map: L.Map;
-
 let geoJSON: L.GeoJSON;
 let thisComponent: LeafletMapComponent;
-let outCountryID;
 let dataDealed: d3.Map<{}>;
 let colorFeature: d3.ScaleLinear<any, any>;
+// let refYears:
 
 @Component({
     selector: 'app-leaflet-map',
@@ -51,10 +50,11 @@ let colorFeature: d3.ScaleLinear<any, any>;
             //1. filter data
             var dataFiltered = data
                 .filter(column => {
-                    if (column['發票年月'] == '2013/01/01' || column['行業名稱'] == '便利商店') {
+                    if (column['發票年月'] == '2013/1/1' && column['行業名稱'] == '便利商店') {
                         return column;
                     }
                 });
+                console.log(dataFiltered);
             //2. adjust format
             dataFiltered.forEach(d => {
                 //deal time and numbers format

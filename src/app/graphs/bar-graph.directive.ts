@@ -55,7 +55,7 @@ export class BarGraph implements OnInit {
             //1. filter data
             var dataFiltered = data
                 .filter(column => {
-                    if (column['發票年月'] == '2013/01/01' || column['行業名稱'] == '便利商店') {
+                    if (column['發票年月'] == '2013/1/1' && column['行業名稱'] == '便利商店') {
                         return column;
                     }
                 });
