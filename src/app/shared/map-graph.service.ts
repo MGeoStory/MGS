@@ -1,30 +1,43 @@
-import {Injectable} from '@angular/core';
-import {Subject} from 'rxjs/Subject';
+import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs/Subject';
 
 @Injectable()
-export class MapGraphService{
+export class MapGraphService {
 
     // Observable string sources
     private refMapClickedSource = new Subject<string>();
-    private refYearSource= new Subject<string>(); 
+    private refYearSource = new Subject<string>();
+
+    //when perpare dropdwonlist, set data formatted
+    private refDataSource = new Subject<Array<Object>>();
+
     // Observable string streams
     refCountry$ = this.refMapClickedSource.asObservable();
     refYear = this.refYearSource.asObservable();
+    refData = this.refDataSource.asObservable();
 
     //dropdown list of years
-    announceRefYear(refYear:string){
+    announceRefYear(refYear: string) {
         this.refYearSource.next(refYear);
     }
-    confirmRefYear(refYear:string){
+    confirmRefYear(refYear: string) {
         this.refYearSource.next(refYear);
+    }
+
+    //data formatted
+    announceRefData(refData: Array<Object>) {
+        this.refDataSource.next(refData);
+    }
+    confirmRefData(refData: Array<Object>) {
+        this.refDataSource.next(refData);
     }
 
     // Service message commands
-    announceRefId (refCountry:string){
+    announceRefId(refCountry: string) {
         this.refMapClickedSource.next(refCountry);
-     }
+    }
 
-    confirmRefId(refCountry:string){
+    confirmRefId(refCountry: string) {
         this.refMapClickedSource.next(refCountry);
     }
 }// END OF MapGraphService

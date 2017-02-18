@@ -2,9 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import * as d3 from 'd3';
 import { MapGraphService } from 'app/shared/map-graph.service';
 
-let outResult: Array<Object>;
 let dropDataOfTime = [];
 let thisComponent: DropdownList;
+let refYear: string;
+let dataFormatted: Array<Object>;
+
 @Component({
     selector: 'app-dropdown-list',
     templateUrl: 'dropdown-list.component.html',
@@ -39,55 +41,54 @@ let thisComponent: DropdownList;
 
         dropDown.on('change', function () {
             console.log(d3.select(this).property('value'));
-            var select = d3.select(this).property('value');
-            thisComponent.mgs.announceRefYear(select);
-            
-        });
+            let selected = d3.select(this).property('value');
+            thisComponent.dealedData(selected, dataFormatted);
+            // thisComponent.mgs.announceRefYear(select); 
 
+        });
     }//END of setDropdownList
 
     /**
-     * deal data od dropdwon list
+     * deal data for dropdwon list and Map/Graph
      */
     setDropData() {
         // resolve(sth) is needed, and then will
         return new Promise(function (resolve, reject) {
+            let parseTime = d3.timeParse("%Y/%m/%d");
             d3.csv('app/data/rawdata/simpleTest.csv', (data: Array<Object>) => {
-                var listOfTime = d3.nest()
+                let listOfTime = d3.nest()
                     .key(d => { return d['發票年月'] })
                     .entries(data);
                 listOfTime.forEach(d => {
                     dropDataOfTime.push(d.key);
                 })
-                resolve(data);
-            });
-        });
-    }// END OF dropOfData
-
-    /**
-     * filter and parse array values 
-     */
-    dealedData(): Promise<Array<Object>> {
-        return new Promise(function (resolve, reject) {
-            var parseTime = d3.timeParse("%Y/%m/%d");
-            d3.csv('app/data/rawdata/simpleTest.csv', (data: Array<Object>) => {
-
-                data.filter(column => {
-                    if (column['發票年月'] == '2013/01/01' || column['行業名稱'] == '便利商店') {
-                        return column;
-                    }
-                });
 
                 data.forEach(d => {
                     //deal time and numbers format
-                    d['發票年月'] = parseTime(d['發票年月']);
+                    // d['發票年月'] = parseTime(d['發票年月']);
                     d['平均客單價'] = +d['平均客單價'];
                     d['平均開立張數'] = +d['平均開立張數'];
                     d['平均開立金額'] = +d['平均開立金額'];
                 });
-                outResult = data;
-                resolve(outResult);
-            });// END OF d3.csv
-        });// END OF return
-    }// END OF dealedData
-};
+
+                dataFormatted = data;
+                console.log(data);
+                resolve(data);
+            });//END of d3.csv
+        });//END of return
+    }// END OF dropOfData
+
+    /**
+     * filter array values 
+     */
+    dealedData(selected: string, data: Array<Object>) {
+        console.log(selected);
+        let dataFiltered = data.filter(column=>{
+            if(column['發票年月']==selected && column['行業名稱'] =='便利商店'){
+                return column;
+            }
+        })
+        console.log(dataFiltered);
+        thisComponent.mgs.announceRefData(dataFiltered);
+    }//END of dealedData
+};// END of Class

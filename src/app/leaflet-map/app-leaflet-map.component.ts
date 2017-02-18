@@ -32,10 +32,15 @@ let title: string;
                 // console.log(refYear);
             }
         );
+
+        mgs.refData.subscribe(
+            data => {
+                console.log(data);
+            }
+        )
     }
 
     ngOnInit() {
-
         thisComponent = this;
         thisComponent.mgs.refYear.subscribe(
             year => {
@@ -64,7 +69,7 @@ let title: string;
     }// END OF initialMap
 
     //parsing data for color of feature
-    setFeatureInfo(refYear:string): void {
+    setFeatureInfo(refYear: string): void {
         //https://github.com/d3/d3-time-format
         var parseTime = d3.timeParse("%Y/%m/%d");
 
