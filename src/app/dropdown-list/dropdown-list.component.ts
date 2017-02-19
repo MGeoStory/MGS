@@ -27,7 +27,9 @@ let dataFormatted: Array<Object>;
     setDropData() {
         // resolve(sth) is needed, and .then() would work
         return new Promise(function (resolve, reject) {
+            //https://github.com/d3/d3-time-format
             let parseTime = d3.timeParse("%Y/%m/%d");
+            // data manipulation: http://learnjsdata.com/group_data.html
             d3.csv('app/data/rawdata/simpleTest.csv', (data: Array<Object>) => {
                 let listOfTime = d3.nest()
                     .key(d => { return d['發票年月'] })
@@ -49,7 +51,7 @@ let dataFormatted: Array<Object>;
                 // console.log(dropDataOfTime[0]);
                 let defaultSelected = dropDataOfTime[0];
                 // console.log(data);
-                thisComponent.filteredData(defaultSelected,dataFormatted);
+                thisComponent.filteredData(defaultSelected, dataFormatted);
                 resolve(data);
             });//END of d3.csv
         });//END of return
