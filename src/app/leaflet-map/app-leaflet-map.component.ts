@@ -4,7 +4,6 @@ import { LMapSetting } from 'app/shared/lmap-setting';
 import { Subscription } from 'rxjs/Subscription';
 import * as L from 'leaflet';
 import * as d3 from 'd3';
-
 // import * as rgbHex from 'rgb-hex';
 const rgbHex = require('rgb-hex');
 
@@ -13,7 +12,6 @@ let geoJSON: L.GeoJSON;
 let thisComponent: LeafletMapComponent;
 let dataDealed: d3.Map<{}>;
 let colorFeature: d3.ScaleLinear<any, any>;
-let refYear: string;
 let title: string;
 
 @Component({
@@ -22,17 +20,7 @@ let title: string;
     templateUrl: 'app-leaflet-map.component.html'
 
 }) export class LeafletMapComponent implements OnInit {
-    title = '+++' + refYear;
     constructor(private mgs: MapGraphService, private lms: LMapSetting) {
-        //test
-        refYear = '2013/2/1';
-        mgs.refYear.subscribe(
-            year => {
-                refYear = year;
-                // console.log(refYear);
-            }
-        );
-
         mgs.refData.subscribe(
             data => {
                 console.log(data);
@@ -42,23 +30,15 @@ let title: string;
 
     ngOnInit() {
         thisComponent = this;
-        thisComponent.mgs.refYear.subscribe(
-            year => {
-                refYear = year;
-                console.log(refYear);
-                this.initialMap();
-                this.setFeatureInfo(refYear);
-                this.mappingMap();
-            }
-        );
+
         //call functions of this component in d3 loop
         this.initialMap();
-        this.setFeatureInfo('2013/1/1');
+        this.setFeatureInfo();
         this.mappingMap();
     }//END OF ngOnInit
 
     ngOnChanges() {
-        var title = refYear;
+        
     }
     //establish a base leaf-map in website
     initialMap(): void {
@@ -69,7 +49,7 @@ let title: string;
     }// END OF initialMap
 
     //parsing data for color of feature
-    setFeatureInfo(refYear: string): void {
+    setFeatureInfo(): void {
         //https://github.com/d3/d3-time-format
         var parseTime = d3.timeParse("%Y/%m/%d");
 
@@ -78,11 +58,11 @@ let title: string;
             //1. filter data
             var dataFiltered = data
                 .filter(column => {
-                    if (column['發票年月'] == refYear && column['行業名稱'] == '便利商店') {
+                    if (column['發票年月'] == '2013/1/1' && column['行業名稱'] == '便利商店') {
                         return column;
                     }
                 });
-            console.log(dataFiltered);
+            // console.log(dataFiltered);
             //2. adjust format
             dataFiltered.forEach(d => {
                 //deal time and numbers format
@@ -104,14 +84,14 @@ let title: string;
             var extentOfData = d3.extent(valuesOfData, function (d) {
                 return d['value'];
             });
-            console.log(extentOfData);
+            // console.log(extentOfData);
 
             // console.log(dataFiltered);
             //3. nest data by縣市代碼
             var dataNested = d3.nest()
                 .key(d => { return d['縣市代碼'] })
                 .entries(dataFiltered);
-            console.log(dataNested);
+            // console.log(dataNested);
 
             //4. map data(make data simplify) by what the map need
             var dataMapped = dataNested.map((d) => {
@@ -133,8 +113,8 @@ let title: string;
             colorFeature = d3.scaleLinear<string>()
                 .domain(extentOfData)
                 .range(["white", "OrangeRed"]);
-            console.log(colorFeature(77));
-            console.log(rgbHex(colorFeature(77)));
+            // console.log(colorFeature(77));
+            // console.log(rgbHex(colorFeature(77)));
 
         });
     }

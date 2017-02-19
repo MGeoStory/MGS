@@ -49,7 +49,6 @@ export class BarGraph implements OnInit {
     }//END OF setup
 
     drawGraph(): void {
-        console.log('drawGraph');
         var parseTime = d3.timeParse("%Y/%m/%d");
         d3.csv('app/data/rawdata/simpleTest.csv', (data) => {
             //1. filter data
@@ -80,7 +79,7 @@ export class BarGraph implements OnInit {
             var extentOfData = d3.extent(valuesOfData, function (d) {
                 return d['value'];
             });
-            console.log(extentOfData);
+            // console.log(extentOfData);
 
             // console.log(dataFiltered);
             //3. nest data by縣市代碼
