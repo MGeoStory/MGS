@@ -11,7 +11,6 @@ let thisComponent: LeafletMapComponent;
 let map: L.Map;
 let geoJSON: L.GeoJSON;
 let valueOfFeatures: d3.Map<{}>;
-let valueOfFeaturesTest: Array<Object>;
 let title: string;
 
 //function for color feature by values
@@ -33,15 +32,9 @@ let colorFeature: d3.ScaleLinear<any, any>;
             data => {
                 // thisComponent.mappingMap();
                 thisComponent.getFeatureInfo(data);
-                // thisComponent.setFeatureInfo();
                 thisComponent.mappingMap();
             }
         );
-
-        //call functions of this component in d3 loop
-        // this.initialMap();
-        // this.setFeatureInfo();
-        // this.mappingMap();
     }//END OF ngOnInit
 
     /**
@@ -58,7 +51,7 @@ let colorFeature: d3.ScaleLinear<any, any>;
      * get values from data, pass data to leafMap and draw layers 
      */
     getFeatureInfo(data: Array<Object>): void {
-        console.log(data);
+        // console.log(data);
         // console.log(data[0]['平均客單價']);
         //extent would read all data[set] and return values
         let extentOfData = d3.extent(data, d => {
@@ -68,14 +61,6 @@ let colorFeature: d3.ScaleLinear<any, any>;
         colorFeature = d3.scaleLinear<string>()
             .domain(extentOfData)
             .range(["white", "OrangeRed"]);
-
-        valueOfFeaturesTest = data.map(d => {
-            return {
-                id: d['縣市代碼'],
-                value: d['平均客單價']
-            }
-        });
-        console.log(valueOfFeaturesTest);
 
         //d3.map would create a map<key:object>; the key and object are from data.map
         valueOfFeatures = d3.map(
@@ -89,6 +74,7 @@ let colorFeature: d3.ScaleLinear<any, any>;
                 return d['id']
             }
         );//end of valueOfFeatures
+
     }// end of getFeatureInfo
 
     /**

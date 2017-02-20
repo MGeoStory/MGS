@@ -10,7 +10,7 @@ let xAxis;
 let yAxis;
 let userClickedInfo: string = '';
 let subscription: Subscription;
-
+let thisComponment: BarGraph;
 
 @Component({
     selector: 'app-vertical-bar-graph',
@@ -32,11 +32,17 @@ export class BarGraph implements OnInit {
     }//END OF constructor
 
     ngOnInit(): void {
+        thisComponment = this;
         this.setup();
         // this.drawContent();
-        this.drawGraph();
+        // this.drawGraph();
+        subscription = thisComponment.mgs.refData.subscribe(
+            data => {
+                thisComponment.drawBarGraph(data);
+            }
+        )
+
         // this.drawXAxis();
-        // this.drawCircles();
     }//END OF ngOnInit
 
     ngOnDestroy() {
@@ -47,6 +53,47 @@ export class BarGraph implements OnInit {
     setup(): void {
         xAxis = d3.axisBottom(gc.xScaleBand);
     }//END OF setup
+
+    /**
+     * draw bar graph by data passed from dropdown list
+     */
+    drawBarGraph(data: Array<Object>): void {
+        console.log(data);
+        let extentOfData = d3.extent(data, (d) => {
+            return d['平均客單價'];
+        });
+        console.log(extentOfData);
+        let dataForDraw = data.map(d => {
+            return {
+                name: d['縣市名稱'],
+                value: d['平均客單價']
+            }
+        });
+        let names = [];
+        for (var i of dataForDraw) {
+            names.push(i['name']);
+        }
+
+        let a = gc.canvas.transition();
+        gc.xScaleBand.domain(names);
+        gc.yScaleLinear.domain(extentOfData);
+        
+        gc.canvas.selectAll('rect').data(dataForDraw).enter().append('rect')
+            .attr('x', (d) => gc.xScaleBand(d['name']))
+            .attr('y', (d) => gc.yScaleLinear(d['value']))
+            .attr('width', gc.xScaleBand.bandwidth())
+            .attr('height', (d) => gc.getFrameHeight() - gc.yScaleLinear(d['value']))
+            // .attr("height", (d) => yScale(d['value']))
+            .attr('fill', 'grey');
+            
+        gc.canvas.selectAll('text').data(dataForDraw).enter().append('text')
+            .attr('class', 'bar-value')
+            .attr('x', (d) => gc.xScaleBand(d['name']) + gc.xScaleBand.bandwidth() / 2)
+            .attr('y', (d) => gc.yScaleLinear(d['value']) - 5)
+            .attr('text-anchor', 'middle')
+            .text((d) => d['value']);
+            console.log('end of drawBarGraph');
+    }// end of drawBarGraph
 
     drawGraph(): void {
         var parseTime = d3.timeParse("%Y/%m/%d");
@@ -130,6 +177,9 @@ export class BarGraph implements OnInit {
         });
     }
 
+    /**
+     * it's example.
+     */
     drawContent(): void {
         d3.json(this.dataPath, function (data) {
             // console.log(JSON.stringify(data));
