@@ -42,16 +42,14 @@ export class BarGraph implements OnInit {
             data => {
                 if (testCanvas.empty()) {
                     testCanvas = gc.createCanvas(thisComponment.el.nativeElement);
-                    thisComponment.drawBarGraph(data);
+                    thisComponment.drawColumnGraph(data);
                 } else {
-                    console.log('!empty');
                     gc.removeCanvas();
                     testCanvas = gc.createCanvas(thisComponment.el.nativeElement);
-                    thisComponment.drawBarGraph(data);
+                    thisComponment.drawColumnGraph(data);
                 }
-            }
-        )
-
+            }//end of data=>
+        )//end of Subscription
         // this.drawXAxis();
     }//END OF ngOnInit
 
@@ -64,10 +62,18 @@ export class BarGraph implements OnInit {
         xAxis = d3.axisBottom(gc.xScaleBand);
     }//END OF setup
 
+
     /**
      * draw bar graph by data passed from dropdown list
      */
-    drawBarGraph(data: Array<Object>): void {
+    drawBarChart(data: Array<Object>): void {
+        
+    }// end of drawBarChart
+
+    /**
+    * draw column graph by data passed from dropdown list
+    */
+    drawColumnGraph(data: Array<Object>): void {
         // console.log(data);
         let extentOfData = d3.extent(data, (d) => {
             return d['平均客單價'];
