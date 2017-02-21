@@ -12,6 +12,7 @@ let userClickedInfo: string = '';
 let subscription: Subscription;
 let thisComponment: BarGraph;
 
+let testCanvas: d3.Selection<any, any, any, any>;
 @Component({
     selector: 'app-vertical-bar-graph',
     templateUrl: 'bar-graph.component.html',
@@ -27,7 +28,10 @@ export class BarGraph implements OnInit {
             info => {
                 userClickedInfo = info;
             });
-        gc.createCanvas(el.nativeElement);
+        // gc.createCanvas(el.nativeElement);
+
+        // make sure testCanvas will be a d3.Selection<>, and the select.empty() can be read 
+        testCanvas = gc.createCanvasT(null);
 
     }//END OF constructor
 
@@ -36,9 +40,31 @@ export class BarGraph implements OnInit {
         this.setup();
         // this.drawContent();
         // this.drawGraph();
+        // gc.createCanvasT(thisComponment.el.nativeElement);
         subscription = thisComponment.mgs.refData.subscribe(
             data => {
-                thisComponment.drawBarGraph(data);
+                if (testCanvas.empty()) {
+                    testCanvas = gc.createCanvasT(thisComponment.el.nativeElement);
+                    // testCanvas.selectAll('circle').data(data).enter().append('circle')
+                    //     .attr("cx", 100)
+                    //     .attr("cy", 100)
+                    //     .attr("r", 50)
+                    //     .style("fill", 'red');
+                    thisComponment.drawBarGraph(data);
+                } else {
+                    console.log('!empty');
+                    // d3.select('#gFrame').remove();
+                    gc.removeCanvas();
+                    // d3.select('gFrame').remove();
+                    // // testCanvas.remove();
+                    // testCanvas = gc.createCanvasT(thisComponment.el.nativeElement);
+                    // testCanvas.selectAll('circle').data(data).enter().append('circle')
+                    //     .attr("cx", 100)
+                    //     .attr("cy", 100)
+                    //     .attr("r", 50)
+                    //     .style("fill", 'black');
+                    thisComponment.drawBarGraph(data);
+                }
             }
         )
 
@@ -58,11 +84,11 @@ export class BarGraph implements OnInit {
      * draw bar graph by data passed from dropdown list
      */
     drawBarGraph(data: Array<Object>): void {
-        console.log(data);
+        // console.log(data);
         let extentOfData = d3.extent(data, (d) => {
             return d['平均客單價'];
         });
-        console.log(extentOfData);
+        // console.log(extentOfData);
         let dataForDraw = data.map(d => {
             return {
                 name: d['縣市名稱'],
@@ -74,25 +100,26 @@ export class BarGraph implements OnInit {
             names.push(i['name']);
         }
 
-        let a = gc.canvas.transition();
+        console.log(names);
+
         gc.xScaleBand.domain(names);
         gc.yScaleLinear.domain(extentOfData);
-        
-        gc.canvas.selectAll('rect').data(dataForDraw).enter().append('rect')
+
+        testCanvas.selectAll('rect').data(dataForDraw).enter().append('rect')
             .attr('x', (d) => gc.xScaleBand(d['name']))
             .attr('y', (d) => gc.yScaleLinear(d['value']))
             .attr('width', gc.xScaleBand.bandwidth())
             .attr('height', (d) => gc.getFrameHeight() - gc.yScaleLinear(d['value']))
             // .attr("height", (d) => yScale(d['value']))
             .attr('fill', 'grey');
-            
-        gc.canvas.selectAll('text').data(dataForDraw).enter().append('text')
+
+        testCanvas.selectAll('text').data(dataForDraw).enter().append('text')
             .attr('class', 'bar-value')
             .attr('x', (d) => gc.xScaleBand(d['name']) + gc.xScaleBand.bandwidth() / 2)
             .attr('y', (d) => gc.yScaleLinear(d['value']) - 5)
             .attr('text-anchor', 'middle')
             .text((d) => d['value']);
-            console.log('end of drawBarGraph');
+        console.log('end of drawBarGraph');
     }// end of drawBarGraph
 
     drawGraph(): void {
@@ -155,6 +182,7 @@ export class BarGraph implements OnInit {
             });
             gc.xScaleBand.domain(dataDealed.keys());
             gc.yScaleLinear.domain(extentOfData);
+
             gc.canvas.selectAll('rect').data(dataMapped).enter().append('rect')
                 .attr('x', (d) => gc.xScaleBand(d['key']))
                 .attr('y', (d) => gc.yScaleLinear(d['value']))
@@ -188,7 +216,7 @@ export class BarGraph implements OnInit {
             gc.yScaleLinear.domain([d3.max(data, (d) => d['value']), 0]);
 
             //bar-rect
-            gc.canvas.selectAll('rect').data(data).enter().append('rect')
+            testCanvas.selectAll('rect').data(data).enter().append('rect')
                 .attr('x', (d) => gc.xScaleBand(d['name']))
                 .attr('y', (d) => gc.yScaleLinear(d['value']))
                 .attr('width', gc.xScaleBand.bandwidth())
@@ -197,7 +225,7 @@ export class BarGraph implements OnInit {
                 .attr('fill', 'grey');
 
             //bar-value
-            gc.canvas.selectAll('text').data(data).enter().append('text')
+            testCanvas.selectAll('text').data(data).enter().append('text')
                 .attr('class', 'bar-value')
                 .attr('x', (d) => gc.xScaleBand(d['name']) + gc.xScaleBand.bandwidth() / 2)
                 .attr('y', (d) => gc.yScaleLinear(d['value']) - 5)
@@ -206,7 +234,7 @@ export class BarGraph implements OnInit {
 
             //不把axis抽成function是因為xAxis會用到xScale，這樣會有時間順序的問題
             //bar-name and axis
-            gc.canvas.append('g')
+            testCanvas.append('g')
                 .attr('class', 'xAxis')
                 .attr('transform', `translate(0,${gc.getFrameHeight()})`)
                 .call(xAxis);
@@ -225,7 +253,7 @@ export class BarGraph implements OnInit {
     //call xAxis沒有東西是life cycle的問題
     drawXAxis(): void {
         console.log('enter xAxis');
-        gc.canvas.append('g')
+        testCanvas.append('g')
             .attr('class', 'xAxis')
             .attr('transform', `translate(0,${gc.getFrameHeight()})`)
             .call(xAxis);

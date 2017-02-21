@@ -3,19 +3,31 @@ import { GraphFrame } from 'app/shared/graph-frame';
 
 //that's extends could work probably, but the problem is how to super(parms)?
 export class GraphCanvas extends GraphFrame {
-    canvas:d3.Selection<any,any,any,any>;
-    xScaleBand:d3.ScaleBand<String>;
+    canvas: d3.Selection<any, any, any, any>;
+    xScaleBand: d3.ScaleBand<String>;
     yScaleLinear: d3.ScaleLinear<number, number>;
     constructor() {
         super();
-        this.xScaleBand =d3.scaleBand().range([0, this.getFrameWidth()]).paddingInner(0.1);
+        this.xScaleBand = d3.scaleBand().range([0, this.getFrameWidth()]).paddingInner(0.1);
         this.yScaleLinear = d3.scaleLinear().range([0, this.getFrameHeight()]);
     };
+    /**
+     * the gFrame is the id of Frame; it was created by createCanvasT extends graph-frame.addFrame;
+     * 
+     */
+    removeCanvas():void{
+        d3.select('#gFrame').remove();
+    }
+
+    createCanvasT(htmlElement: any): d3.Selection<any, any, any, any> {
+        return this.canvas = super.addFrame(htmlElement).append('g')
+            .attr('transform', 'translate(' + this.getFrameMargin()['left'] + ',' + this.getFrameMargin()['top'] + ')');
+    }
 
     /**
     * create a responsive embedded D3 SVG (graph frame adn canvas)
     */
-    createCanvas(htmlElement: any):void{
+    createCanvas(htmlElement: any): void {
         this.canvas = super.addFrame(htmlElement).append('g')
             .attr('transform', 'translate(' + this.getFrameMargin()['left'] + ',' + this.getFrameMargin()['top'] + ')');
     }

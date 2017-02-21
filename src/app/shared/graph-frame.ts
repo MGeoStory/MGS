@@ -57,6 +57,7 @@ export class GraphFrame {
     }
     /**
      * create a responsive embedded D3 SVG (graph frame)
+     * id =>#gFrame
      */
     addFrame(htmlElement: any): d3.Selection<any, any, any, any> {
         //append svg是為 了透過attr改變view(CSS可連動),if style則無法透過css覆寫
@@ -65,6 +66,8 @@ export class GraphFrame {
         let width = this.width + this.margin.left + this.margin.right;
         let height = this.height + this.margin.top + this.margin.bottom;
         return this.frame = d3.select(htmlElement).append('svg')
+             // the id of addFrame is be used to delete the old graph
+            .attr('id','gFrame')
             .attr('width', '100%')
             .attr('height', height)
             .attr("preserveAspectRatio", "xMidYMid meet")
