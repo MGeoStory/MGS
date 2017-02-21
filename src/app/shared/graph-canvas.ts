@@ -18,17 +18,11 @@ export class GraphCanvas extends GraphFrame {
     removeCanvas():void{
         d3.select('#gFrame').remove();
     }
-
-    createCanvasT(htmlElement: any): d3.Selection<any, any, any, any> {
-        return this.canvas = super.addFrame(htmlElement).append('g')
-            .attr('transform', 'translate(' + this.getFrameMargin()['left'] + ',' + this.getFrameMargin()['top'] + ')');
-    }
-
     /**
     * create a responsive embedded D3 SVG (graph frame adn canvas)
     */
-    createCanvas(htmlElement: any): void {
-        this.canvas = super.addFrame(htmlElement).append('g')
+    createCanvas(htmlElement: any): d3.Selection<any, any, any, any> {
+        return this.canvas = super.createFrame(htmlElement).append('g')
             .attr('transform', 'translate(' + this.getFrameMargin()['left'] + ',' + this.getFrameMargin()['top'] + ')');
     }
 
@@ -58,11 +52,4 @@ export class GraphCanvas extends GraphFrame {
     getFrameMargin() {
         return super.getFrameMargin();
     }
-    /**
-    * create a responsive embedded D3 SVG (graph frame)
-    */
-    addFrame(htmlElement: any): d3.Selection<any, any, any, any> {
-        return super.addFrame(htmlElement);
-    }
-
 }// END OF GraphCanvas
