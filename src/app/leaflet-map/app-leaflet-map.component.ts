@@ -42,7 +42,7 @@ let colorFeature: d3.ScaleLinear<any, any>;
     */
     initialMap(): void {
         //create mapbox and tileLayer
-        d3.select('div').attr('id', 'lmap');
+        d3.select('#leaf-map').attr('id', 'lmap');
         map = L.map('lmap').setView([0, 0], 5);
         map.addLayer(thisComponent.lms.basedMap());
     }// END OF initialMap

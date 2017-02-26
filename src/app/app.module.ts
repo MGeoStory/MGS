@@ -12,6 +12,7 @@ import { GoogleMapComponent } from './google-map/google-map.component';
 import { LeafletMapComponent } from './leaflet-map/app-leaflet-map.component';
 import { ContentComponent } from './content/content.component';
 import {DropdownList} from'./dropdown-list/dropdown-list.component'
+import {NavBarComponent} from './nav-bar/nav-bar.component';
 
 import { MapGraphService } from './shared/map-graph.service';
 import { AgmCoreModule } from 'angular2-google-maps/core';
@@ -32,7 +33,8 @@ import { LMapSetting } from './shared/lmap-setting';
     GoogleMapComponent,
     LeafletMapComponent,
     ContentComponent,
-    DropdownList
+    DropdownList,
+    NavBarComponent
   ],
   providers: [
     MapGraphService,
