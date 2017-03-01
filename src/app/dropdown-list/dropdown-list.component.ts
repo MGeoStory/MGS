@@ -62,8 +62,7 @@ let dataFormatted: Array<Object>;
      */
     setDropdownList() {
         //select id => '#+id'
-        var dropDown = d3.select('#select_table').append('select')
-            .attr('name', 'listOfTime');
+        var dropDown = d3.select('#dropdown_year').attr('name', 'listOfTime');
 
         // html select->options
         var options = dropDown.selectAll('option')

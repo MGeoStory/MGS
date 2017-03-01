@@ -1,6 +1,7 @@
-table {
-    border: 1px solid black;
-}
 #top {
     padding-top: 50px;
+}
+
+dropdown{
+    font-size: 20px;
 }
