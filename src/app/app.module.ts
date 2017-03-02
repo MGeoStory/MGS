@@ -18,7 +18,7 @@ import { MapGraphService } from './shared/map-graph.service';
 import { AgmCoreModule } from 'angular2-google-maps/core';
 import { LMapSetting } from './shared/lmap-setting';
 
-import {AlertModule,CollapseModule} from 'ng2-bootstrap';
+import {DropdownModule} from 'ng2-bootstrap';
 @NgModule({
   imports: [
     BrowserModule,
@@ -27,8 +27,7 @@ import {AlertModule,CollapseModule} from 'ng2-bootstrap';
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyDhm69UDMZY-VG4b3HQ3-RImGmlukvNKQ0'
     }),
-    AlertModule.forRoot(),
-    CollapseModule.forRoot()
+    DropdownModule.forRoot(),
   ],
   declarations: [
     AppComponent,
