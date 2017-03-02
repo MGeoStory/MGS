@@ -91,7 +91,7 @@ let colorFeature: d3.ScaleLinear<any, any>;
                 onEachFeature: function (feature, layer) {
                     layer.on({
                         click: function (e) {
-                            var countyName = feature.properties.COUNTYNAME;
+                            var countyName = feature.properties['COUNTYNAME'];
                             thisComponent.mgs.announceRefId(countyName);
                         }
                     });
