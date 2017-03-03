@@ -2,15 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import * as d3 from 'd3';
 import { MapGraphService } from 'app/shared/map-graph.service';
 
-let dropDataOfTime = [];
+let dropDataOfTime : Array<string> = [];
 let thisComponent: DropdownList;
 let dataFormatted: Array<Object>;
+let items: Array<String>;
 
 @Component({
     selector: 'app-dropdown-list',
     templateUrl: 'dropdown-list.component.html',
     styleUrls: ['dropdown-list.component.css']
 }) export class DropdownList implements OnInit {
+    public items:Array<string> = [];
     title = 'data sharing';
     brief = 'infomation about Taiwan.';
     constructor(private mgs: MapGraphService) {
@@ -38,7 +40,7 @@ let dataFormatted: Array<Object>;
                     dropDataOfTime.push(d.key);
                 })
                 dropDataOfTime.sort();
-
+                thisComponent.items = dropDataOfTime;
                 data.forEach(d => {
                     //deal time and numbers format
                     // d['發票年月'] = parseTime(d['發票年月']);

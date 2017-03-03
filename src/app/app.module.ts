@@ -19,6 +19,7 @@ import { AgmCoreModule } from 'angular2-google-maps/core';
 import { LMapSetting } from './shared/lmap-setting';
 
 import {DropdownModule} from 'ng2-bootstrap';
+import {SelectModule} from 'ng2-select';
 @NgModule({
   imports: [
     BrowserModule,
@@ -28,6 +29,7 @@ import {DropdownModule} from 'ng2-bootstrap';
       apiKey: 'AIzaSyDhm69UDMZY-VG4b3HQ3-RImGmlukvNKQ0'
     }),
     DropdownModule.forRoot(),
+    SelectModule
   ],
   declarations: [
     AppComponent,

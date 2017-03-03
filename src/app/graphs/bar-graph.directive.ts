@@ -90,7 +90,7 @@ export class BarGraph implements OnInit {
             names.push(i['name']);
         }
 
-        console.log(names);
+        // console.log(names);
 
         gc.xScaleBand.domain(names);
         gc.yScaleLinear.domain(extentOfData);
@@ -109,7 +109,7 @@ export class BarGraph implements OnInit {
             .attr('y', (d) => gc.yScaleLinear(d['value']) - 5)
             .attr('text-anchor', 'middle')
             .text((d) => d['value']);
-        console.log('end of drawBarGraph');
+        // console.log('end of drawBarGraph');
     }// end of drawBarGraph
 
     //call xAxis沒有東西是life cycle的問題
