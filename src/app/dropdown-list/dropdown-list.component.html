@@ -15,9 +15,9 @@
         <label class="col-xs-2">TIME:</label>
         <div class="col-xs-10">
             <ng-select 
-                (selected)="yearSelected($event)" 
-                [items]="items" 
-                [active]="active">
+                (selected)="timeSelected($event)" 
+                [items]="itemsOfTime" 
+                [active]="activeOfTime">
             </ng-select>
         </div>
     </div>
@@ -25,9 +25,9 @@
         <label class="col-xs-2">TYPE:</label>
         <div class="col-xs-10">
             <ng-select 
-                (selected)="yearSelected($event)" 
-                [items]="items" 
-                [active]="active">
+                (selected)="typeSelected($event)" 
+                [items]="itemsOfType" 
+                [active]="activeOfType">
             </ng-select>
         </div>
     </div>

@@ -12,8 +12,11 @@ let items: Array<String>;
     templateUrl: 'dropdown-list.component.html',
     styleUrls: ['dropdown-list.component.css']
 }) export class DropdownList implements OnInit {
-    public items:Array<string> = [];
-    public active:Array<string> =[];
+    //ng variables
+    public itemsOfTime:Array<string> = [];
+    public activeOfTime:Array<string> =[];
+    public itemsOfType:Array<string> = [];
+    public activeOfype:Array<string> =[];
 
     title = 'data sharing';
     brief = 'infomation about Taiwan.';
@@ -27,13 +30,19 @@ let items: Array<String>;
     }// END OF ngOnInit
 
     /**
-     * ng-selected
+     * ng-select
      */
-    yearSelected(value:any):void{
+    timeSelected(value:any):void{
         console.log(value.text);
         thisComponent.filteredData(value.text, dataFormatted);
     }
-
+    /**
+     * ng-select
+     */
+    typeSelected(value:any):void{
+        console.log(value.text);
+        thisComponent.filteredData(value.text, dataFormatted);
+    }
     /**
      * deal data for dropdwon list and Map/Graph
      */
@@ -64,8 +73,8 @@ let items: Array<String>;
                 let defaultSelected = dropDataOfTime[0];
                 // console.log(data);
                 thisComponent.filteredData(defaultSelected, dataFormatted);
-                thisComponent.active = [dropDataOfTime[0]];
-                thisComponent.items = dropDataOfTime;
+                thisComponent.activeOfTime = [dropDataOfTime[0]];
+                thisComponent.itemsOfTime = dropDataOfTime;
                 resolve(data);
             });//END of d3.csv
         });//END of return
