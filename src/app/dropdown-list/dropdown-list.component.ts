@@ -27,7 +27,7 @@ let items: Array<String>;
     }// END OF ngOnInit
 
     /**
-     * ng-selec
+     * ng-selected
      */
     yearSelected(value:any):void{
         console.log(value.text);
@@ -71,6 +71,21 @@ let items: Array<String>;
         });//END of return
     }// END OF dropOfData
 
+    
+
+    /**
+     * filter array values and annnoumceRefData
+     */
+    filteredData(selected: string, data: Array<Object>) {
+        let dataFiltered = data.filter(column => {
+            if (column['發票年月'] == selected && column['行業名稱'] == '便利商店') {
+                return column;
+            }
+        })
+        // console.log(dataFiltered);
+        thisComponent.mgs.announceRefData(dataFiltered);
+    }//END of filteredData
+
     /**
      * call after setDropData(), set the droplist value and text, and call filteredData() when menu on change
      */
@@ -95,17 +110,4 @@ let items: Array<String>;
 
         });
     }//END of setDropdownList
-
-    /**
-     * filter array values and annnoumceRefData
-     */
-    filteredData(selected: string, data: Array<Object>) {
-        let dataFiltered = data.filter(column => {
-            if (column['發票年月'] == selected && column['行業名稱'] == '便利商店') {
-                return column;
-            }
-        })
-        // console.log(dataFiltered);
-        thisComponent.mgs.announceRefData(dataFiltered);
-    }//END of filteredData
 };// END of Class

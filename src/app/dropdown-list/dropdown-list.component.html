@@ -1,20 +1,34 @@
 <!--the navbar-fixed-top size=50px, so set top padding top =70px -->
 <div id="top">
 </div>
-
-<h1 class='h1'>{{title}}</h1>
-<h4>{{brief}}</h4>
 <div>
-    <!-- 標準按鈕 -->
-    <!--<button type="button" class="btn btn-default col-xs-3">Year:</button>-->
-    <!--<select class='selectpicker col-xs-3 col-md-3' id='dropdown_year'></select>-->
-    <!--<button type="button" class="btn btn-default col-xs-3">Type:</button>-->
+    <h1 class='h1'>{{title}}</h1>
+    <h4>{{brief}}</h4>
 </div>
-
-<div class = "col-xs-6">
-    <ng-select 
-        (selected) ="yearSelected($event)"
-        [items]="items" 
-        [active] ="active">
-    </ng-select>
-</div>
+<!--<div>
+    <button type="button" class="btn btn-default col-xs-3">Year:</button>
+    <select class='selectpicker col-xs-3 col-md-3' id='dropdown_year'></select>
+    <button type="button" class="btn btn-default col-xs-3">Type:</button>
+</div>-->
+<form class="form-horizontal" role="form">
+    <div class="form-group">
+        <label class="col-xs-2">TIME:</label>
+        <div class="col-xs-10">
+            <ng-select 
+                (selected)="yearSelected($event)" 
+                [items]="items" 
+                [active]="active">
+            </ng-select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-2">TYPE:</label>
+        <div class="col-xs-10">
+            <ng-select 
+                (selected)="yearSelected($event)" 
+                [items]="items" 
+                [active]="active">
+            </ng-select>
+        </div>
+    </div>
+</form>
