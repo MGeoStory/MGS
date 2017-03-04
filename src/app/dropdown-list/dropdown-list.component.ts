@@ -13,6 +13,8 @@ let items: Array<String>;
     styleUrls: ['dropdown-list.component.css']
 }) export class DropdownList implements OnInit {
     public items:Array<string> = [];
+    public active:Array<string> =[];
+
     title = 'data sharing';
     brief = 'infomation about Taiwan.';
     constructor(private mgs: MapGraphService) {
@@ -20,8 +22,17 @@ let items: Array<String>;
 
     ngOnInit() {
         thisComponent = this;
-        this.setDropData().then(this.setDropdownList);
+        // this.setDropData().then(this.setDropdownList);
+        this.setDropData();
     }// END OF ngOnInit
+
+    /**
+     * ng-selec
+     */
+    yearSelected(value:any):void{
+        console.log(value.text);
+        thisComponent.filteredData(value.text, dataFormatted);
+    }
 
     /**
      * deal data for dropdwon list and Map/Graph
@@ -40,7 +51,6 @@ let items: Array<String>;
                     dropDataOfTime.push(d.key);
                 })
                 dropDataOfTime.sort();
-                thisComponent.items = dropDataOfTime;
                 data.forEach(d => {
                     //deal time and numbers format
                     // d['發票年月'] = parseTime(d['發票年月']);
@@ -54,6 +64,8 @@ let items: Array<String>;
                 let defaultSelected = dropDataOfTime[0];
                 // console.log(data);
                 thisComponent.filteredData(defaultSelected, dataFormatted);
+                thisComponent.active = [dropDataOfTime[0]];
+                thisComponent.items = dropDataOfTime;
                 resolve(data);
             });//END of d3.csv
         });//END of return
