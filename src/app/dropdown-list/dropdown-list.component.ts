@@ -63,7 +63,6 @@ let items: Array<String>;
     getSelectedCondition() {
         let time = this.getTimeSelected();
         let type = this.getTypeSelected();
-        console.log(time+""+type);
         thisComponent.filterData(time, type, dataFormatted);
     }
 

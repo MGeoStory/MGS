@@ -5,8 +5,6 @@ import { Subscription } from 'rxjs/Subscription';
 import { ViewEncapsulation } from '@angular/core';
 import * as L from 'leaflet';
 import * as d3 from 'd3';
-// import * as rgbHex from 'rgb-hex';
-const rgbHex = require('rgb-hex');
 
 let thisComponent: LeafletMapComponent;
 
@@ -102,7 +100,8 @@ let colorFeature: d3.ScaleLinear<any, any>;
         //extent would read all data[set] and return values
         let extentOfData = d3.extent(data, d => {
             return d['平均客單價'];
-        })
+        });
+        console.log(extentOfData);
         //why <string>? https://github.com/DefinitelyTyped/DefinitelyTyped/issues/8941
         colorFeature = d3.scaleLinear<string>()
             .domain(extentOfData)
@@ -130,7 +129,6 @@ let colorFeature: d3.ScaleLinear<any, any>;
         d3.json('app/data/geojson/tw_country_ms.json', function (data) {
             //remove the existed layer.
             if (map.hasLayer(layerOfGeoJSON)) {
-                console.log('111');
                 map.removeLayer(layerOfGeoJSON);
             }
             // console.log(JSON.stringify(data));
@@ -207,12 +205,14 @@ let colorFeature: d3.ScaleLinear<any, any>;
         let valueOfCountry: number;
         if (valueOfFeatures.get(countryId) != null) {
             valueOfCountry = valueOfFeatures.get(countryId)['value'];
+            console.log(valueOfCountry);
             // return rgbHex('#'+colorFeature(valueOfCountry));
             // console.log('#' + rgbHex(colorFeature(valueOfCountry)));
-            return '#' + rgbHex(colorFeature(valueOfCountry));
+            console.log(colorFeature(valueOfCountry));
+            return colorFeature(valueOfCountry);
         } else {
             valueOfCountry = 0;
-            return 'LightGrey';
+            return ('LightGrey');
         }
     }//END OF getFillColor
 } //END OF class
