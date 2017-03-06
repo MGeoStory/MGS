@@ -6,54 +6,35 @@ import { GraphFrame } from 'app/shared/graph-frame';
 import { GraphCanvas } from 'app/shared/graph-canvas';
 import { citiesOfTaiwan } from 'app/shared/cities-tw';
 
-let gc = new GraphCanvas();
 let ct = new citiesOfTaiwan();
-let xAxisOfColumn;
-let yAxisOfBar;
-let userClickedInfo: string = '';
+let gc = new GraphCanvas();
 let subscription: Subscription;
-let testCanvas: d3.Selection<any, any, any, any>;
-let barCanvas: d3.Selection<any, any, any, any>;
+let canvas: d3.Selection<any, any, any, any>;
 
 @Component({
     selector: 'app-vertical-bar-graph',
     templateUrl: 'bar-graph.component.html',
-    styleUrls: ['bar-graph.component.css']
-
+    styleUrls: ['bar-graph.component.css'],
 })
 export class BarGraph implements OnInit {
     private dataPath: string = 'app/data/bar.json';
 
 
     constructor(private el: ElementRef, private renderer: Renderer, private mgs: MapGraphService) {
-        //passsing info to userClickedInfo
-        subscription = mgs.refCountry$.subscribe(
-            info => {
-                userClickedInfo = info;
-            });
-        // gc.createCanvas(el.nativeElement);
-
         // make sure testCanvas will be a d3.Selection<>, and the select.empty() can be read 
-        testCanvas = gc.createCanvas(null);
-        barCanvas = gc.createCanvas(null);
-
+        canvas = gc.createCanvas(null);
     }//END OF constructor
 
     ngOnInit(): void {
-        this.setup();
         subscription = this.mgs.refData.subscribe(
             data => {
-                if (testCanvas.empty()) {
-                    testCanvas = gc.createCanvas('#graph');
-                    barCanvas = gc.createCanvas('#column-graph');
+                if (canvas.empty()) {
+                    canvas = gc.createCanvas('#graph');
                     this.drawColumnGraph(data);
-                    this.drawBarChart(data);
                 } else {
                     gc.removeCanvas();
-                    testCanvas = gc.createCanvas('#graph');
-                    barCanvas = gc.createCanvas('#column-graph');
+                    canvas = gc.createCanvas('#graph');
                     this.drawColumnGraph(data);
-                    this.drawBarChart(data);
                 }
             }//end of data=>
         )//end of Subscription
@@ -64,11 +45,6 @@ export class BarGraph implements OnInit {
         // prevent memory leak when component destroyed
         subscription.unsubscribe();
     }//END OF ngOnDestroy
-
-    setup(): void {
-        xAxisOfColumn = d3.axisBottom(gc.xScaleBand);
-    }//END OF setup
-
 
     /**
      * draw bar graph by data passed from dropdown list
@@ -83,7 +59,6 @@ export class BarGraph implements OnInit {
                 }
             });
         });
-
         console.log(dataOfCities);
     }// end of drawBarChart
 
@@ -93,49 +68,66 @@ export class BarGraph implements OnInit {
     drawColumnGraph(data: Array<Object>): void {
 
         // maxOfData is used to Scale graph
-        let maxOfData = d3.max(data,(d)=>{
+        let maxOfData = d3.max(data, (d) => {
             return d['平均客單價'];
         })
+
+
+
         // console.log(extentOfData);
         let dataForDraw = data.map(d => {
-            console.log(d['id'] + "," + d['value']);
             return {
-                name: d['縣市代碼'],
+                name: d['縣市名稱'],
                 value: d['平均客單價']
             }
         });
+
+        dataForDraw.sort(function (x, y) {
+            return d3.descending(x.value, y.value);
+        })
+
         let names = [];
         for (var i of dataForDraw) {
             names.push(i['name']);
         }
         // console.log(names);
 
+        //set the value of xAxis
         gc.xScaleBand.domain(names);
-        gc.yScaleLinear.domain([0,maxOfData]);
-        
-        testCanvas.selectAll('rect').data(dataForDraw).enter().append('rect')
+
+        gc.yScaleLinear.domain([0, maxOfData]);
+
+        canvas.selectAll('rect').data(dataForDraw).enter().append('rect')
             .attr('x', (d) => gc.xScaleBand(d['name']))
             .attr('y', (d) => gc.yScaleLinear(d['value']))
             .attr('width', gc.xScaleBand.bandwidth())
             .attr('height', (d) => gc.getFrameHeight() - gc.yScaleLinear(d['value']))
             // .attr("height", (d) => yScale(d['value']))
-            .attr('fill', 'grey');
+            .attr('fill', 'skyblue');
 
-        testCanvas.selectAll('text').data(dataForDraw).enter().append('text')
+        canvas.selectAll('text').data(dataForDraw).enter().append('text')
             .attr('class', 'bar-value')
             .attr('x', (d) => gc.xScaleBand(d['name']) + gc.xScaleBand.bandwidth() / 2)
             .attr('y', (d) => gc.yScaleLinear(d['value']) - 5)
             .attr('text-anchor', 'middle')
             .text((d) => d['value']);
         // console.log('end of drawBarGraph');
-    }// end of drawBarGraph
 
-    //call xAxis沒有東西是life cycle的問題
-    drawXAxis(): void {
-        console.log('enter xAxis');
-        testCanvas.append('g')
+        //text from gc.scaleBand.domain()
+        let textOfAaxis = canvas.append('g')
             .attr('class', 'xAxis')
             .attr('transform', `translate(0,${gc.getFrameHeight()})`)
-            .call(xAxisOfColumn);
-    }//END OF drawXAxis
+            .call(gc.xAxisOfColumn)
+            .selectAll('text');
+
+        if (names.length > 10) {
+            textOfAaxis.attr('transform', 'rotate(45)')
+                .attr('x', 20)
+                .attr('font-size','12px');
+        } else {
+            textOfAaxis.attr('y',10).attr('font-size','14px');
+        };
+
+
+    }// end of drawBarGraph
 }// END OF class
