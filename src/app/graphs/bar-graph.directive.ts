@@ -4,15 +4,17 @@ import { Subscription } from 'rxjs/Subscription';
 import * as d3 from 'd3';
 import { GraphFrame } from 'app/shared/graph-frame';
 import { GraphCanvas } from 'app/shared/graph-canvas';
+import { citiesOfTaiwan } from 'app/shared/cities-tw';
 
 let gc = new GraphCanvas();
-let xAxis;
-let yAxis;
+let ct = new citiesOfTaiwan();
+let xAxisOfBar;
+let yAxisOfBar;
 let userClickedInfo: string = '';
 let subscription: Subscription;
-let thisComponment: BarGraph;
-
 let testCanvas: d3.Selection<any, any, any, any>;
+let barCanvas: d3.Selection<any, any, any, any>;
+
 @Component({
     selector: 'app-vertical-bar-graph',
     templateUrl: 'bar-graph.component.html',
@@ -21,6 +23,7 @@ let testCanvas: d3.Selection<any, any, any, any>;
 })
 export class BarGraph implements OnInit {
     private dataPath: string = 'app/data/bar.json';
+
 
     constructor(private el: ElementRef, private renderer: Renderer, private mgs: MapGraphService) {
         //passsing info to userClickedInfo
@@ -32,21 +35,25 @@ export class BarGraph implements OnInit {
 
         // make sure testCanvas will be a d3.Selection<>, and the select.empty() can be read 
         testCanvas = gc.createCanvas(null);
+        barCanvas = gc.createCanvas(null);
 
     }//END OF constructor
 
     ngOnInit(): void {
-        thisComponment = this;
         this.setup();
-        subscription = thisComponment.mgs.refData.subscribe(
+        subscription = this.mgs.refData.subscribe(
             data => {
                 if (testCanvas.empty()) {
                     testCanvas = gc.createCanvas('#graph');
-                    thisComponment.drawColumnGraph(data);
+                    barCanvas = gc.createCanvas('#column-graph');
+                    this.drawColumnGraph(data);
+                    this.drawColumnGraph(data);
                 } else {
                     gc.removeCanvas();
                     testCanvas = gc.createCanvas('#graph');
-                    thisComponment.drawColumnGraph(data);
+                    barCanvas = gc.createCanvas('#column-graph');
+                    this.drawColumnGraph(data);
+                    this.drawColumnGraph(data);
                 }
             }//end of data=>
         )//end of Subscription
@@ -59,7 +66,7 @@ export class BarGraph implements OnInit {
     }//END OF ngOnDestroy
 
     setup(): void {
-        xAxis = d3.axisBottom(gc.xScaleBand);
+        xAxisOfBar = d3.axisBottom(gc.xScaleBand);
     }//END OF setup
 
 
@@ -67,21 +74,33 @@ export class BarGraph implements OnInit {
      * draw bar graph by data passed from dropdown list
      */
     drawBarChart(data: Array<Object>): void {
-        
+        let dataOfCities = ct.getCitiesOfTaiwan();
+        //pass value of data to the dataForGraph
+        data.forEach((od) => {
+            dataOfCities.forEach((nd) => {
+                if (od['縣市代碼'] == nd['id']) {
+                    nd['value'] = od['平均客單價'];
+                }
+            });
+        });
+
+        console.log(dataOfCities);
     }// end of drawBarChart
 
     /**
     * draw column graph by data passed from dropdown list
     */
     drawColumnGraph(data: Array<Object>): void {
-        // console.log(data);
+
+        // extentOfData is used to Scale graph
         let extentOfData = d3.extent(data, (d) => {
             return d['平均客單價'];
         });
         // console.log(extentOfData);
         let dataForDraw = data.map(d => {
+            console.log(d['id'] + "," + d['value']);
             return {
-                name: d['縣市名稱'],
+                name: d['縣市代碼'],
                 value: d['平均客單價']
             }
         });
@@ -89,7 +108,6 @@ export class BarGraph implements OnInit {
         for (var i of dataForDraw) {
             names.push(i['name']);
         }
-
         // console.log(names);
 
         gc.xScaleBand.domain(names);
@@ -118,6 +136,6 @@ export class BarGraph implements OnInit {
         testCanvas.append('g')
             .attr('class', 'xAxis')
             .attr('transform', `translate(0,${gc.getFrameHeight()})`)
-            .call(xAxis);
+            .call(xAxisOfBar);
     }//END OF drawXAxis
 }// END OF class
