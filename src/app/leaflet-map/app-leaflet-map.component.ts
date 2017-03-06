@@ -101,7 +101,7 @@ let colorFeature: d3.ScaleLinear<any, any>;
         let extentOfData = d3.extent(data, d => {
             return d['平均客單價'];
         });
-        console.log(extentOfData);
+        // console.log(extentOfData);
         //why <string>? https://github.com/DefinitelyTyped/DefinitelyTyped/issues/8941
         colorFeature = d3.scaleLinear<string>()
             .domain(extentOfData)
@@ -205,10 +205,10 @@ let colorFeature: d3.ScaleLinear<any, any>;
         let valueOfCountry: number;
         if (valueOfFeatures.get(countryId) != null) {
             valueOfCountry = valueOfFeatures.get(countryId)['value'];
-            console.log(valueOfCountry);
+            // console.log(valueOfCountry);
             // return rgbHex('#'+colorFeature(valueOfCountry));
             // console.log('#' + rgbHex(colorFeature(valueOfCountry)));
-            console.log(colorFeature(valueOfCountry));
+            // console.log(colorFeature(valueOfCountry));
             return colorFeature(valueOfCountry);
         } else {
             valueOfCountry = 0;

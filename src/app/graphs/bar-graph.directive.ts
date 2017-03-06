@@ -41,11 +41,11 @@ export class BarGraph implements OnInit {
         subscription = thisComponment.mgs.refData.subscribe(
             data => {
                 if (testCanvas.empty()) {
-                    testCanvas = gc.createCanvas(thisComponment.el.nativeElement);
+                    testCanvas = gc.createCanvas('#graph');
                     thisComponment.drawColumnGraph(data);
                 } else {
                     gc.removeCanvas();
-                    testCanvas = gc.createCanvas(thisComponment.el.nativeElement);
+                    testCanvas = gc.createCanvas('#graph');
                     thisComponment.drawColumnGraph(data);
                 }
             }//end of data=>
