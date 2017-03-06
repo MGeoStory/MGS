@@ -9,14 +9,14 @@ export class GraphCanvas extends GraphFrame {
     constructor() {
         super();
         this.xScaleBand = d3.scaleBand().range([0, this.getFrameWidth()]).paddingInner(0.1);
-        this.yScaleLinear = d3.scaleLinear().range([0, this.getFrameHeight()]);
+        this.yScaleLinear = d3.scaleLinear().range([this.getFrameHeight(),0]);
     };
     /**
      * the gFrame is the id of Frame; it was created by createCanvasT extends graph-frame.addFrame;
      * 
      */
     removeCanvas():void{
-        d3.select('#gFrame').remove();
+        d3.selectAll('#graph-frame').remove();
     }
     /**
     * create a responsive embedded D3 SVG (graph frame adn canvas)

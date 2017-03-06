@@ -10,7 +10,7 @@ export class GraphFrame {
     constructor() {
         //phone6s size: 414x736
         this.width = 414;
-        this.height = 300;
+        this.height = 200;
 
         //nargin.top and margin.left are used in Frame and Canvas.
         this.margin = {
@@ -67,7 +67,7 @@ export class GraphFrame {
         let height = this.height + this.margin.top + this.margin.bottom;
         return this.frame = d3.select(htmlElement).append('svg')
              // the id of addFrame is be used to delete the old graph
-            .attr('id','gFrame')
+            .attr('id','graph-frame')
             .attr('width', '100%')
             .attr('height', height)
             .attr("preserveAspectRatio", "xMidYMid meet")

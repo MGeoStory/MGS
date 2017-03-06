@@ -8,7 +8,7 @@ import { citiesOfTaiwan } from 'app/shared/cities-tw';
 
 let gc = new GraphCanvas();
 let ct = new citiesOfTaiwan();
-let xAxisOfBar;
+let xAxisOfColumn;
 let yAxisOfBar;
 let userClickedInfo: string = '';
 let subscription: Subscription;
@@ -47,13 +47,13 @@ export class BarGraph implements OnInit {
                     testCanvas = gc.createCanvas('#graph');
                     barCanvas = gc.createCanvas('#column-graph');
                     this.drawColumnGraph(data);
-                    this.drawColumnGraph(data);
+                    this.drawBarChart(data);
                 } else {
                     gc.removeCanvas();
                     testCanvas = gc.createCanvas('#graph');
                     barCanvas = gc.createCanvas('#column-graph');
                     this.drawColumnGraph(data);
-                    this.drawColumnGraph(data);
+                    this.drawBarChart(data);
                 }
             }//end of data=>
         )//end of Subscription
@@ -66,7 +66,7 @@ export class BarGraph implements OnInit {
     }//END OF ngOnDestroy
 
     setup(): void {
-        xAxisOfBar = d3.axisBottom(gc.xScaleBand);
+        xAxisOfColumn = d3.axisBottom(gc.xScaleBand);
     }//END OF setup
 
 
@@ -92,10 +92,10 @@ export class BarGraph implements OnInit {
     */
     drawColumnGraph(data: Array<Object>): void {
 
-        // extentOfData is used to Scale graph
-        let extentOfData = d3.extent(data, (d) => {
+        // maxOfData is used to Scale graph
+        let maxOfData = d3.max(data,(d)=>{
             return d['平均客單價'];
-        });
+        })
         // console.log(extentOfData);
         let dataForDraw = data.map(d => {
             console.log(d['id'] + "," + d['value']);
@@ -111,8 +111,8 @@ export class BarGraph implements OnInit {
         // console.log(names);
 
         gc.xScaleBand.domain(names);
-        gc.yScaleLinear.domain(extentOfData);
-
+        gc.yScaleLinear.domain([0,maxOfData]);
+        
         testCanvas.selectAll('rect').data(dataForDraw).enter().append('rect')
             .attr('x', (d) => gc.xScaleBand(d['name']))
             .attr('y', (d) => gc.yScaleLinear(d['value']))
@@ -136,6 +136,6 @@ export class BarGraph implements OnInit {
         testCanvas.append('g')
             .attr('class', 'xAxis')
             .attr('transform', `translate(0,${gc.getFrameHeight()})`)
-            .call(xAxisOfBar);
+            .call(xAxisOfColumn);
     }//END OF drawXAxis
 }// END OF class
