@@ -1,12 +1,10 @@
-import { ElementRef, Input, Renderer, OnInit, OnDestroy, Component } from '@angular/core';
-import { MapGraphService } from 'app/shared/map-graph.service';
+import { Input, OnInit, OnDestroy, Component } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
-import * as d3 from 'd3';
+import { MapGraphService } from 'app/shared/map-graph.service';
 import { GraphFrame } from 'app/shared/graph-frame';
 import { GraphCanvas } from 'app/shared/graph-canvas';
-import { citiesOfTaiwan } from 'app/shared/cities-tw';
+import * as d3 from 'd3';
 
-let ct = new citiesOfTaiwan();
 let gc = new GraphCanvas();
 let subscription: Subscription;
 let canvas: d3.Selection<any, any, any, any>;
@@ -17,10 +15,8 @@ let canvas: d3.Selection<any, any, any, any>;
     styleUrls: ['bar-graph.component.css'],
 })
 export class BarGraph implements OnInit {
-    private dataPath: string = 'app/data/bar.json';
 
-
-    constructor(private el: ElementRef, private renderer: Renderer, private mgs: MapGraphService) {
+    constructor(private mgs: MapGraphService) {
         // make sure testCanvas will be a d3.Selection<>, and the select.empty() can be read 
         canvas = gc.createCanvas(null);
     }//END OF constructor
@@ -47,22 +43,6 @@ export class BarGraph implements OnInit {
     }//END OF ngOnDestroy
 
     /**
-     * draw bar graph by data passed from dropdown list
-     */
-    drawBarChart(data: Array<Object>): void {
-        let dataOfCities = ct.getCitiesOfTaiwan();
-        //pass value of data to the dataForGraph
-        data.forEach((od) => {
-            dataOfCities.forEach((nd) => {
-                if (od['縣市代碼'] == nd['id']) {
-                    nd['value'] = od['平均客單價'];
-                }
-            });
-        });
-        console.log(dataOfCities);
-    }// end of drawBarChart
-
-    /**
     * draw column graph by data passed from dropdown list
     */
     drawColumnGraph(data: Array<Object>): void {
@@ -72,8 +52,6 @@ export class BarGraph implements OnInit {
             return d['平均客單價'];
         })
 
-
-
         // console.log(extentOfData);
         let dataForDraw = data.map(d => {
             return {
@@ -82,21 +60,23 @@ export class BarGraph implements OnInit {
             }
         });
 
+        //sort data by '平均客單價'
         dataForDraw.sort(function (x, y) {
             return d3.descending(x.value, y.value);
         })
 
+        //set the name of band
         let names = [];
         for (var i of dataForDraw) {
             names.push(i['name']);
         }
-        // console.log(names);
 
         //set the value of xAxis
         gc.xScaleBand.domain(names);
 
         gc.yScaleLinear.domain([0, maxOfData]);
 
+        //append bar chart
         canvas.selectAll('rect').data(dataForDraw).enter().append('rect')
             .attr('x', (d) => gc.xScaleBand(d['name']))
             .attr('y', (d) => gc.yScaleLinear(d['value']))
@@ -105,6 +85,7 @@ export class BarGraph implements OnInit {
             // .attr("height", (d) => yScale(d['value']))
             .attr('fill', 'skyblue');
 
+        //append values of bar
         canvas.selectAll('text').data(dataForDraw).enter().append('text')
             .attr('class', 'bar-value')
             .attr('x', (d) => gc.xScaleBand(d['name']) + gc.xScaleBand.bandwidth() / 2)
@@ -119,7 +100,8 @@ export class BarGraph implements OnInit {
             .attr('transform', `translate(0,${gc.getFrameHeight()})`)
             .call(gc.xAxisOfColumn)
             .selectAll('text');
-
+        
+        //make text more reabable
         if (names.length > 10) {
             textOfAaxis.attr('transform', 'rotate(45)')
                 .attr('x', 20)
@@ -127,7 +109,5 @@ export class BarGraph implements OnInit {
         } else {
             textOfAaxis.attr('y',10).attr('font-size','14px');
         };
-
-
     }// end of drawBarGraph
 }// END OF class
