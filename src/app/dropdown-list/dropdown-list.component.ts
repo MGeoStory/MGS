@@ -13,6 +13,8 @@ let items: Array<String>;
     templateUrl: 'dropdown-list.component.html',
     styleUrls: ['dropdown-list.component.css']
 }) export class DropdownList implements OnInit {
+
+    private RECIPT_DATA = 'app/data/rawdata/receipt_info1.csv';
     //ng variables
     public itemsOfTime: Array<string> = [];
     public activeOfTime: Array<string> = [];
@@ -75,7 +77,7 @@ let items: Array<String>;
             //https://github.com/d3/d3-time-format
             let parseTime = d3.timeParse("%Y/%m/%d");
             // data manipulation: http://learnjsdata.com/group_data.html
-            d3.csv('app/data/rawdata/simpleTest.csv', (data: Array<Object>) => {
+            d3.csv(thisComponent.RECIPT_DATA, (data: Array<Object>) => {
 
                 let listOfTime = d3.nest()
                     .key(d => { return d['發票年月'] })

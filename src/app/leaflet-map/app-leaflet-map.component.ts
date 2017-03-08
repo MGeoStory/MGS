@@ -29,6 +29,9 @@ let colorFeature: d3.ScaleLinear<any, any>;
     encapsulation: ViewEncapsulation.None //no shoadow DOM.
 
 }) export class LeafletMapComponent implements OnInit {
+
+    private GEOJSON_DATA:string='app/data/geojson/country_tw-ms.json';
+
     constructor(private mgs: MapGraphService, private lms: LMapSetting) {
     }
 
@@ -50,7 +53,7 @@ let colorFeature: d3.ScaleLinear<any, any>;
     initialMap(): void {
         //create mapbox and tileLayer
         d3.select('#leaf-map').attr('id', 'lmap');
-        map = L.map('lmap').setView([0, 0], 5);
+        map = L.map('lmap').setView([23.5, 121], 6);
         map.addLayer(thisComponent.lms.basedMap());
 
         map.addControl(this.createInfoControl());
@@ -89,7 +92,7 @@ let colorFeature: d3.ScaleLinear<any, any>;
                 divOfInfoControl.innerHTML = `<h4>${countryName}</h4><b>平均客單價：無資料</b>`;
             }
         } else {
-            divOfInfoControl.innerHTML = '<h4>click cities to get info</h4>';
+            divOfInfoControl.innerHTML = '<h4>click country</h4>';
         }
     }//.updateInfoCOntrol
 
@@ -126,7 +129,7 @@ let colorFeature: d3.ScaleLinear<any, any>;
      */
     mappingMap(): void {
         //using d3.json to read file and addTo leaflet map
-        d3.json('app/data/geojson/tw_country_ms.json', function (data) {
+        d3.json(this.GEOJSON_DATA, function (data) {
             //remove the existed layer.
             if (map.hasLayer(layerOfGeoJSON)) {
                 map.removeLayer(layerOfGeoJSON);
@@ -150,7 +153,8 @@ let colorFeature: d3.ScaleLinear<any, any>;
             });
             //add geoJson and zoom to geoJSON
             layerOfGeoJSON.addTo(map);
-            map.fitBounds(layerOfGeoJSON.getBounds());
+            //if zoom at tiawan => set common view is better.
+            // map.fitBounds(layerOfGeoJSON.getBounds());
         });
     }// END OF mappingMap
 
