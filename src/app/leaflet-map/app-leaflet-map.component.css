@@ -5,6 +5,15 @@
     /*margin-right: 12vh;*/
 }
 
+@media (min-width: 1200px) {
+    #lmap { 
+        width: 80vw;
+        height:80vh;
+        margin: 0px auto;
+    }
+}
+
+
 .infoControl{
     padding: 6px 8px;
     font: 14px/16px Arial, Helvetica, sans-serif;

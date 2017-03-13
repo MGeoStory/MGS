@@ -154,7 +154,7 @@ let colorFeature: d3.ScaleLinear<any, any>;
             //add geoJson and zoom to geoJSON
             layerOfGeoJSON.addTo(map);
             //if zoom at tiawan => set common view is better.
-            // map.fitBounds(layerOfGeoJSON.getBounds());
+            map.fitBounds(layerOfGeoJSON.getBounds());
         });
     }// END OF mappingMap
 

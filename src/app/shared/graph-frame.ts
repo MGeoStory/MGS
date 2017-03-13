@@ -16,7 +16,7 @@ export class GraphFrame {
         this.margin = {
             top: 20,
             right: 20,
-            bottom: 20,
+            bottom: 40,
             left: 20
         }
     }
@@ -69,7 +69,7 @@ export class GraphFrame {
              // the id of addFrame is be used to delete the old graph
             .attr('id','graph-frame')
             .attr('width', '100%')
-            .attr('height', height)
+            .attr('height', '30%')
             .attr("preserveAspectRatio", "xMidYMid meet")
             .attr("viewBox", "0 0 " + width + " " + height);
 

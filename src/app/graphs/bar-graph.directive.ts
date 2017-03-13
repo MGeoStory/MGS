@@ -46,7 +46,14 @@ export class BarGraph implements OnInit {
     * draw column graph by data passed from dropdown list
     */
     drawColumnGraph(data: Array<Object>): void {
-
+        if(data.length == 0){
+            canvas.append('text').text('查無資料')
+            .attr('font-size','5rem')
+            .attr('x', gc.getFrameWidth()/2)
+            .attr('y',gc.getFrameHeight()/2)
+            .attr('font-anchor','center');
+            return;
+        }
         // maxOfData is used to Scale graph
         let maxOfData = d3.max(data, (d) => {
             return d['平均客單價'];
@@ -105,9 +112,9 @@ export class BarGraph implements OnInit {
         if (names.length > 10) {
             textOfAaxis.attr('transform', 'rotate(45)')
                 .attr('x', 20)
-                .attr('font-size','12px');
+                .attr('font-size','2 rem');
         } else {
-            textOfAaxis.attr('y',10).attr('font-size','14px');
+            textOfAaxis.attr('y',10).attr('font-size','1.5rem');
         };
     }// end of drawBarGraph
 }// END OF class
