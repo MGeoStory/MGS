@@ -19,6 +19,7 @@
       "mobile": false,
       "styles": [
         "styles.css",
+        "../src/css/clean-blog.min.css",
         "../node_modules/bootstrap/dist/css/bootstrap.min.css"
       ],
       "scripts": [],
