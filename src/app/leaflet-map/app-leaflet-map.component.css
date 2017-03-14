@@ -1,14 +1,14 @@
 /*http://leafletjs.com/examples/mobile*/
 #lmap { 
     height: 40vh;
-    width: 100vw; 
+    width: auto; 
     /*margin-right: 12vh;*/
 }
 
 @media (min-width: 1200px) {
     #lmap { 
-        width: 80vw;
-        height:80vh;
+        width: auto;
+        height:40vh;
         margin: 0px auto;
     }
 }
