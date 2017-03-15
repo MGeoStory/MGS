@@ -4,15 +4,15 @@ import { MapGraphService } from 'app/shared/map-graph.service';
 
 let dropDataOfTime: Array<string> = [];
 let dropDataOfType: Array<string> = [];
-let thisComponent: DropdownList;
+let thisComponent: DropdownListComponent;
 let dataFormatted: Array<Object>;
 let items: Array<String>;
 
 @Component({
-    selector: 'app-dropdown-list',
+    selector: 'post-receipt-dropdown-list',
     templateUrl: 'dropdown-list.component.html',
     styleUrls: ['dropdown-list.component.css']
-}) export class DropdownList implements OnInit {
+}) export class DropdownListComponent implements OnInit {
 
     private RECIPT_DATA = 'app/data/rawdata/receipt_info1.csv';
     //ng variables

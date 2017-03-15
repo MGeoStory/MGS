@@ -11,14 +11,23 @@ import { BarGraph } from './graphs/bar-graph.directive';
 import { GoogleMapComponent } from './google-map/google-map.component';
 import { LeafletMapComponent } from './leaflet-map/app-leaflet-map.component';
 import { ContentComponent } from './content/content.component';
-import {DropdownList} from'./dropdown-list/dropdown-list.component'
 
 import { MapGraphService } from './shared/map-graph.service';
 import { AgmCoreModule } from 'angular2-google-maps/core';
 import { LMapSetting } from './shared/lmap-setting';
 
-import {DropdownModule} from 'ng2-bootstrap';
-import {SelectModule} from 'ng2-select';
+import { DropdownModule } from 'ng2-bootstrap';
+import { SelectModule } from 'ng2-select';
+
+
+import { PostReceiptComponent } from './post-receipt/post-receipt.component';
+import { DropdownListComponent } from './post-receipt/dropdown-list/dropdown-list.component'
+export const PostReceiptComponents = [
+  DropdownListComponent,
+  PostReceiptComponent
+];
+
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -28,7 +37,7 @@ import {SelectModule} from 'ng2-select';
       apiKey: 'AIzaSyDhm69UDMZY-VG4b3HQ3-RImGmlukvNKQ0'
     }),
     DropdownModule.forRoot(),
-    SelectModule
+    SelectModule,
   ],
   declarations: [
     AppComponent,
@@ -36,7 +45,7 @@ import {SelectModule} from 'ng2-select';
     GoogleMapComponent,
     LeafletMapComponent,
     ContentComponent,
-    DropdownList,
+    PostReceiptComponents
   ],
   providers: [
     MapGraphService,
