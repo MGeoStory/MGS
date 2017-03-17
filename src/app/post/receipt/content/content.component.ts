@@ -3,7 +3,7 @@ import { MapGraphService } from 'app/shared/map-graph.service';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
-    selector: 'app-content>',
+    selector: 'post-receipt-content',
     styleUrls: ['content.component.css'],
     templateUrl: 'content.component.html'
 }) export class ContentComponent implements OnDestroy {

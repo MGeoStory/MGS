@@ -6,7 +6,7 @@ import { ViewEncapsulation } from '@angular/core';
 import * as L from 'leaflet';
 import * as d3 from 'd3';
 
-let thisComponent: LeafletMapComponent;
+let thisComponent: ReceiptMapComponent;
 
 let title: string;
 let map: L.Map;
@@ -23,12 +23,12 @@ let valueOfFeatures: d3.Map<{}>;
 let colorFeature: d3.ScaleLinear<any, any>;
 
 @Component({
-    selector: 'app-leaflet-map',
-    styleUrls: ['app-leaflet-map.component.css'],
-    templateUrl: 'app-leaflet-map.component.html',
+    selector: 'post-receipt-map',
+    styleUrls: ['receipt-map.component.css'],
+    templateUrl: 'receipt-map.component.html',
     encapsulation: ViewEncapsulation.None //no shoadow DOM.
 
-}) export class LeafletMapComponent implements OnInit {
+}) export class ReceiptMapComponent implements OnInit {
 
     private GEOJSON_DATA:string='app/data/geojson/country_tw-ms.json';
 

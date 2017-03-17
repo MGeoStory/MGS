@@ -10,7 +10,7 @@ let subscription: Subscription;
 let canvas: d3.Selection<any, any, any, any>;
 
 @Component({
-    selector: 'app-vertical-bar-graph',
+    selector: 'post-receipt-graph',
     templateUrl: 'bar-graph.component.html',
     styleUrls: ['bar-graph.component.css'],
 })
