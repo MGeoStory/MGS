@@ -6,17 +6,22 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import './rxjs-extensions';
 
-//graph type
-import { GoogleMapComponent } from './google-map/google-map.component';
 
-import { MapGraphService } from './shared/map-graph.service';
 import { AgmCoreModule } from 'angular2-google-maps/core';
-import { LMapSetting } from './shared/lmap-setting';
-
 import { DropdownModule } from 'ng2-bootstrap';
 import { SelectModule } from 'ng2-select';
 
+//sharedService
+import { MapGraphService } from './shared/map-graph.service';
+import { LMapSetting } from './shared/lmap-setting';
 
+//home-page
+import {HomeComponent} from './home/home-component';
+export const HomeComponents =[
+  HomeComponent,
+];
+
+//post-receipt
 import { PostReceiptComponent } from './post/receipt/post-receipt.component';
 import { DropdownListComponent } from './post/receipt/dropdown-list/dropdown-list.component'
 import { ReceiptMapComponent } from './post/receipt/map/receipt-map.component';
@@ -44,7 +49,7 @@ export const PostReceiptComponents = [
   ],
   declarations: [
     AppComponent,
-    GoogleMapComponent,
+    HomeComponents,
     PostReceiptComponents
   ],
   providers: [

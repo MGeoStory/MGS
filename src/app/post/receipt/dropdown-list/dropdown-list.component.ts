@@ -24,8 +24,8 @@ let items: Array<String>;
     public selecedOfTime: string;
     public selectedOfType: string;
 
-    title = 'data sharing';
-    brief = 'infomation about Taiwan.';
+    title = '台灣電子發票消費地圖';
+    brief = '縣市消費差異';
     constructor(private mgs: MapGraphService) {
     }
 
