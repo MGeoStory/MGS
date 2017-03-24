@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-
+import { Routes, RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import './rxjs-extensions';
 
@@ -14,8 +14,8 @@ import { MapGraphService } from './shared/map-graph.service';
 import { LMapSetting } from './shared/lmap-setting';
 
 //home-page
-import {HomeComponent} from './home/home-component';
-export const HomeComponents =[
+import { HomeComponent } from './home/home-component';
+export const HomeComponents = [
   HomeComponent,
 ];
 
@@ -33,12 +33,17 @@ export const PostReceiptComponents = [
   ContentComponent
 ];
 
+import { routes } from './app.routes';
+
 
 @NgModule({
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
+    // RouterModule.forRoot(routes),
+    // routing,
+    RouterModule.forRoot(routes),
     DropdownModule.forRoot(),
     SelectModule,
   ],

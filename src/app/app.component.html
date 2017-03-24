@@ -17,7 +17,7 @@
                     <li role="menuitem"><a class="dropdown-item" href="#">Another action</a></li>
                     <li role="menuitem"><a class="dropdown-item" href="#">Something else here</a></li>
                     <li class="divider dropdown-divider"></li>
-                    <li role="menuitem"><a class="dropdown-item" href="#">Separated link</a></li>
+                    <li role="menuitem"><a class="dropdown-item" [routerLink] = "['/post-receipt']">router test</a></li>
                 </ul>
             </div>
             <!--/.navbar-toggle collapsed-->
@@ -35,7 +35,7 @@
                     <a href="post.html">Sample Post</a>
                 </li>
                 <li>
-                    <a href="contact.html">Contact</a>
+                    <a [routerLink] = "['/post-receipt']">router test</a>
                 </li>
             </ul>
         </div>
@@ -66,8 +66,9 @@
         <!-- Blog Entries Column -->
         <div class="col-md-8">
             <div>
-                <home-page></home-page>
-                <post-receipt></post-receipt>
+                <!--<home-page></home-page>-->
+                <router-outlet></router-outlet>
+                <!--<post-receipt></post-receipt>-->
             </div>
         </div>
         <!-- /.col-md-8 -->
