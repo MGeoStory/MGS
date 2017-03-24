@@ -33,7 +33,7 @@ export const PostReceiptComponents = [
   ContentComponent
 ];
 
-import { routes } from './app.routes';
+import { routing } from './app.routes';
 
 
 @NgModule({
@@ -41,9 +41,7 @@ import { routes } from './app.routes';
     BrowserModule,
     FormsModule,
     HttpModule,
-    // RouterModule.forRoot(routes),
-    // routing,
-    RouterModule.forRoot(routes),
+    routing,
     DropdownModule.forRoot(),
     SelectModule,
   ],
