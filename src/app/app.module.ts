@@ -6,8 +6,6 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import './rxjs-extensions';
 
-
-import { AgmCoreModule } from 'angular2-google-maps/core';
 import { DropdownModule } from 'ng2-bootstrap';
 import { SelectModule } from 'ng2-select';
 
@@ -41,9 +39,6 @@ export const PostReceiptComponents = [
     BrowserModule,
     FormsModule,
     HttpModule,
-    AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyDhm69UDMZY-VG4b3HQ3-RImGmlukvNKQ0'
-    }),
     DropdownModule.forRoot(),
     SelectModule,
   ],

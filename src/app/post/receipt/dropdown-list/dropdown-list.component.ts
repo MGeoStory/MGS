@@ -14,7 +14,8 @@ let items: Array<String>;
     styleUrls: ['dropdown-list.component.css']
 }) export class DropdownListComponent implements OnInit {
 
-    private RECIPT_DATA = 'app/data/rawdata/receipt_info1.csv';
+    private RECIPT_DATA = 'src/app/data/rawdata/receipt_info1.csv';
+    
     //ng variables
     public itemsOfTime: Array<string> = [];
     public activeOfTime: Array<string> = [];

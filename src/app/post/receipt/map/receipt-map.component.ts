@@ -30,7 +30,7 @@ let colorFeature: d3.ScaleLinear<any, any>;
 
 }) export class ReceiptMapComponent implements OnInit {
 
-    private GEOJSON_DATA:string='app/data/geojson/country_tw-ms.json';
+    private GEOJSON_DATA:string='src/app/data/geojson/country_tw-ms.json';
 
     constructor(private mgs: MapGraphService, private lms: LMapSetting) {
     }
