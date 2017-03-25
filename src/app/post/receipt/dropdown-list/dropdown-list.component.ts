@@ -14,7 +14,7 @@ let items: Array<String>;
     styleUrls: ['dropdown-list.component.css']
 }) export class DropdownListComponent implements OnInit {
 
-    private RECIPT_DATA = 'src/app/data/rawdata/receipt_info1.csv';
+    private RECIPT_DATA = 'src/app/data/rawdata/receipt_article.csv';
     
     //ng variables
     public itemsOfTime: Array<string> = [];
@@ -25,8 +25,8 @@ let items: Array<String>;
     public selecedOfTime: string;
     public selectedOfType: string;
 
-    title = '台灣電子發票消費地圖';
-    brief = '縣市消費差異';
+    title = '南北便利商店角色大不同！';
+    brief = '台灣電子發票消費地圖';
     constructor(private mgs: MapGraphService) {
     }
 
