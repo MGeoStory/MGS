@@ -5,7 +5,7 @@ import { HomeComponent } from './home/home-component';
 import { PostReceiptComponent } from './post/receipt/post-receipt.component';
 
 export const routes: Routes = [
-    { path: '', component: HomeComponent },
+    { path: '', component: HomeComponent },  
     {
         path: 'post', component: null,
         children: [
