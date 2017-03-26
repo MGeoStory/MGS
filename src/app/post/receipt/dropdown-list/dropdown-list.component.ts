@@ -13,7 +13,7 @@ let items: Array<String>;
     templateUrl: 'dropdown-list.component.html',
     styleUrls: ['dropdown-list.component.css']
 }) export class DropdownListComponent implements OnInit {
-
+    public someRange=[1, 50];
     private RECIPT_DATA = 'src/app/data/rawdata/receipt_article.csv';
     
     //ng variables

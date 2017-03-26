@@ -6,8 +6,10 @@ import { Routes, RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import './rxjs-extensions';
 
+//ng2-Moudle
 import { DropdownModule } from 'ng2-bootstrap';
 import { SelectModule } from 'ng2-select';
+import { NouisliderComponent } from 'ng2-nouislider';
 
 //sharedService
 import { MapGraphService } from './shared/map-graph.service';
@@ -19,12 +21,14 @@ export const HomeComponents = [
   HomeComponent,
 ];
 
+
 //post-receipt
 import { PostReceiptComponent } from './post/receipt/post-receipt.component';
 import { DropdownListComponent } from './post/receipt/dropdown-list/dropdown-list.component'
 import { ReceiptMapComponent } from './post/receipt/map/receipt-map.component';
 import { BarGraph } from './post/receipt/graphs/bar-graph.directive';
 import { ContentComponent } from './post/receipt/content/content.component';
+
 export const PostReceiptComponents = [
   PostReceiptComponent,
   DropdownListComponent,
@@ -44,11 +48,13 @@ import { routing } from './app.routes';
     routing,
     DropdownModule.forRoot(),
     SelectModule,
+    
   ],
   declarations: [
     AppComponent,
     HomeComponents,
-    PostReceiptComponents
+    PostReceiptComponents,
+    NouisliderComponent,
   ],
   providers: [
     MapGraphService,
