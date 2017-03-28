@@ -101,7 +101,7 @@ let items: Array<String>;
     }
 
     getTypeSelected(): string {
-        return this.selectedOfType;
+        return this.selectedOfType; 
     }
 
     /**
