@@ -13,11 +13,11 @@ let items: Array<String>;
     templateUrl: 'dropdown-list.component.html',
     styleUrls: ['dropdown-list.component.css']
 }) export class DropdownListComponent implements OnInit {
-    public yearValue: number = 7;
-    public monthValue: number = 12;
+    public yearValue: string = '2013';
+    public monthValue: string = '1';
     public minYear: number = 2013;
-    public maxYear: number = 2017;
-    private RECIPT_DATA = 'src/app/data/rawdata/receipt_article.csv';
+    public maxYear: number = 2016;
+    private RECIPT_DATA = 'src/app/data/rawdata/receipt_article_1.csv';
     public yearConfig: any = {
         behaviour: 'drag',
         start: [this.minYear, this.maxYear],
@@ -40,7 +40,7 @@ let items: Array<String>;
         behaviour: 'drag',
         start: [1, 12],
         step: 1,
-        pageSteps: 11,
+        pageSteps: 1,
         range: {
             min: 1,
             max: 12
@@ -57,13 +57,9 @@ let items: Array<String>;
 
 
     //ng variables
-    public itemsOfTime: Array<string> = [];
-    public activeOfTime: Array<string> = [];
-    public itemsOfType: Array<string> = [];
-    public activeOfType: Array<string> = [];
+    public selectedYear: string;
+    public selectedMonth: string;
 
-    public selecedOfTime: string;
-    public selectedOfType: string;
 
     title = '南北便利商店角色大不同！';
     brief = '台灣電子發票消費地圖';
@@ -72,45 +68,35 @@ let items: Array<String>;
 
     ngOnInit() {
         thisComponent = this;
-        // this.setDropData().then(this.setDropdownList);
         this.setDropData();
     }// END OF ngOnInit
 
     onChangeYear(e) {
-        console.log(e);
-
-    }
-    /**
-     * get ng-select info
-     */
-    timeSelected(value: any): void {
-        this.selecedOfTime = value.text;
+        this.selectedYear = e;
         this.getSelectedCondition();
     }
 
-    /**
-     * get ng-select info
-     */
-    typeSelected(value: any): void {
-        this.selectedOfType = value.text;
+    onChangeMonth(e) {
+        this.selectedMonth = e;
+        console.log(this.selectedMonth);
         this.getSelectedCondition();
     }
 
-    getTimeSelected(): string {
-        return this.selecedOfTime;
+    getYearSelected(): string {
+        return this.selectedYear;
     }
 
-    getTypeSelected(): string {
-        return this.selectedOfType; 
+    getMonthSelected(): string {
+        return this.selectedMonth;
     }
-
     /**
      * deal the condition about user's select
      */
     getSelectedCondition() {
-        let time = this.getTimeSelected();
-        let type = this.getTypeSelected();
-        thisComponent.filterData(time, type, dataFormatted);
+        let year = this.getYearSelected();
+        let month = this.getMonthSelected();
+
+        thisComponent.filterData(year, month, dataFormatted);
     }
 
     /**
@@ -119,27 +105,8 @@ let items: Array<String>;
     setDropData() {
         // resolve(sth) is needed, and .then() would work
         return new Promise(function (resolve, reject) {
-            //https://github.com/d3/d3-time-format
-            let parseTime = d3.timeParse("%Y/%m/%d");
             // data manipulation: http://learnjsdata.com/group_data.html
             d3.csv(thisComponent.RECIPT_DATA, (data: Array<Object>) => {
-
-                let listOfTime = d3.nest()
-                    .key(d => { return d['發票年月'] })
-                    .entries(data);
-                listOfTime.forEach(d => {
-                    dropDataOfTime.push(d.key);
-                })
-                dropDataOfTime.sort();
-
-                let listOfType = d3.nest()
-                    .key(d => { return d['行業名稱'] })
-                    .entries(data);
-                listOfType.forEach(d => {
-                    dropDataOfType.push(d.key);
-                })
-                dropDataOfType.sort();
-
                 data.forEach(d => {
                     //deal time and numbers format
                     // d['發票年月'] = parseTime(d['發票年月']);
@@ -149,21 +116,7 @@ let items: Array<String>;
                 });
 
                 dataFormatted = data;
-                // console.log(dropDataOfTime[0]);
-                let defaultSelectedOfTime = dropDataOfTime[0];
-                let defaultSelectedOfType = dropDataOfType[0];
-                // console.log(data);
-
-                //set the values of ng-select
-                thisComponent.activeOfTime = [dropDataOfTime[0]];
-                thisComponent.itemsOfTime = dropDataOfTime;
-                thisComponent.selecedOfTime = dropDataOfTime[0];
-
-                thisComponent.activeOfType = [dropDataOfType[0]];
-                thisComponent.itemsOfType = dropDataOfType;
-                thisComponent.selectedOfType = dropDataOfType[0];
-
-                thisComponent.filterData(defaultSelectedOfTime, defaultSelectedOfType, dataFormatted);
+                thisComponent.filterData(thisComponent.yearValue, thisComponent.monthValue, dataFormatted);
                 resolve(data);
             });//END of d3.csv
         });//END of return
@@ -173,8 +126,9 @@ let items: Array<String>;
      * filter array values and annnoumceRefData
      */
     filterData(timeSelected: string, typeSelected: string, data: Array<Object>) {
+        console.log('filterData');
         let dataFiltered = data.filter(column => {
-            if (column['發票年月'] == timeSelected && column['行業名稱'] == typeSelected) {
+            if (column['發票年'] == timeSelected && column['發票月'] == typeSelected) {
                 return column;
             }
         })
