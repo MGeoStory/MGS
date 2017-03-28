@@ -14,14 +14,18 @@
                 <div class="input-group-addon">年度</div>
                 <!--tooltips is array for two slider control; ture=show value false= don't show-->
                 <!--<nouislider name="yearSlider" [min]="minYear" [max]="maxYear" [step]="1" [(ngModel)]="someValue" [tooltips]="[true]" style="margin-top: 4em" (ngModelChange)="onChangeYear($event)"></nouislider>-->
+                <div class ="col-xs-11">
                 <nouislider name="yearSlider" [config]="yearConfig" [(ngModel)]="yearValue" style="margin-left: 2em; margin-bottom:2em" (ngModelChange)="onChangeYear($event)"></nouislider>
+                </div>
             </div>
         </div>
         <div class="form-group">
             <div class="input-group">
                 <div class="input-group-addon">月份</div>
+                <div class="col-xs-11">
                 <nouislider name="monthSlider" [config]="monthConfig" [(ngModel)]="monthValue" style="margin-left: 2em; margin-bottom:2em"
                     (ngModelChange)="onChangeMonth($event)"></nouislider>
+                </div>
             </div>
         </div>
     </form>
