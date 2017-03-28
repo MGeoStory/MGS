@@ -16,7 +16,7 @@ let items: Array<String>;
     public yearValue: number = 7;
     public monthValue: number = 12;
     public minYear: number = 2013;
-    public maxYear: number = 2016;
+    public maxYear: number = 2017;
     private RECIPT_DATA = 'src/app/data/rawdata/receipt_article.csv';
     public yearConfig: any = {
         behaviour: 'drag',
