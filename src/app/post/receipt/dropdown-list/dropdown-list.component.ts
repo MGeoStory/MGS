@@ -13,9 +13,29 @@ let items: Array<String>;
     templateUrl: 'dropdown-list.component.html',
     styleUrls: ['dropdown-list.component.css']
 }) export class DropdownListComponent implements OnInit {
-    public someRange=[1, 50];
+    public someValue = 7;
+    public minYear: number = 2010;
+    public maxYear: number = 2013;
     private RECIPT_DATA = 'src/app/data/rawdata/receipt_article.csv';
-    
+    public yearConfig: any = {
+        behaviour: 'drag',
+        start: [this.minYear, this.maxYear],
+        step: 1,
+        pageSteps: this.maxYear - this.minYear,
+        range: {
+            min: this.minYear,
+            max: this.maxYear
+        },
+        pips: {
+            mode: 'count',
+            //small xias
+            density: 100,
+            //number of values
+            values: this.maxYear - this.minYear + 1,
+            stepped: true
+        }
+    };
+
     //ng variables
     public itemsOfTime: Array<string> = [];
     public activeOfTime: Array<string> = [];
@@ -36,6 +56,10 @@ let items: Array<String>;
         this.setDropData();
     }// END OF ngOnInit
 
+    onChangeYear(e) {
+        console.log(e);
+
+    }
     /**
      * get ng-select info
      */
@@ -114,11 +138,11 @@ let items: Array<String>;
                 thisComponent.activeOfTime = [dropDataOfTime[0]];
                 thisComponent.itemsOfTime = dropDataOfTime;
                 thisComponent.selecedOfTime = dropDataOfTime[0];
-                
+
                 thisComponent.activeOfType = [dropDataOfType[0]];
                 thisComponent.itemsOfType = dropDataOfType;
-                thisComponent.selectedOfType =dropDataOfType[0];
-                
+                thisComponent.selectedOfType = dropDataOfType[0];
+
                 thisComponent.filterData(defaultSelectedOfTime, defaultSelectedOfType, dataFormatted);
                 resolve(data);
             });//END of d3.csv
