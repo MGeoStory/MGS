@@ -14,13 +14,16 @@ let items: Array<String>;
     styleUrls: ['dropdown-list.component.css']
 }) export class DropdownListComponent implements OnInit {
     private RECIPT_DATA = 'src/app/data/rawdata/receipt_article.csv';
-
     //ng variables
-    public itemsOfTime: Array<string> = [];
-    public activeOfTime: Array<string> = [];
+    public itemsOfYear: Array<string> = [];
+    public activeOfYear: Array<string> = [];
     public itemsOfType: Array<string> = [];
     public activeOfType: Array<string> = [];
 
+    public itemsOfMonth: Array<string> = [];
+    public activeOfMonth: Array<string> = [];
+
+    public slectedOfMonth: string;
     public selecedOfTime: string;
     public selectedOfType: string;
 
@@ -35,14 +38,10 @@ let items: Array<String>;
         this.setDropData();
     }// END OF ngOnInit
 
-    onChangeYear(e) {
-        console.log(e);
-
-    }
     /**
      * get ng-select info
      */
-    timeSelected(value: any): void {
+    yearSelected(value: any): void {
         this.selecedOfTime = value.text;
         this.getSelectedCondition();
     }
@@ -55,7 +54,16 @@ let items: Array<String>;
         this.getSelectedCondition();
     }
 
-    getTimeSelected(): string {
+    monthSelected(value:any):void{
+        this.slectedOfMonth = value.text;
+        this.getSelectedCondition();
+    }
+
+    getMonthSelected():string{
+        return this.slectedOfMonth;
+    }
+
+    getYearSelected(): string {
         return this.selecedOfTime;
     }
 
@@ -63,13 +71,16 @@ let items: Array<String>;
         return this.selectedOfType;
     }
 
+
+
     /**
      * deal the condition about user's select
      */
     getSelectedCondition() {
-        let time = this.getTimeSelected();
+        let year = this.getYearSelected();
         let type = this.getTypeSelected();
-        thisComponent.filterData(time, type, dataFormatted);
+        let month = this.getMonthSelected
+        thisComponent.filterData(year, type, dataFormatted);
     }
 
     /**
@@ -114,8 +125,8 @@ let items: Array<String>;
                 // console.log(data);
 
                 //set the values of ng-select
-                thisComponent.activeOfTime = [dropDataOfTime[0]];
-                thisComponent.itemsOfTime = dropDataOfTime;
+                thisComponent.activeOfYear = [dropDataOfTime[0]];
+                thisComponent.itemsOfYear = dropDataOfTime;
                 thisComponent.selecedOfTime = dropDataOfTime[0];
 
                 thisComponent.activeOfType = [dropDataOfType[0]];

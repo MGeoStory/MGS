@@ -11,7 +11,15 @@
     <div class="input-group">
         <div class="input-group-addon">年份</div>
         <div>
-            <ng-select (selected)="timeSelected($event)" [items]="itemsOfTime" [active]="activeOfTime">
+            <ng-select (selected)="yearSelected($event)" [items]="itemsOfYear" [active]="activeOfYear">
+            </ng-select>
+        </div>
+    </div>
+    <br>
+    <div class="input-group">
+        <div class="input-group-addon">月份</div>
+        <div>
+            <ng-select (selected)="monthSelected($event)" [items]="monthOfYear" [active]="activeOfmonth">
             </ng-select>
         </div>
     </div>
