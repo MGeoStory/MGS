@@ -13,48 +13,7 @@ let items: Array<String>;
     templateUrl: 'dropdown-list.component.html',
     styleUrls: ['dropdown-list.component.css']
 }) export class DropdownListComponent implements OnInit {
-    public yearValue: number = 7;
-    public monthValue: number = 12;
-    public minYear: number = 2013;
-    public maxYear: number = 2016;
     private RECIPT_DATA = 'src/app/data/rawdata/receipt_article.csv';
-    public yearConfig: any = {
-        behaviour: 'drag',
-        start: [this.minYear, this.maxYear],
-        step: 1,
-        pageSteps: this.maxYear - this.minYear,
-        range: {
-            min: this.minYear,
-            max: this.maxYear
-        },
-        pips: {
-            mode: 'count',
-            //small xias
-            density: 100,
-            //number of values
-            values: this.maxYear - this.minYear + 1,
-            stepped: true
-        }
-    };
-    public monthConfig: any = {
-        behaviour: 'drag',
-        start: [1, 12],
-        step: 1,
-        pageSteps: 11,
-        range: {
-            min: 1,
-            max: 12
-        },
-        pips: {
-            mode: 'count',
-            //small xias
-            density: 100,
-            //number of values
-            values: 13,
-            stepped: true
-        }
-    };
-
 
     //ng variables
     public itemsOfTime: Array<string> = [];

@@ -8,9 +8,9 @@
     <button type="button" class="btn btn-default col-xs-3">Type:</button>
 </div>-->
 <form class="form-horizontal" role="form">
-    <div class="form-group">
-        <label class="col-xs-2">TIME:</label>
-        <div class="col-xs-10">
+    <div class="input-group">
+        <div class="input-group-addon">年份</div>
+        <div>
             <ng-select (selected)="timeSelected($event)" [items]="itemsOfTime" [active]="activeOfTime">
             </ng-select>
         </div>
