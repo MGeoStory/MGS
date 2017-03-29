@@ -9,6 +9,7 @@ import './rxjs-extensions';
 //ng2-Moudle
 import { DropdownModule } from 'ng2-bootstrap';
 import { SelectModule } from 'ng2-select';
+import { ModalModule } from 'ng2-bootstrap';
 import { NouisliderComponent } from 'ng2-nouislider';
 
 //sharedService
@@ -47,6 +48,7 @@ import { routing } from './app.routes';
     HttpModule,
     routing,
     DropdownModule.forRoot(),
+    ModalModule.forRoot(),
     SelectModule,
     
   ],

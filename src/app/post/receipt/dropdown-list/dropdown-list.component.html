@@ -13,7 +13,9 @@
             <li>無論南北的便利商店在一月份時，都是平均消費最高的時候，但南部地區也可能在七月達到另一個高峰。</li>
         </ul>
         <blockquote>
-            <p>透過<u>拖動時間軸</u>可以看到不同時間點的消費差異；<u>點選地圖</u>上的各縣市，將可以看到各縣市的消費趨勢。</p>
+            <p>透過
+                <u>拖動時間軸</u>可以看到不同時間點的消費差異；
+                <u>點選地圖</u>上的各縣市，將可以看到各縣市的消費趨勢。</p>
         </blockquote>
     </div>
 
@@ -46,3 +48,25 @@
         </div>
     </form>
 </form>
+
+
+<!--copy from ng2-bootstrap-->
+<div bsModal #childModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title pull-left">查無資料</h4>
+                        <button type="button" class="close pull-right" aria-label="Close" (click)="hideChildModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+                    </div>
+                    <div class="modal-body">
+                        目前最新資料僅統計到2016年8月，後續會持續保持更新。感謝！
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

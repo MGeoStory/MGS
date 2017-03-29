@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import * as d3 from 'd3';
 import { MapGraphService } from 'app/shared/map-graph.service';
+import { ModalDirective } from 'ng2-bootstrap/modal';
 
 let thisComponent: DropdownListComponent;
 let dataFormatted: Array<Object>;
@@ -10,9 +11,11 @@ let dataFormatted: Array<Object>;
     templateUrl: 'dropdown-list.component.html',
     styleUrls: ['dropdown-list.component.css']
 }) export class DropdownListComponent implements OnInit {
+    @ViewChild('childModal') public childModal: ModalDirective;
+
     title = '南北便利商店角色大不同！';
     brief = '2017/03/29- MoGeoStory';
-    
+
     public yearValue: string = '2013';
     public monthValue: string = '1';
     public minYear: number = 2013;
@@ -21,7 +24,6 @@ let dataFormatted: Array<Object>;
     //ng variables
     public selectedYear: string;
     public selectedMonth: string;
-
 
     private RECIPT_DATA = 'src/app/data/rawdata/receipt_article_1.csv';
     public yearConfig: any = {
@@ -69,14 +71,29 @@ let dataFormatted: Array<Object>;
         this.setDropData();
     }// END OF ngOnInit
 
-    onChangeYear(e) {
-        this.selectedYear = e;
+    public showChildModal(): void {
+        this.childModal.show();
+    }
+
+    public hideChildModal(): void {
+        this.childModal.hide();
+    }
+
+    /**
+     * get the user select
+     * @param e 
+     */
+    onChangeYear(userSelected: string) {
+        this.selectedYear = userSelected;
         this.getSelectedCondition();
     }
 
-    onChangeMonth(e) {
-        this.selectedMonth = e;
-        console.log(this.selectedMonth);
+    /**
+     * get the user select
+     * @param e 
+     */
+    onChangeMonth(userSelected: string) {
+        this.selectedMonth = userSelected;
         this.getSelectedCondition();
     }
 
@@ -119,13 +136,32 @@ let dataFormatted: Array<Object>;
      * filter array values and annnoumceRefData
      */
     filterData(timeSelected: string, typeSelected: string, data: Array<Object>) {
-        console.log('filterData');
+        // console.log('filterData');
         let dataFiltered = data.filter(column => {
             if (column['發票年'] == timeSelected && column['發票月'] == typeSelected) {
                 return column;
             }
         })
-        console.log(dataFiltered);
-        thisComponent.mgs.announceRefData(dataFiltered);
+        if (dataFiltered.length == 0) {
+            console.log("no data");
+            
+            //show the modal
+            this.showChildModal();
+            
+            dataFiltered = data.filter(column => {
+            if (column['發票年'] == '2016' && column['發票月'] == '8') {
+                return column;
+            }});
+
+            thisComponent.mgs.announceRefData(dataFiltered);
+
+            //set the value to the latest data
+            this.yearValue= '2016';
+            this.monthValue='8';
+
+        } else {
+            console.log(dataFiltered);
+            thisComponent.mgs.announceRefData(dataFiltered);
+        }
     }//END of filteredData
 };// END of Class
