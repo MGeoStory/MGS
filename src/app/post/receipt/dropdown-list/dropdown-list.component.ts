@@ -2,24 +2,30 @@ import { Component, OnInit } from '@angular/core';
 import * as d3 from 'd3';
 import { MapGraphService } from 'app/shared/map-graph.service';
 
-let dropDataOfTime: Array<string> = [];
-let dropDataOfType: Array<string> = [];
 let thisComponent: DropdownListComponent;
 let dataFormatted: Array<Object>;
-let items: Array<String>;
 
 @Component({
     selector: 'post-receipt-dropdown-list',
     templateUrl: 'dropdown-list.component.html',
     styleUrls: ['dropdown-list.component.css']
 }) export class DropdownListComponent implements OnInit {
+    title = '南北便利商店角色大不同！';
+    brief = '2017/03/29- MoGeoStory';
+    
     public yearValue: string = '2013';
     public monthValue: string = '1';
     public minYear: number = 2013;
     public maxYear: number = 2016;
+
+    //ng variables
+    public selectedYear: string;
+    public selectedMonth: string;
+
+
     private RECIPT_DATA = 'src/app/data/rawdata/receipt_article_1.csv';
     public yearConfig: any = {
-        behaviour: 'drag',
+        behaviour: 'tap',
         start: [this.minYear, this.maxYear],
         step: 1,
         pageSteps: this.maxYear - this.minYear,
@@ -37,7 +43,7 @@ let items: Array<String>;
         }
     };
     public monthConfig: any = {
-        behaviour: 'drag',
+        behaviour: 'tap',
         start: [1, 12],
         step: 1,
         pageSteps: 1,
@@ -55,14 +61,6 @@ let items: Array<String>;
         }
     };
 
-
-    //ng variables
-    public selectedYear: string;
-    public selectedMonth: string;
-
-
-    title = '南北便利商店角色大不同！';
-    brief = '台灣電子發票消費地圖';
     constructor(private mgs: MapGraphService) {
     }
 
@@ -82,20 +80,15 @@ let items: Array<String>;
         this.getSelectedCondition();
     }
 
-    getYearSelected(): string {
-        return this.selectedYear;
-    }
-
-    getMonthSelected(): string {
-        return this.selectedMonth;
-    }
     /**
      * deal the condition about user's select
      */
     getSelectedCondition() {
-        let year = this.getYearSelected();
-        let month = this.getMonthSelected();
-
+        let year: string = "";
+        let month: string = "";
+        year = this.yearValue;
+        month = this.monthValue;
+        console.log(year + "," + month);
         thisComponent.filterData(year, month, dataFormatted);
     }
 
