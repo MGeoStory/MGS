@@ -21,7 +21,7 @@ export class BarGraph implements OnInit {
     }//END OF constructor
 
     ngOnInit(): void {
-        subscription = this.mgs.refData.subscribe(
+        this.mgs.refData.subscribe(
             data => {
                 if (canvas.empty()) {
                     canvas = gc.createCanvas('#graph');
@@ -32,8 +32,24 @@ export class BarGraph implements OnInit {
                     this.drawColumnGraph(data);
                 }
             }//end of data=>
-        )//end of Subscription
-        // this.drawXAxis();
+        );//end of Subscription
+
+        // the previous clicked id on map from user
+        let preUserClicked :string;
+
+        //color the bar which user clicked on map
+        this.mgs.refId.subscribe(
+            userClicked => {
+                //reset the color
+                d3.select(`.${preUserClicked}`).style('fill', 'skyblue');
+                
+                //save the info of user clicked
+                preUserClicked = userClicked;
+
+                //set new color
+                d3.select(`.${userClicked}`).style('fill', 'blue');
+            }
+        );
     }//END OF ngOnInit
 
     ngOnDestroy() {
@@ -50,14 +66,13 @@ export class BarGraph implements OnInit {
             return d['平均客單價'];
         })
 
-        // console.log(extentOfData);
+        //data reduction
         let dataForDraw = data.map(d => {
             return {
                 name: d['縣市名稱'],
                 value: d['平均客單價']
             }
         });
-
 
         //sort data by '平均客單價'
         dataForDraw.sort(function (x, y) {
@@ -79,9 +94,9 @@ export class BarGraph implements OnInit {
         canvas.selectAll('rect').data(dataForDraw).enter().append('rect')
             .attr('x', (d) => gc.xScaleBand(d['name']))
             .attr('y', (d) => gc.yScaleLinear(d['value']))
+            .attr('class', (d) => (d['name']))
             .attr('width', gc.xScaleBand.bandwidth())
             .attr('height', (d) => gc.getFrameHeight() - gc.yScaleLinear(d['value']))
-            // .attr("height", (d) => yScale(d['value']))
             .attr('fill', 'skyblue');
 
         //append values of bar
@@ -92,7 +107,14 @@ export class BarGraph implements OnInit {
             .attr('text-anchor', 'middle')
             .text((d) => d['value'])
             //0.9em will equal 0.9 x the parent font-size
-            .style('font-size', '1.2rem');
+            .style('font-size', '1.2rem')
+            .style('fill', (d, i) => {
+                if (i % 2 == 0) {
+                    return 'black';
+                } else {
+                    return 'DimGrey';
+                }
+            });
         // console.log('end of drawBarGraph');
 
         //the text of domain name from gc.scaleBand.domain()
@@ -103,7 +125,6 @@ export class BarGraph implements OnInit {
             .selectAll('text')
             .style('fill', (d, i) => {
                 if (i % 2 == 0) {
-                    console.log(d)
                     return 'black';
                 } else {
                     return 'DimGrey';
@@ -134,7 +155,6 @@ export class BarGraph implements OnInit {
             sum += d['value'];
         });
         avg = Math.round(sum / dataForDraw.length);
-        console.log(avg);
 
         //avg line
         canvas.append('line')

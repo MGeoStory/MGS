@@ -12,7 +12,7 @@ export class MapGraphService {
     private refDataSource = new Subject<Array<Object>>();
 
     // Observable string streams
-    refCountry$ = this.refMapClickedSource.asObservable();
+    refId = this.refMapClickedSource.asObservable();
     refYear = this.refYearSource.asObservable();
     refData = this.refDataSource.asObservable();
 
