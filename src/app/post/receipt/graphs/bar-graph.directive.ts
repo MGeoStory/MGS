@@ -15,7 +15,6 @@ let canvas: d3.Selection<any, any, any, any>;
     styleUrls: ['bar-graph.component.css'],
 })
 export class BarGraph implements OnInit {
-
     constructor(private mgs: MapGraphService) {
         // make sure testCanvas will be a d3.Selection<>, and the select.empty() can be read 
         canvas = gc.createCanvas(null);
@@ -46,14 +45,6 @@ export class BarGraph implements OnInit {
     * draw column graph by data passed from dropdown list
     */
     drawColumnGraph(data: Array<Object>): void {
-        if(data.length == 0){
-            canvas.append('text').text('查無資料')
-            .attr('font-size','5rem')
-            .attr('x', gc.getFrameWidth()/2)
-            .attr('y',gc.getFrameHeight()/2)
-            .attr('font-anchor','center');
-            return;
-        }
         // maxOfData is used to Scale graph
         let maxOfData = d3.max(data, (d) => {
             return d['平均客單價'];
@@ -67,16 +58,17 @@ export class BarGraph implements OnInit {
             }
         });
 
+
         //sort data by '平均客單價'
         dataForDraw.sort(function (x, y) {
             return d3.descending(x.value, y.value);
-        })
+        });
 
         //set the name of band
         let names = [];
         for (var i of dataForDraw) {
             names.push(i['name']);
-        }
+        };
 
         //set the value of xAxis
         gc.xScaleBand.domain(names);
@@ -98,23 +90,68 @@ export class BarGraph implements OnInit {
             .attr('x', (d) => gc.xScaleBand(d['name']) + gc.xScaleBand.bandwidth() / 2)
             .attr('y', (d) => gc.yScaleLinear(d['value']) - 5)
             .attr('text-anchor', 'middle')
-            .text((d) => d['value']);
+            .text((d) => d['value'])
+            //0.9em will equal 0.9 x the parent font-size
+            .style('font-size', '1.2rem');
         // console.log('end of drawBarGraph');
 
-        //text from gc.scaleBand.domain()
+        //the text of domain name from gc.scaleBand.domain()
         let textOfAaxis = canvas.append('g')
             .attr('class', 'xAxis')
             .attr('transform', `translate(0,${gc.getFrameHeight()})`)
             .call(gc.xAxisOfColumn)
-            .selectAll('text');
-        
+            .selectAll('text')
+            .style('fill', (d, i) => {
+                if (i % 2 == 0) {
+                    console.log(d)
+                    return 'black';
+                } else {
+                    return 'DimGrey';
+                }
+            });
+
+        this.drawAvgLine(dataForDraw);
+
         //make text more reabable
         if (names.length > 10) {
             textOfAaxis.attr('transform', 'rotate(45)')
                 .attr('x', 20)
-                .attr('font-size','2 rem');
+                .style('font-size', '1.2rem');
         } else {
-            textOfAaxis.attr('y',10).attr('font-size','1.5rem');
+            textOfAaxis.attr('y', 10).attr('font-size', '1.5rem');
         };
+
     }// end of drawBarGraph
+
+    /*
+    * drwa average line and the info text
+    */
+    drawAvgLine(dataForDraw: Array<Object>) {
+        console.log(dataForDraw);
+        let sum: number = 0;
+        let avg: number = 0;
+        dataForDraw.forEach((d) => {
+            sum += d['value'];
+        });
+        avg = Math.round(sum / dataForDraw.length);
+        console.log(avg);
+
+        //avg line
+        canvas.append('line')
+            .style('stroke', 'red')
+            .style('stroke-dasharray', ('3,3'))
+            .attr('x1', 0)
+            .attr('y1', gc.yScaleLinear(avg))
+            .attr('x2', gc.getFrameWidth())
+            .attr('y2', gc.yScaleLinear(avg));
+
+        //info of avg line
+        canvas.append('text')
+            .attr('x', gc.getFrameWidth())
+            .attr('y', gc.yScaleLinear(avg) - 3)
+            .attr('text-anchor', 'end')
+            .style('fill', 'red')
+            .text(`平均值:${avg}`);
+
+    }
 }// END OF class

@@ -15,9 +15,9 @@ export class GraphFrame {
         //nargin.top and margin.left are used in Frame and Canvas.
         this.margin = {
             top: 20,
-            right: 20,
+            right: 15,
             bottom: 40,
-            left: 20
+            left: 10
         }
     }
 

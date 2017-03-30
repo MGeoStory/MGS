@@ -144,23 +144,23 @@ let dataFormatted: Array<Object>;
         })
         if (dataFiltered.length == 0) {
             console.log("no data");
-            
+
             //show the modal
             this.showChildModal();
-            
+
             dataFiltered = data.filter(column => {
-            if (column['發票年'] == '2016' && column['發票月'] == '8') {
-                return column;
-            }});
+                if (column['發票年'] == '2016' && column['發票月'] == '8') {
+                    return column;
+                }
+            });
 
             thisComponent.mgs.announceRefData(dataFiltered);
 
             //set the value to the latest data
-            this.yearValue= '2016';
-            this.monthValue='8';
+            this.yearValue = '2016';
+            this.monthValue = '8';
 
         } else {
-            console.log(dataFiltered);
             thisComponent.mgs.announceRefData(dataFiltered);
         }
     }//END of filteredData
