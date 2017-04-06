@@ -10,7 +10,7 @@ let subscription: Subscription;
 let canvas: d3.Selection<any, any, any, any>;
 
 @Component({
-    selector: 'post-receipt-graph',
+    selector: 'post-receipt-bar-graph',
     templateUrl: 'bar-graph.component.html',
     styleUrls: ['bar-graph.component.css'],
 })
@@ -31,11 +31,11 @@ export class BarGraph implements OnInit {
         this.mgs.refData.subscribe(
             data => {
                 if (canvas.empty()) {
-                    canvas = gc.createCanvas('#graph');
+                    canvas = gc.createCanvas('#bar-graph');
                     this.drawColumnGraph(data);
                 } else {
                     gc.removeCanvas();
-                    canvas = gc.createCanvas('#graph');
+                    canvas = gc.createCanvas('#bar-graph');
                     this.drawColumnGraph(data);
                 }
             }//end of data=>
