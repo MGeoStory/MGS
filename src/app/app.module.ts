@@ -27,7 +27,7 @@ export const HomeComponents = [
 import { PostReceiptComponent } from './post/receipt/post-receipt.component';
 import { DropdownListComponent } from './post/receipt/dropdown-list/dropdown-list.component'
 import { ReceiptMapComponent } from './post/receipt/map/receipt-map.component';
-import { BarGraph } from './post/receipt/graphs/bar-graph.directive';
+import { BarGraph } from './post/receipt/bar-graph/bar-graph.directive';
 import { ContentComponent } from './post/receipt/content/content.component';
 
 export const PostReceiptComponents = [

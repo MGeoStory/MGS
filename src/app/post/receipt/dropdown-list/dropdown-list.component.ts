@@ -105,7 +105,13 @@ let dataFormatted: Array<Object>;
         let month: string = "";
         year = this.yearValue;
         month = this.monthValue;
-        console.log(year + "," + month);
+        // console.log(year + "," + month);
+        let refTime: Array<string> = [];
+        refTime.push(year);
+        refTime.push(month);
+        console.log(refTime);
+        //announceRefTime to title of bar-graph
+        this.mgs.announceRefTime(refTime);
         thisComponent.filterData(year, month, dataFormatted);
     }
 

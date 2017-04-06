@@ -15,12 +15,19 @@ let canvas: d3.Selection<any, any, any, any>;
     styleUrls: ['bar-graph.component.css'],
 })
 export class BarGraph implements OnInit {
+    private graphTitle: string = "各縣市平均消費金額(2013/1):";
     constructor(private mgs: MapGraphService) {
         // make sure testCanvas will be a d3.Selection<>, and the select.empty() can be read 
         canvas = gc.createCanvas(null);
     }//END OF constructor
 
     ngOnInit(): void {
+        this.mgs.refTime.subscribe(
+            time => {
+                this.graphTitle = `各縣市平均消費金額(${time[0]}/${time[1]}):`;
+            }
+        )
+
         this.mgs.refData.subscribe(
             data => {
                 if (canvas.empty()) {
@@ -35,14 +42,14 @@ export class BarGraph implements OnInit {
         );//end of Subscription
 
         // the previous clicked id on map from user
-        let preUserClicked :string;
+        let preUserClicked: string;
 
         //color the bar which user clicked on map
         this.mgs.refId.subscribe(
             userClicked => {
                 //reset the color
                 d3.select(`.${preUserClicked}`).style('fill', 'skyblue');
-                
+
                 //save the info of user clicked
                 preUserClicked = userClicked;
 
@@ -171,7 +178,7 @@ export class BarGraph implements OnInit {
             .attr('y', gc.yScaleLinear(avg) - 3)
             .attr('text-anchor', 'end')
             .style('fill', 'red')
-            .text(`平均值:${avg}`);
+            .text(`平均值:${avg}元`);
 
     }
 }// END OF class
