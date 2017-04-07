@@ -31,7 +31,11 @@ export class BarGraph implements OnInit {
 
         this.mgs.refData.subscribe(
             data => {
-                canvas = gc.createCanvas('bar-canvas','#bar-graph');
+                // remove line-canvas when user select new time record
+                if (!d3.select('#line-canvas').empty()) {
+                    d3.select('#line-canvas').remove();
+                }
+                canvas = gc.createCanvas('bar-canvas', '#bar-graph');
                 this.drawColumnGraph(data);
             }//end of data=>
         );//end of Subscription

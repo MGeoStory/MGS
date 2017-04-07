@@ -28,6 +28,7 @@ export class LineGraphComponent implements OnInit {
             id => {
                 canvas = gc.createCanvas('line-canvas','#line-graph');
                 this.drawLineGraph(id);
+                console.log(id);
             }
         )
     }
