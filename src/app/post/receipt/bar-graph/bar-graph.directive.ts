@@ -5,8 +5,10 @@ import { GraphFrame } from 'app/shared/graph-frame';
 import { GraphCanvas } from 'app/shared/graph-canvas';
 import * as d3 from 'd3';
 
+
 let gc = new GraphCanvas();
-let subscription: Subscription;
+// let subscription: Subscription;
+//decare outside of class =>dont use this. to appoint variable
 let canvas: d3.Selection<any, any, any, any>;
 
 @Component({
@@ -16,9 +18,8 @@ let canvas: d3.Selection<any, any, any, any>;
 })
 export class BarGraph implements OnInit {
     private graphTitle: string = "各縣市平均消費金額(2013/1):";
+
     constructor(private mgs: MapGraphService) {
-        // make sure testCanvas will be a d3.Selection<>, and the select.empty() can be read 
-        canvas = gc.createCanvas(null);
     }//END OF constructor
 
     ngOnInit(): void {
@@ -30,14 +31,9 @@ export class BarGraph implements OnInit {
 
         this.mgs.refData.subscribe(
             data => {
-                if (canvas.empty()) {
-                    canvas = gc.createCanvas('#bar-graph');
-                    this.drawColumnGraph(data);
-                } else {
-                    gc.removeCanvas();
-                    canvas = gc.createCanvas('#bar-graph');
-                    this.drawColumnGraph(data);
-                }
+                canvas = gc.createCanvas('#bar-graph');
+                this.drawColumnGraph(data);
+                console.log(gc.getFrameWidth());
             }//end of data=>
         );//end of Subscription
 
@@ -59,10 +55,10 @@ export class BarGraph implements OnInit {
         );
     }//END OF ngOnInit
 
-    ngOnDestroy() {
-        // prevent memory leak when component destroyed
-        subscription.unsubscribe();
-    }//END OF ngOnDestroy
+    // ngOnDestroy() {
+    //     // prevent memory leak when component destroyed
+    //     subscription.unsubscribe();
+    // }//END OF ngOnDestroy
 
     /**
     * draw column graph by data passed from dropdown list
@@ -128,7 +124,7 @@ export class BarGraph implements OnInit {
         let textOfAaxis = canvas.append('g')
             .attr('class', 'xAxis')
             .attr('transform', `translate(0,${gc.getFrameHeight()})`)
-            .call(gc.xAxisOfColumn)
+            .call(gc.xAxisOfColumn())
             .selectAll('text')
             .style('fill', (d, i) => {
                 if (i % 2 == 0) {

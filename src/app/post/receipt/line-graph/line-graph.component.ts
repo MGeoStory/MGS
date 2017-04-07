@@ -53,6 +53,7 @@ export class LineGraphComponent implements OnInit {
                 }
             });
             console.log(dataForDraw);
+
             
         });
     }//* drawLineGraph

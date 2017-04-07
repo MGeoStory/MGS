@@ -4,29 +4,42 @@ import { GraphFrame } from 'app/shared/graph-frame';
 //that's extends could work probably, but the problem is how to super(parms)?
 export class GraphCanvas extends GraphFrame {
     canvas: d3.Selection<any, any, any, any>;
+
+    //variable of function
     xScaleBand: d3.ScaleBand<String>;
     yScaleLinear: d3.ScaleLinear<number, number>;
-    xAxisOfColumn:d3.Axis<any>;
+    // xAxisOfColumn: d3.Axis<any>;
+
     constructor() {
         super();
         this.xScaleBand = d3.scaleBand().range([0, this.getFrameWidth()]).paddingInner(0.1);
         this.yScaleLinear = d3.scaleLinear().range([this.getFrameHeight(), 0]);
-        this.xAxisOfColumn = d3.axisBottom(this.xScaleBand).tickSize(0);
+        // this.xAxisOfColumn = this.xAxisOfColumn();
     };
-    /**
-     * the gFrame is the id of Frame; it was created by createCanvasT extends graph-frame.addFrame;
-     * 
-     */
-    removeCanvas(): void {
-        d3.selectAll('#graph-frame').remove();
-    }
+
+    xAxisOfColumn(): d3.Axis<any> {
+        return d3.axisBottom(this.xScaleBand).tickSize(0);
+    }// xAxisOfColumn
+
     /**
     * create a responsive embedded D3 SVG (graph frame adn canvas)
+    *the graph-frame is the id of Frame; it was created by createCanvasT extends graph-frame.addFrame;
     */
     createCanvas(htmlElement: any): d3.Selection<any, any, any, any> {
-        return this.canvas = super.createFrame(htmlElement).append('g')
-            .attr('transform', 'translate(' + this.getFrameMargin()['left'] + ',' + this.getFrameMargin()['top'] + ')');
-    }
+
+        //if graph-frame is empty=>return true
+        let graphFrameIsEmpty: boolean = d3.select('#graph-frame').empty();
+
+        if (graphFrameIsEmpty) {
+            return this.canvas = super.createFrame(htmlElement).append('g')
+                .attr('transform', 'translate(' + this.getFrameMargin()['left'] + ',' + this.getFrameMargin()['top'] + ')');
+        } else {
+            //remove old graph and return new one
+            d3.select('#graph-frame').remove();
+            return this.canvas = super.createFrame(htmlElement).append('g')
+                .attr('transform', 'translate(' + this.getFrameMargin()['left'] + ',' + this.getFrameMargin()['top'] + ')');
+        }
+    }//createCanvas
 
     /**
      * default:414px in graph-frame
