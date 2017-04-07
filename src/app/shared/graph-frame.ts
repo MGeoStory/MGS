@@ -59,7 +59,7 @@ export class GraphFrame {
      * create a responsive embedded D3 SVG (graph frame)
      * id =>#gFrame
      */
-    createFrame(htmlElement: any): d3.Selection<any, any, any, any> {
+    createFrame(id:string,htmlElement: any): d3.Selection<any, any, any, any> {
         //append svg是為 了透過attr改變view(CSS可連動),if style則無法透過css覆寫
         //frame留白
         //http://www.oxxostudio.tw/articles/201409/svg-23-viewpoint-viewBox.html
@@ -67,7 +67,7 @@ export class GraphFrame {
         let height = this.height + this.margin.top + this.margin.bottom;
         return this.frame = d3.select(htmlElement).append('svg')
              // the id of addFrame is be used to delete the old graph
-            .attr('id','graph-frame')
+            .attr('id',id)
             .attr('width', '100%')
             .attr('height', '30%')
             .attr("preserveAspectRatio", "xMidYMid meet")

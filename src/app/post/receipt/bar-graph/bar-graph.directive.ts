@@ -31,9 +31,8 @@ export class BarGraph implements OnInit {
 
         this.mgs.refData.subscribe(
             data => {
-                canvas = gc.createCanvas('#bar-graph');
+                canvas = gc.createCanvas('bar-canvas','#bar-graph');
                 this.drawColumnGraph(data);
-                console.log(gc.getFrameWidth());
             }//end of data=>
         );//end of Subscription
 

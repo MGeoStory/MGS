@@ -22,21 +22,21 @@ export class GraphCanvas extends GraphFrame {
     }// xAxisOfColumn
 
     /**
-    * create a responsive embedded D3 SVG (graph frame adn canvas)
+    *create a responsive embedded D3 SVG (graph frame adn canvas)
     *the graph-frame is the id of Frame; it was created by createCanvasT extends graph-frame.addFrame;
     */
-    createCanvas(htmlElement: any): d3.Selection<any, any, any, any> {
-
-        //if graph-frame is empty=>return true
-        let graphFrameIsEmpty: boolean = d3.select('#graph-frame').empty();
+    createCanvas(IdOfHtml:string,htmlElement: any): d3.Selection<any, any, any, any> {
+        
+        //if #id is empty=>return true
+        let graphFrameIsEmpty: boolean = d3.select(`#${IdOfHtml}`).empty();
 
         if (graphFrameIsEmpty) {
-            return this.canvas = super.createFrame(htmlElement).append('g')
+            return this.canvas = super.createFrame(IdOfHtml,htmlElement).append('g')
                 .attr('transform', 'translate(' + this.getFrameMargin()['left'] + ',' + this.getFrameMargin()['top'] + ')');
         } else {
             //remove old graph and return new one
-            d3.select('#graph-frame').remove();
-            return this.canvas = super.createFrame(htmlElement).append('g')
+            d3.select(`#${IdOfHtml}`).remove();
+            return this.canvas = super.createFrame(IdOfHtml,htmlElement).append('g')
                 .attr('transform', 'translate(' + this.getFrameMargin()['left'] + ',' + this.getFrameMargin()['top'] + ')');
         }
     }//createCanvas

@@ -20,13 +20,13 @@ export class LineGraphComponent implements OnInit {
     private RECIPT_DATA = 'src/app/data/rawdata/receipt_article_1.csv';
 
     constructor(private mgs: MapGraphService) {
-        canvas = gc.createCanvas(null);
+        // canvas = gc.createCanvas(null);
     }
 
     ngOnInit() {
         this.mgs.refId.subscribe(
             id => {
-                canvas = gc.createCanvas('#line-graph');
+                canvas = gc.createCanvas('line-canvas','#line-graph');
                 this.drawLineGraph(id);
             }
         )
