@@ -73,17 +73,23 @@ export class LineGraphComponent implements OnInit {
                 return d.date;
             }))
 
-            gc.yScaleLinear.domain([0, d3.max(dataForDraw, (d) => {
+            // gc.yScaleLinear.domain([0, d3.max(dataForDraw, (d) => {
+            //     return d.value;
+            // })]);
+            gc.yScaleLinear.domain(d3.extent(dataForDraw, (d) => {
                 return d.value;
-            })]);
+            }))
 
             console.log(gc.line(dataForDraw));
-            canvas.append("path") 
+            canvas.append("path")
                 .attr("class", "line")
                 .attr("d", gc.line(dataForDraw))
-                .attr('fill','none')
-                .attr('stroke','blue')
-                .attr('stroke-width','2px');
+                .attr('fill', 'none')
+                .attr('stroke', 'blue')
+                .attr('stroke-width', '2px');
+
+            canvas.append('g')
+                .call(d3.axisLeft(gc.yScaleLinear));
         });
     }//* drawLineGraph
 }
