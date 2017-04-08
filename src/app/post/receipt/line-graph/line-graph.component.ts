@@ -24,9 +24,10 @@ export class LineGraphComponent implements OnInit {
     }
 
     ngOnInit() {
+
         this.mgs.refId.subscribe(
             id => {
-                canvas = gc.createCanvas('line-canvas','#line-graph');
+                canvas = gc.createCanvas('line-canvas', '#line-graph');
                 this.drawLineGraph(id);
                 console.log(id);
             }
@@ -38,6 +39,7 @@ export class LineGraphComponent implements OnInit {
         d3.csv(this.RECIPT_DATA, (data: Array<Object>) => {
             // console.log(data);
 
+            //filter data
             let dataFiltered = data.filter(column => {
                 if (column['縣市名稱'] == id) {
                     return column;
@@ -45,17 +47,43 @@ export class LineGraphComponent implements OnInit {
             });
             // console.log(dataFiltered);
 
+            //parse year and month to Date format 
+
+            let timeParse = d3.timeParse("%Y/%m");
+            //nesting data 
             let dataForDraw = dataFiltered.map(d => {
+                let p = timeParse(d['發票年'] + "/" + d['發票月']);
                 return {
                     name: d['縣市名稱'],
                     year: d['發票年'],
                     month: d['發票月'],
+                    date: p,
                     value: +d['平均客單價']
                 }
             });
+
+
+            // dataForDraw.forEach(d => {
+            //     d.date = timeParse(d.year + "/" + d.month);
+            // })
+
             console.log(dataForDraw);
 
-            
+            gc.xScaleTime.domain(d3.extent(dataForDraw, (d) => {
+                return d.date;
+            }))
+
+            gc.yScaleLinear.domain([0, d3.max(dataForDraw, (d) => {
+                return d.value;
+            })]);
+
+            console.log(gc.line(dataForDraw));
+            canvas.append("path") 
+                .attr("class", "line")
+                .attr("d", gc.line(dataForDraw))
+                .attr('fill','none')
+                .attr('stroke','blue')
+                .attr('stroke-width','2px');
         });
     }//* drawLineGraph
 }

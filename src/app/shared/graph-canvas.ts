@@ -6,14 +6,28 @@ export class GraphCanvas extends GraphFrame {
     canvas: d3.Selection<any, any, any, any>;
 
     //variable of function
-    xScaleBand: d3.ScaleBand<String>;
+    xScaleBand: d3.ScaleBand<string>;
+    xScaleTime: d3.ScaleTime<number, number>;
     yScaleLinear: d3.ScaleLinear<number, number>;
+    line;
     // xAxisOfColumn: d3.Axis<any>;
 
     constructor() {
         super();
         this.xScaleBand = d3.scaleBand().range([0, this.getFrameWidth()]).paddingInner(0.1);
         this.yScaleLinear = d3.scaleLinear().range([this.getFrameHeight(), 0]);
+        this.xScaleTime = d3.scaleTime().range([0, this.getFrameWidth()]);
+
+        //Typescript does not know anything about your data object type. 
+        //You can define the data object type or you could try to use the type any:
+        this.line = d3.line()
+            .x((d: any) => {
+                return this.xScaleTime(d.date);
+            })
+            .y((d: any) => {
+                return this.yScaleLinear(d.value);
+            });
+            
         // this.xAxisOfColumn = this.xAxisOfColumn();
     };
 
@@ -25,18 +39,18 @@ export class GraphCanvas extends GraphFrame {
     *create a responsive embedded D3 SVG (graph frame adn canvas)
     *the graph-frame is the id of Frame; it was created by createCanvasT extends graph-frame.addFrame;
     */
-    createCanvas(IdOfHtml:string,htmlElement: any): d3.Selection<any, any, any, any> {
-        
+    createCanvas(IdOfHtml: string, htmlElement: any): d3.Selection<any, any, any, any> {
+
         //if #id is empty=>return true
         let graphFrameIsEmpty: boolean = d3.select(`#${IdOfHtml}`).empty();
 
         if (graphFrameIsEmpty) {
-            return this.canvas = super.createFrame(IdOfHtml,htmlElement).append('g')
+            return this.canvas = super.createFrame(IdOfHtml, htmlElement).append('g')
                 .attr('transform', 'translate(' + this.getFrameMargin()['left'] + ',' + this.getFrameMargin()['top'] + ')');
         } else {
             //remove old graph and return new one
             d3.select(`#${IdOfHtml}`).remove();
-            return this.canvas = super.createFrame(IdOfHtml,htmlElement).append('g')
+            return this.canvas = super.createFrame(IdOfHtml, htmlElement).append('g')
                 .attr('transform', 'translate(' + this.getFrameMargin()['left'] + ',' + this.getFrameMargin()['top'] + ')');
         }
     }//createCanvas
