@@ -9,6 +9,8 @@ export class GraphCanvas extends GraphFrame {
     xScaleBand: d3.ScaleBand<string>;
     xScaleTime: d3.ScaleTime<number, number>;
     yScaleLinear: d3.ScaleLinear<number, number>;
+    //http://bl.ocks.org/zanarmstrong/05c1e95bf7aa16c4768e
+    rounded = d3.format(',.0f');
     line;
     // xAxisOfColumn: d3.Axis<any>;
 
@@ -22,12 +24,13 @@ export class GraphCanvas extends GraphFrame {
         //You can define the data object type or you could try to use the type any:
         this.line = d3.line()
             .x((d: any) => {
-                return this.xScaleTime(d.date);
+                // use '+' for convert string to number
+                return +this.rounded(this.xScaleTime(d.date));
             })
             .y((d: any) => {
-                return this.yScaleLinear(d.value);
+                return +this.rounded(this.yScaleLinear(d.value));
             });
-            
+
         // this.xAxisOfColumn = this.xAxisOfColumn();
     };
 

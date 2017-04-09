@@ -27,6 +27,8 @@ export class LineGraphComponent implements OnInit {
 
         this.mgs.refId.subscribe(
             id => {
+                //more right margin for yAxis
+                gc.setFrameMargin(-1,-1,-1,50)
                 canvas = gc.createCanvas('line-canvas', '#line-graph');
                 this.drawLineGraph(id);
                 console.log(id);
@@ -48,7 +50,6 @@ export class LineGraphComponent implements OnInit {
             // console.log(dataFiltered);
 
             //parse year and month to Date format 
-
             let timeParse = d3.timeParse("%Y/%m");
             //nesting data 
             let dataForDraw = dataFiltered.map(d => {
@@ -73,23 +74,31 @@ export class LineGraphComponent implements OnInit {
                 return d.date;
             }))
 
-            // gc.yScaleLinear.domain([0, d3.max(dataForDraw, (d) => {
-            //     return d.value;
-            // })]);
             gc.yScaleLinear.domain(d3.extent(dataForDraw, (d) => {
                 return d.value;
             }))
 
+            //draw y axis of line
+            canvas.append('g')
+                .attr('class','line-yAxis')
+                .call(d3.axisLeft(gc.yScaleLinear).ticks(6));;
+            
+            //draw x axis of line
+            canvas.append('g')
+            .attr('class','line-xAxis')
+            .attr('transform',`translate(0,${gc.getFrameHeight()})`)
+            .call(d3.axisBottom(gc.xScaleTime));
+
+            //draw paths of line
             console.log(gc.line(dataForDraw));
             canvas.append("path")
-                .attr("class", "line")
+                .attr("class", "line-path")
                 .attr("d", gc.line(dataForDraw))
                 .attr('fill', 'none')
-                .attr('stroke', 'blue')
-                .attr('stroke-width', '2px');
+                .attr('stroke', 'blue');;
 
-            canvas.append('g')
-                .call(d3.axisLeft(gc.yScaleLinear));
+            
+
         });
     }//* drawLineGraph
 }
