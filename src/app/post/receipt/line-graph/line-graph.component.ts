@@ -87,7 +87,7 @@ export class LineGraphComponent implements OnInit {
             canvas.append('g')
             .attr('class','line-xAxis')
             .attr('transform',`translate(0,${gc.getFrameHeight()})`)
-            .call(d3.axisBottom(gc.xScaleTime));
+            .call(d3.axisBottom(gc.xScaleTime).ticks(5));
 
             //draw paths of line
             console.log(gc.line(dataForDraw));
@@ -95,10 +95,7 @@ export class LineGraphComponent implements OnInit {
                 .attr("class", "line-path")
                 .attr("d", gc.line(dataForDraw))
                 .attr('fill', 'none')
-                .attr('stroke', 'blue');;
-
-            
-
+                .attr('stroke', 'blue');
         });
     }//* drawLineGraph
 }
