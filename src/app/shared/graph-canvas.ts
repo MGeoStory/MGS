@@ -20,6 +20,10 @@ export class GraphCanvas extends GraphFrame {
         this.yScaleLinear = d3.scaleLinear().range([this.getFrameHeight(), 0]);
         this.xScaleTime = d3.scaleTime().range([0, this.getFrameWidth()]);
 
+
+
+        // this.yGridLine= d3.axisRight(this.y)
+
         //Typescript does not know anything about your data object type. 
         //You can define the data object type or you could try to use the type any:
         this.line = d3.line()
@@ -34,7 +38,39 @@ export class GraphCanvas extends GraphFrame {
         // this.xAxisOfColumn = this.xAxisOfColumn();
     };
 
-    xAxisOfColumn(): d3.Axis<any> {
+    /*
+    *create grid line of linear scale
+    */
+    yAixsOfLinearOfGridLine(): d3.Axis<any> {
+        return d3.axisRight(this.yScaleLinear).tickSize(this.getFrameWidth()).tickSizeOuter(0);
+    }
+
+    /**
+    *create axis of linear scale
+    */
+    yAxisOfLinear(): d3.Axis<any> {
+        return d3.axisLeft(this.yScaleLinear);
+    }
+
+
+    /*
+   *create grid line of linear scale
+   */
+    xAixsOfTimeOfGridLine(): d3.Axis<any> {
+        return d3.axisBottom(this.xScaleTime).tickSize(this.getFrameHeight());
+    }
+
+    /**
+   *create axis of time scale
+   */
+    xAxisOfTime(): d3.Axis<any> {
+        return d3.axisBottom(this.xScaleTime);
+    }
+
+    /** 
+    *create axis of band (tickSize=0))
+    */
+    xAxisOfBand(): d3.Axis<any> {
         return d3.axisBottom(this.xScaleBand).tickSize(0);
     }// xAxisOfColumn
 

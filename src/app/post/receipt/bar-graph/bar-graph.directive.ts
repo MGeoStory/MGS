@@ -127,7 +127,7 @@ export class BarGraph implements OnInit {
         let textOfAaxis = canvas.append('g')
             .attr('class', 'xAxis')
             .attr('transform', `translate(0,${gc.getFrameHeight()})`)
-            .call(gc.xAxisOfColumn())
+            .call(gc.xAxisOfBand())
             .selectAll('text')
             .style('fill', (d, i) => {
                 if (i % 2 == 0) {

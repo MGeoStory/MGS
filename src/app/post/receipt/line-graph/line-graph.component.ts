@@ -28,14 +28,13 @@ export class LineGraphComponent implements OnInit {
         this.mgs.refId.subscribe(
             id => {
                 //more right margin for yAxis
-                gc.setFrameMargin(-1,-1,-1,50)
+                gc.setFrameMargin(-1, -1, -1, 50)
                 canvas = gc.createCanvas('line-canvas', '#line-graph');
                 this.drawLineGraph(id);
                 console.log(id);
             }
         )
     }
-
 
     drawLineGraph(id: string) {
         d3.csv(this.RECIPT_DATA, (data: Array<Object>) => {
@@ -63,31 +62,42 @@ export class LineGraphComponent implements OnInit {
                 }
             });
 
-
-            // dataForDraw.forEach(d => {
-            //     d.date = timeParse(d.year + "/" + d.month);
-            // })
-
             console.log(dataForDraw);
 
             gc.xScaleTime.domain(d3.extent(dataForDraw, (d) => {
                 return d.date;
-            }))
+            }));
 
             gc.yScaleLinear.domain(d3.extent(dataForDraw, (d) => {
                 return d.value;
-            }))
+            }));
+
+            //draw x axis of line
+            canvas.append('g')
+                .attr('class', 'line-xAxis')
+                .attr('transform', `translate(0,${gc.getFrameHeight()})`)
+                .call(gc.xAxisOfTime().ticks(10).tickFormat(d3.timeFormat('%y/%m')));
+
+            //draw x GridLine ,remove outer tick, remove text,remove top path, and change color of line
+            let xGridLine = canvas.append('g')
+                .attr('class', 'line-xGridLine')
+                .call(gc.xAixsOfTimeOfGridLine().ticks(10).tickFormat(d3.timeFormat('%y/%d')));
+            xGridLine.selectAll('text').remove();
+            xGridLine.select('path').remove();
+            xGridLine.selectAll('line').attr('stroke', 'grey');
 
             //draw y axis of line
             canvas.append('g')
-                .attr('class','line-yAxis')
-                .call(d3.axisLeft(gc.yScaleLinear).ticks(6));;
-            
-            //draw x axis of line
-            canvas.append('g')
-            .attr('class','line-xAxis')
-            .attr('transform',`translate(0,${gc.getFrameHeight()})`)
-            .call(d3.axisBottom(gc.xScaleTime).ticks(5));
+                .attr('class', 'line-yAxis')
+                .attr('stroke-width', '2px')
+                .call(gc.yAxisOfLinear().ticks(6));
+
+            // draw y GridLine ,remove outer tick, remove text, and change color of line
+            let yGridLine = canvas.append('g')
+                .attr('class', 'line-yGridLine')
+                .call(gc.yAixsOfLinearOfGridLine().ticks(6))
+            yGridLine.selectAll('text').remove();
+            yGridLine.selectAll('line').attr('stroke', 'grey');
 
             //draw paths of line
             console.log(gc.line(dataForDraw));
@@ -95,7 +105,8 @@ export class LineGraphComponent implements OnInit {
                 .attr("class", "line-path")
                 .attr("d", gc.line(dataForDraw))
                 .attr('fill', 'none')
-                .attr('stroke', 'blue');
+                .attr('stroke', 'blue')
+                .attr('stroke-width', '2px');
         });
     }//* drawLineGraph
-}
+}//* LineGraphComponent
