@@ -69,6 +69,9 @@ let dataFormatted: Array<Object>;
     ngOnInit() {
         thisComponent = this;
         this.setDropData();
+        
+        //scroll to top whn user entire page
+        window.scroll(0,0);
     }// END OF ngOnInit
 
     public showChildModal(): void {

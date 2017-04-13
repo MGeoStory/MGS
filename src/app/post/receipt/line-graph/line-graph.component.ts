@@ -35,6 +35,12 @@ export class LineGraphComponent implements OnInit {
                 canvas = gc.createCanvas('line-canvas', '#line-graph');
                 this.drawLineGraph(id);
                 this.lineGraphTitle = `每月發票平均消費金額(${id}):`;
+
+                //scoll to line-graph
+                // const element = document.querySelector('#test');
+                // if (element) { element.scrollIntoView(element); }
+                let offsetTop = d3.select('#line-graph')['_groups'][0][0].offsetTop;
+                window.scrollTo(0, offsetTop - gc.getFrameHeight() / 3);
             }
         )
     }
