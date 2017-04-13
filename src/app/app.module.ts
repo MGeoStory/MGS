@@ -29,7 +29,6 @@ import { DropdownListComponent } from './post/receipt/dropdown-list/dropdown-lis
 import { ReceiptMapComponent } from './post/receipt/map/receipt-map.component';
 import { BarGraph } from './post/receipt/bar-graph/bar-graph.directive';
 import { LineGraphComponent } from './post/receipt/line-graph/line-graph.component';
-import { ContentComponent } from './post/receipt/content/content.component';
 
 export const PostReceiptComponents = [
   PostReceiptComponent,
@@ -37,7 +36,6 @@ export const PostReceiptComponents = [
   ReceiptMapComponent,
   BarGraph,
   LineGraphComponent,
-  ContentComponent
 ];
 
 import { routing } from './app.routes';

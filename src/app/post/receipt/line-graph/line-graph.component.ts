@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { MapGraphService } from 'app/shared/map-graph.service';
 import { GraphFrame } from 'app/shared/graph-frame';
 import { GraphCanvas } from 'app/shared/graph-canvas';
+import { ViewEncapsulation } from '@angular/core';
 import * as d3 from 'd3';
 
 let gc = new GraphCanvas();
@@ -12,13 +13,15 @@ let canvas: d3.Selection<any, any, any, any>;
 @Component({
     selector: 'post-receipt-line-graph',
     styleUrls: ['line-graph.component.css'],
-    templateUrl: 'line-graph.component.html'
+    templateUrl: 'line-graph.component.html',
+    encapsulation: ViewEncapsulation.None
 })
 
 export class LineGraphComponent implements OnInit {
 
     private RECIPT_DATA = 'src/app/data/rawdata/receipt_article_1.csv';
-
+    private lineGraphTitle: string = "";
+    private lineGraphInfo: string = "";
     constructor(private mgs: MapGraphService) {
         // canvas = gc.createCanvas(null);
     }
@@ -31,12 +34,13 @@ export class LineGraphComponent implements OnInit {
                 gc.setFrameMargin(-1, -1, -1, 50)
                 canvas = gc.createCanvas('line-canvas', '#line-graph');
                 this.drawLineGraph(id);
-                console.log(id);
+                this.lineGraphTitle = `每月發票平均消費金額(${id}):`;
             }
         )
     }
 
-    drawLineGraph(id: string) {
+    drawLineGraph(id: string): void {
+
         d3.csv(this.RECIPT_DATA, (data: Array<Object>) => {
             // console.log(data);
 
@@ -72,11 +76,6 @@ export class LineGraphComponent implements OnInit {
                 return d.value;
             }));
 
-            //draw x axis of line
-            canvas.append('g')
-                .attr('class', 'line-xAxis')
-                .attr('transform', `translate(0,${gc.getFrameHeight()})`)
-                .call(gc.xAxisOfTime().ticks(10).tickFormat(d3.timeFormat('%y/%m')));
 
             //draw x GridLine ,remove outer tick, remove text,remove top path, and change color of line
             let xGridLine = canvas.append('g')
@@ -86,27 +85,85 @@ export class LineGraphComponent implements OnInit {
             xGridLine.select('path').remove();
             xGridLine.selectAll('line').attr('stroke', 'grey');
 
-            //draw y axis of line
+            //draw x axis of line
             canvas.append('g')
-                .attr('class', 'line-yAxis')
+                .attr('class', 'line-xAxis')
+                .attr('transform', `translate(0,${gc.getFrameHeight()})`)
                 .attr('stroke-width', '2px')
-                .call(gc.yAxisOfLinear().ticks(6));
+                .call(gc.xAxisOfTime().ticks(10).tickFormat(d3.timeFormat('%y/%m')));
 
-            // draw y GridLine ,remove outer tick, remove text, and change color of line
-            let yGridLine = canvas.append('g')
-                .attr('class', 'line-yGridLine')
-                .call(gc.yAixsOfLinearOfGridLine().ticks(6))
-            yGridLine.selectAll('text').remove();
-            yGridLine.selectAll('line').attr('stroke', 'grey');
+            this.drawYAxisOfLinear(6);
+            this.drawyGridLinear(6);
 
             //draw paths of line
-            console.log(gc.line(dataForDraw));
-            canvas.append("path")
-                .attr("class", "line-path")
-                .attr("d", gc.line(dataForDraw))
-                .attr('fill', 'none')
-                .attr('stroke', 'blue')
-                .attr('stroke-width', '2px');
+            // console.log(gc.line(dataForDraw));
+            this.drawPathOfLine(dataForDraw);
+
+            //about lineGraphInfo
+            let avg: number = this.getAvgValues(dataForDraw, 'value');
+            let extent: number[] = d3.extent(dataForDraw, (d) => {
+                return d.value;
+            });
+
+            let maxTime;
+            let minTime;
+            dataForDraw.forEach((d) => {
+                if (d.value == extent[1]) {
+                    maxTime = d.date;
+                } else if (d.value == extent[0]) {
+                    minTime = d.date;
+                }
+            })
+            let tf = d3.timeFormat('%Y/%m')
+            maxTime = tf(maxTime);
+            minTime = tf(minTime);
+            this.lineGraphInfo = `最大值：${extent[1]} (${maxTime}) ｜最小值：${extent[0]} (${minTime}) ｜平均值：${avg} `;
         });
     }//* drawLineGraph
+
+    /**draw y axis of line
+     * 
+     */
+    drawYAxisOfLinear(ticks: number) {
+        canvas.append('g')
+            .attr('class', 'line-yAxis')
+            .attr('stroke-width', '2px')
+            .call(gc.yAxisOfLinear().ticks(6));
+    }
+
+    /* 
+    *draw y GridLine ,remove outer tick, remove text, and change color of line
+    */
+    drawyGridLinear(ticks: number) {
+        let yGridLine = canvas.append('g')
+            .attr('class', 'line-yGridLine')
+            .call(gc.yAixsOfLinearOfGridLine().ticks(6))
+        yGridLine.selectAll('text').remove();
+        yGridLine.selectAll('line').attr('stroke', 'grey');
+    }
+
+    /**
+     * draw paths of line (using gc.line)
+     */
+    drawPathOfLine(data: Array<Object>): void {
+        canvas.append("path")
+            .attr("class", "line-path")
+            .attr("d", gc.line(data))
+            .attr('fill', 'none')
+            .attr('stroke', 'blue')
+            .attr('stroke-width', '2px');
+    }
+
+    /**
+    * get average valuse from object array
+    */
+    getAvgValues(objs: Array<Object>, key: string): number {
+        let sum: number = 0;
+        let avg: number = 0;
+        objs.forEach((d) => {
+            sum += d[`${key}`];
+        });
+        avg = Math.round(sum / objs.length);
+        return avg;
+    }//* getAvgValues
 }//* LineGraphComponent

@@ -17,7 +17,7 @@ let canvas: d3.Selection<any, any, any, any>;
     styleUrls: ['bar-graph.component.css'],
 })
 export class BarGraph implements OnInit {
-    private graphTitle: string = "各縣市平均消費金額(2013/1):";
+    private graphTitle: string = "各縣市發票平均消費金額(2013/1):";
 
     constructor(private mgs: MapGraphService) {
     }//END OF constructor
@@ -25,7 +25,7 @@ export class BarGraph implements OnInit {
     ngOnInit(): void {
         this.mgs.refTime.subscribe(
             time => {
-                this.graphTitle = `各縣市平均消費金額(${time[0]}/${time[1]}):`;
+                this.graphTitle = `各縣市發票平均消費金額(${time[0]}/${time[1]}):`;
             }
         )
 
@@ -155,13 +155,14 @@ export class BarGraph implements OnInit {
     */
     drawAvgLine(dataForDraw: Array<Object>) {
         console.log(dataForDraw);
-        let sum: number = 0;
-        let avg: number = 0;
-        dataForDraw.forEach((d) => {
-            sum += d['value'];
-        });
-        avg = Math.round(sum / dataForDraw.length);
-
+        // let sum: number = 0;
+        // let avg: number = 0;
+        // dataForDraw.forEach((d) => {
+        //     sum += d['value'];
+        // });
+        // avg = Math.round(sum / dataForDraw.length);
+        let avg: number = this.getAvgValues(dataForDraw, 'value');
+        
         //avg line
         canvas.append('line')
             .style('stroke', 'red')
@@ -178,6 +179,18 @@ export class BarGraph implements OnInit {
             .attr('text-anchor', 'end')
             .style('fill', 'red')
             .text(`平均值:${avg}元`);
+    }//* drawAvgLine
 
+    /**
+     * get average valuse from object array
+     */
+    getAvgValues(objs: Array<Object>, key: string): number {
+        let sum: number = 0;
+        let avg: number = 0;
+        objs.forEach((d) => {
+            sum += d[`${key}`];
+        });
+        avg = Math.round(sum / objs.length);
+        return avg;
     }
 }// END OF class
