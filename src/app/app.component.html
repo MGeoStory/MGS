@@ -3,7 +3,7 @@
     <div class="container-fluid">
         <div class="page-scroll">
             <!-- Brand and btn-group get grouped for better mobile display -->
-            <a class="navbar-brand" href="#">MoGeoStory</a>
+            <a class="navbar-brand" [routerLink] ="['']">MoGeoStory</a>
             <div dropdown>
                 <button id="single-button" type="button" class="navbar-toggle collapsed" dropdownToggle>
                     <span class="sr-only">Toggle navigation</span>
@@ -13,11 +13,11 @@
                 </button>
 
                 <ul dropdownMenu role="menu" class="nav navbar-nav dropdown-menu-right">
-                    <li role="menuitem"><a class="dropdown-item" [routerLink] ="['']">Home</a></li>
-                    <li role="menuitem"><a class="dropdown-item" href="#">Another action</a></li>
-                    <li role="menuitem"><a class="dropdown-item" href="#">Something else here</a></li>
+                    <li role="menuitem"><a class="dropdown-item" [routerLink] ="['/about']">ABOUT</a></li>
+                    <!--<li role="menuitem"><a class="dropdown-item" href="#">Another action</a></li>-->
+                    <!--<li role="menuitem"><a class="dropdown-item" href="#">Something else here</a></li>-->
                     <li class="divider dropdown-divider"></li>
-                    <li role="menuitem"><a class="dropdown-item" [routerLink] = "['/post/receipt']">router test</a></li>
+                    <!--<li role="menuitem"><a class="dropdown-item" [routerLink] = "['/post/receipt']">router test</a></li>-->
                 </ul>
             </div>
             <!--/.navbar-toggle collapsed-->
@@ -26,9 +26,9 @@
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a [routerLink] ="['']">Home</a>
+                    <a [routerLink] ="['/about']">ABOUT</a>
                 </li>
-                <li>
+                <!--<li>
                     <a href="about.html">About</a>
                 </li>
                 <li>
@@ -36,7 +36,7 @@
                 </li>
                 <li>
                     <a [routerLink] = "['/post/receipt']">router test</a>
-                </li>
+                </li>-->
             </ul>
         </div>
         <!--./collapse navbar-collapse-->
@@ -51,9 +51,9 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 <div class="site-heading">
-                    <h1>Geo Story</h1>
+                    <h1>Geo Stories</h1>
                     <hr class="small">
-                    <span class="subheading">infomation about the world</span>
+                    <span class="subheading">讓資訊流通，進而啟發各種可能</span>
                 </div>
             </div>
         </div>

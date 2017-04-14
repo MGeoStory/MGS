@@ -17,9 +17,11 @@ import { MapGraphService } from './shared/map-graph.service';
 import { LMapSetting } from './shared/lmap-setting';
 
 //home-page
-import { HomeComponent } from './home/home-component';
-export const HomeComponents = [
+import { HomeComponent } from './home/home.component';
+import { AboutComponent } from './about/about.component';
+export const singleComponents = [
   HomeComponent,
+  AboutComponent
 ];
 
 
@@ -29,7 +31,6 @@ import { DropdownListComponent } from './post/receipt/dropdown-list/dropdown-lis
 import { ReceiptMapComponent } from './post/receipt/map/receipt-map.component';
 import { BarGraph } from './post/receipt/bar-graph/bar-graph.directive';
 import { LineGraphComponent } from './post/receipt/line-graph/line-graph.component';
-
 export const PostReceiptComponents = [
   PostReceiptComponent,
   DropdownListComponent,
@@ -50,11 +51,11 @@ import { routing } from './app.routes';
     DropdownModule.forRoot(),
     ModalModule.forRoot(),
     SelectModule,
-    
+
   ],
   declarations: [
     AppComponent,
-    HomeComponents,
+    singleComponents,
     PostReceiptComponents,
     NouisliderComponent,
   ],
