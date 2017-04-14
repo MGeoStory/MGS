@@ -13,8 +13,7 @@ let dataFormatted: Array<Object>;
 }) export class DropdownListComponent implements OnInit {
     @ViewChild('childModal') public childModal: ModalDirective;
 
-    title = '南北便利商店角色大不同！';
-    brief = '2017/03/29- MoGeoStory';
+    
 
     public yearValue: string = '2013';
     public monthValue: string = '1';
