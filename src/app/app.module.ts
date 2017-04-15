@@ -10,8 +10,8 @@ import './rxjs-extensions';
 import { DropdownModule } from 'ng2-bootstrap';
 import { SelectModule } from 'ng2-select';
 import { ModalModule } from 'ng2-bootstrap';
-import { NouisliderComponent } from 'ng2-nouislider';
-
+// import { NouisliderComponent } from 'ng2-nouislider';
+import { NouisliderModule } from 'ng2-nouislider';
 //sharedService
 import { MapGraphService } from './shared/map-graph.service';
 import { LMapSetting } from './shared/lmap-setting';
@@ -51,13 +51,14 @@ import { routing } from './app.routes';
     DropdownModule.forRoot(),
     ModalModule.forRoot(),
     SelectModule,
+    NouisliderModule
 
   ],
   declarations: [
     AppComponent,
     singleComponents,
     PostReceiptComponents,
-    NouisliderComponent,
+    
   ],
   providers: [
     MapGraphService,
