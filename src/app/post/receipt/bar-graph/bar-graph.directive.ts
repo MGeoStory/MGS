@@ -17,7 +17,7 @@ let canvas: d3.Selection<any, any, any, any>;
     styleUrls: ['bar-graph.component.css'],
 })
 export class BarGraph implements OnInit {
-    private graphTitle: string = "各縣市發票平均消費金額(2013/1):";
+    private graphTitle: string = "2013年1月-各縣市平均消費金額(便利商店)：";
 
     constructor(private mgs: MapGraphService) {
     }//END OF constructor
@@ -25,7 +25,8 @@ export class BarGraph implements OnInit {
     ngOnInit(): void {
         this.mgs.refTime.subscribe(
             time => {
-                this.graphTitle = `各縣市發票平均消費金額(${time[0]}/${time[1]}):`;
+                // this.graphTitle = `各縣市平均消費金額(${time[0]}/${time[1]}):`;
+                this.graphTitle = `${time[0]}年${time[1]}月-各縣市平均消費金額(便利商店)：`
             }
         )
 
@@ -113,7 +114,7 @@ export class BarGraph implements OnInit {
             .attr('text-anchor', 'middle')
             .text((d) => d['value'])
             //0.9em will equal 0.9 x the parent font-size
-            .style('font-size', '1.2rem')
+            .style('font-size', '1rem')
             .style('fill', (d, i) => {
                 if (i % 2 == 0) {
                     return 'black';
@@ -140,13 +141,9 @@ export class BarGraph implements OnInit {
         this.drawAvgLine(dataForDraw);
 
         //make text more reabable
-        if (names.length > 10) {
-            textOfAaxis.attr('transform', 'rotate(45)')
-                .attr('x', 20)
-                .style('font-size', '1.2rem');
-        } else {
-            textOfAaxis.attr('y', 10).attr('font-size', '1.5rem');
-        };
+        textOfAaxis.attr('transform', 'rotate(45)')
+            .attr('x', 20)
+            .style('font-size', '1rem');
 
     }// end of drawBarGraph
 
@@ -162,7 +159,7 @@ export class BarGraph implements OnInit {
         // });
         // avg = Math.round(sum / dataForDraw.length);
         let avg: number = this.getAvgValues(dataForDraw, 'value');
-        
+
         //avg line
         canvas.append('line')
             .style('stroke', 'red')

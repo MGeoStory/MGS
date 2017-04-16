@@ -87,12 +87,12 @@ let colorFeature: d3.ScaleLinear<any, any>;
             //get feature value from data that pass by dropdwon list
             if (valueOfFeatures.get(props['COUNTYID']) != null) {
                 let valueOfCountry = valueOfFeatures.get(props['COUNTYID'])['value'];
-                divOfInfoControl.innerHTML = `<h4>${countryName}</h4><b>平均客單價：${valueOfCountry}</b>`;
+                divOfInfoControl.innerHTML = `<h5>${countryName}</h5><b>消費金額：${valueOfCountry}元</b>`;
             } else {
-                divOfInfoControl.innerHTML = `<h4>${countryName}</h4><b>平均客單價：無資料</b>`;
+                divOfInfoControl.innerHTML = `<h5>${countryName}</h5><b>消費金額：無資料</b>`;
             }
         } else {
-            divOfInfoControl.innerHTML = '<h4>click country</h4>';
+            divOfInfoControl.innerHTML = '<h5>可點選縣市</h5>';
         }
     }//.updateInfoCOntrol
 
