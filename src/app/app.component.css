@@ -1,3 +1,16 @@
 .navbar{
     min-height: 50px;
+    background-color:#4C92FF; /*main color*/
+}
+
+.navbar-brand{
+    color:white;
+}
+
+.navbar-right>li>a{
+    color:white;
+}
+
+.navbar-default .navbar-toggle .icon-bar{
+    background-color: white;
 }
