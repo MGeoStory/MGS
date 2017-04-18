@@ -21,8 +21,8 @@ let dataFormatted: Array<Object>;
     public maxYear: number = 2016;
 
     //ng variables
-    public selectedYear: string;
-    public selectedMonth: string;
+    // public selectedYear: string;
+    // public selectedMonth: string;
 
     private RECIPT_DATA = 'src/app/data/rawdata/receipt_article_1.csv';
     public yearConfig: any = {
@@ -81,12 +81,19 @@ let dataFormatted: Array<Object>;
         this.childModal.hide();
     }
 
+    onSlide(e){
+        console.log(e);
+        let year = e;
+        console.log(year);
+    }
+
     /**
      * get the user select
      * @param e 
      */
-    onChangeYear(userSelected: string) {
-        this.selectedYear = userSelected;
+    onSlideYear(userSelected: string) {
+        this.yearValue = userSelected;
+        // console.log(this.selectedYear);
         this.getSelectedCondition();
     }
 
@@ -94,8 +101,8 @@ let dataFormatted: Array<Object>;
      * get the user select
      * @param e 
      */
-    onChangeMonth(userSelected: string) {
-        this.selectedMonth = userSelected;
+    onSlideMonth(userSelected: string) {
+        this.monthValue = userSelected;
         this.getSelectedCondition();
     }
 
