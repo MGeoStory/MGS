@@ -28,6 +28,14 @@ export class LineGraphComponent implements OnInit {
 
     ngOnInit() {
 
+        //if the data change, remove the title and info about line graph
+        this.mgs.refData.subscribe(
+            data => {
+                this.lineGraphTitle = null;
+                this.lineGraphInfo = null;
+            }
+        )
+
         this.mgs.refId.subscribe(
             id => {
                 //more right margin for yAxis
@@ -35,7 +43,6 @@ export class LineGraphComponent implements OnInit {
                 canvas = gc.createCanvas('line-canvas', '#line-graph');
                 this.drawLineGraph(id);
                 this.lineGraphTitle = `${id}逐月平均消費金額（便利商店）:`;
-
                 //scoll to line-graph
                 // const element = document.querySelector('#test');
                 // if (element) { element.scrollIntoView(element); }
@@ -46,7 +53,6 @@ export class LineGraphComponent implements OnInit {
     }
 
     drawLineGraph(id: string): void {
-
         d3.csv(this.RECIPT_DATA, (data: Array<Object>) => {
             // console.log(data);
 
