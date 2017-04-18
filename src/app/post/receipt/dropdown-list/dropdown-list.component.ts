@@ -13,16 +13,10 @@ let dataFormatted: Array<Object>;
 }) export class DropdownListComponent implements OnInit {
     @ViewChild('childModal') public childModal: ModalDirective;
 
-    
-
     public yearValue: string = '2013';
     public monthValue: string = '1';
     public minYear: number = 2013;
     public maxYear: number = 2016;
-
-    //ng variables
-    // public selectedYear: string;
-    // public selectedMonth: string;
 
     private RECIPT_DATA = 'src/app/data/rawdata/receipt_article_1.csv';
     public yearConfig: any = {
@@ -88,17 +82,16 @@ let dataFormatted: Array<Object>;
     }
 
     /**
-     * get the user select
+     * get the year value when user slding 
      * @param e 
      */
     onSlideYear(userSelected: string) {
         this.yearValue = userSelected;
-        // console.log(this.selectedYear);
         this.getSelectedCondition();
     }
 
     /**
-     * get the user select
+     * get the month value when user slding 
      * @param e 
      */
     onSlideMonth(userSelected: string) {
@@ -107,7 +100,7 @@ let dataFormatted: Array<Object>;
     }
 
     /**
-     * deal the condition about user's select
+     * deal the condition about user's selected
      */
     getSelectedCondition() {
         let year: string = "";
@@ -118,7 +111,7 @@ let dataFormatted: Array<Object>;
         let refTime: Array<string> = [];
         refTime.push(year);
         refTime.push(month);
-        console.log(refTime);
+        // console.log(refTime);
         //announceRefTime to title of bar-graph
         this.mgs.announceRefTime(refTime);
         thisComponent.filterData(year, month, dataFormatted);
