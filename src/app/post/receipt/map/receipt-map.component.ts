@@ -114,7 +114,7 @@ let colorFeature: d3.ScaleLinear<any, any>;
                 divOfInfoControl.innerHTML = `<h5>${countryName}</h5><b>消費金額：無資料</b>`;
             }
         } else {
-            divOfInfoControl.innerHTML = '<h5>用地圖點選縣市！</h5>';
+            divOfInfoControl.innerHTML = '<h5>在地圖中點選縣市！</h5>';
         }
     }//.updateInfoCOntrol
 
