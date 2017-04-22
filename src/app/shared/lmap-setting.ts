@@ -15,7 +15,7 @@ export class LMapSetting {
         
         //setting scale bar, compass and other base components 
         this.mapboxTileLayer = L.tileLayer(this.mapboxUrl, {
-            attribution: this.mapboxAttribution,
+            // attribution: this.mapboxAttribution,
         });
 
         return this.mapboxTileLayer;

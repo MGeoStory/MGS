@@ -15,10 +15,10 @@ let map: L.Map;
 let layerOfGeoJSON: L.GeoJSON;
 let featuresClicked: L.FeatureGroup;
 let divOfInfoControl: HTMLElement;
+let divOfResetControl: HTMLElement;
 
 //about data
 let valueOfFeatures: d3.Map<{}>;
-
 //function for color feature by values
 let colorFeature: d3.ScaleLinear<any, any>;
 
@@ -30,7 +30,7 @@ let colorFeature: d3.ScaleLinear<any, any>;
 
 }) export class ReceiptMapComponent implements OnInit {
 
-    private GEOJSON_DATA:string='src/app/data/geojson/country_tw-ms.json';
+    private GEOJSON_DATA: string = 'src/app/data/geojson/country_tw-ms.json';
 
     constructor(private mgs: MapGraphService, private lms: LMapSetting) {
     }
@@ -45,6 +45,7 @@ let colorFeature: d3.ScaleLinear<any, any>;
                 thisComponent.mappingMap();
             }
         );
+
     }//END OF ngOnInit
 
     /**
@@ -55,18 +56,39 @@ let colorFeature: d3.ScaleLinear<any, any>;
         d3.select('#leaf-map').attr('id', 'lmap');
         map = L.map('lmap').setView([23.5, 121], 6);
         map.addLayer(thisComponent.lms.basedMap());
-
         map.addControl(this.createInfoControl());
-
+        map.addControl(this.createResetControl()).on('click', this.resetControl);
     }// END OF initialMap
 
+    resetControl() {
+        map.fitBounds(layerOfGeoJSON.getBounds());
+    }
+
     /**
-     * crate control(window) on map
+    * crate reset control(window) at bottom-left on map
+    */
+    createResetControl(): L.Control {
+        let resetControl = L.control.attribution({ position: 'bottomleft' });
+
+        resetControl.onAdd = () => {
+            divOfResetControl = L.DomUtil.create('div');
+            divOfResetControl.className = 'resetControl';
+            divOfResetControl.innerHTML = '<span class="glyphicon glyphicon-refresh resetControl"></span>';
+            return divOfResetControl;
+        }
+        return resetControl;
+    }
+
+
+    /**
+     * crate control(window) at top-right on map
      */
     createInfoControl(): L.Control {
 
         //control will upon leaflet map
         let infoControl = L.control.attribution({ position: 'topright' });
+
+
         //add HTMLElement
         infoControl.onAdd = () => {
             divOfInfoControl = L.DomUtil.create('div');
@@ -92,7 +114,7 @@ let colorFeature: d3.ScaleLinear<any, any>;
                 divOfInfoControl.innerHTML = `<h5>${countryName}</h5><b>消費金額：無資料</b>`;
             }
         } else {
-            divOfInfoControl.innerHTML = '<h5>可點選縣市</h5>';
+            divOfInfoControl.innerHTML = '<h5>用地圖點選縣市！</h5>';
         }
     }//.updateInfoCOntrol
 
