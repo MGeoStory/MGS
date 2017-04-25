@@ -1,3 +1,26 @@
 .line-path{
     /*stroke: red;*/
 }
+
+@media (min-width: 768px) { 
+    .graphTitle{
+        padding-top:20px;
+        font-size:1.8rem;
+    }   
+}
+
+/* 中螢幕設備（一般桌面，992px（含）以上） */
+@media (min-width: 992px) {
+    .graphTitle{
+        padding-top:20px;
+        font-size:2rem;
+    }   
+}
+
+/* 大螢幕設備（大型桌面，1200px（含）以上） */
+@media (min-width: 1200px) {
+    .graphTitle{
+        padding-top:20px;
+        font-size:2.5rem;
+    }
+}

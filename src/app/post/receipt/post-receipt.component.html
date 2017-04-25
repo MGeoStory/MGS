@@ -1,26 +1,38 @@
-<div>
-    <h1 class='h1'>{{title}}</h1>
-    <h4>{{brief}}</h4>
+<div class="container">
+    <div class="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1">
+        <h1 class='h1'>{{title}}</h1>
+        <h4>{{brief}}</h4>
 
-    <div class="abstract">
-        <blockquote>
-            <p>相較台北、新北或新竹市等地方而言，便利商店在離島(澎湖、金門、馬祖)、彰化和屏東等地，可能是重要的購物場所之一，而非僅只是順手買個方便的地方。</p>
-        </blockquote>
-        <p class="line1">檢視地圖中2013年至2016年的便利商店消費平均客單價資料，可以發現幾項有趣的事情：</p>
-        <ul class="listPoints">
-            <li>離島(澎湖、金門、馬祖)、彰化和屏東等地，通常是消費金額最高的前三名；而台北、新北和新竹市等地，則都是消費金額最少的三個地區之一。</li>
-            <li>金門一直到2013年12月才有在便利商店，然後消費金額一直逐年上升。</li>
-            <li>無論南北的便利商店在一月份時，都是平均消費最高的時候，但南部地區也可能在七月達到另一個高峰。</li>
-        </ul>
-        <blockquote>
-            <p>於下方
-                <u>拖動時間軸</u>可以看到不同時間點的消費差異；
-                <u>點選地圖</u>上的各縣市，則可看到各縣市的消費趨勢。</p>
-        </blockquote>
+        <div class="abstract">
+            <blockquote>
+                <p>相較台北、新北或新竹市等地方而言，便利商店在離島(澎湖、金門、馬祖)、彰化和屏東等地，可能是重要的購物場所之一，而非僅只是順手買個方便的地方。</p>
+            </blockquote>
+            <p class="line1">檢視地圖中2013年至2016年的便利商店消費平均客單價資料，可以發現幾項有趣的事情：</p>
+            <ul class="listPoints">
+                <li>離島(澎湖、金門、馬祖)、彰化和屏東等地，通常是消費金額最高的前三名；而台北、新北和新竹市等地，則都是消費金額最少的三個地區之一。</li>
+                <li>金門一直到2013年12月才有在便利商店，然後消費金額一直逐年上升。</li>
+                <li>無論南北的便利商店在一月份時，都是平均消費最高的時候，但南部地區也可能在七月達到另一個高峰。</li>
+            </ul>
+            <blockquote>
+                <p>於下方
+                    <u>拖動時間軸</u>可以看到不同時間點的消費差異；
+                    <u>點選地圖</u>上的各縣市，則可看到各縣市的消費趨勢。</p>
+            </blockquote>
+        </div>
+    </div>
+
+    <div class="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1">
+        <post-receipt-dropdown-list></post-receipt-dropdown-list>
+    </div>
+    <div class="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1">
+        <post-receipt-map></post-receipt-map>
+    </div>
+    <div class="row">
+        <div class="clo-lg-6 col-md-6">
+            <post-receipt-line-graph></post-receipt-line-graph>
+        </div>
+        <div class="col-lg-6 col-md-6">
+            <post-receipt-bar-graph></post-receipt-bar-graph>
+        </div>
     </div>
 </div>
-
-<post-receipt-dropdown-list></post-receipt-dropdown-list>  
-<post-receipt-map></post-receipt-map>
-<post-receipt-line-graph></post-receipt-line-graph>
-<post-receipt-bar-graph></post-receipt-bar-graph>
